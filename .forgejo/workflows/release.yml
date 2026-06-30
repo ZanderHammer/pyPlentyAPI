@@ -58,7 +58,8 @@ jobs:
 
           RELEASE_ID=$(curl -s \
             -H "Authorization: token $GITEA_TOKEN" \
-            "https://codeberg.org/api/v1/repos/$REPO/releases/tags/$TAG" | jq '.id')
+            "https://codeberg.org/api/v1/repos/$REPO/releases/tags/$TAG" \
+            | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
 
           for file in dist/*; do
             [ -f "$file" ] || continue
