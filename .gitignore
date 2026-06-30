@@ -8,3 +8,4 @@ uv.lock
 .pytest_cache/
 .ruff_cache/
 .superpowers/
+docs/openApiV3.json
