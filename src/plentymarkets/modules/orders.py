@@ -60,7 +60,27 @@ class OrdersModule:
             - ``totalsCount`` (int): Total number of matching orders.
             - ``isLastPage`` (bool): ``True`` when no further pages exist.
             - ``lastPageNumber`` (int): Number of the last page.
-            - ``entries`` (list[dict]): Order dicts; same keys as ``get()``.
+            - ``entries`` (list[dict]): Order dicts, each with:
+
+                - ``id`` (int): The order ID.
+                - ``typeId`` (int): Order type. 1=order, 2=delivery, 3=returns,
+                  4=credit note, 5=warranty, 6=repair, 7=offer, 8=advance order,
+                  9=multiorder.
+                - ``statusId`` (float): Current order status ID (e.g. ``5.0``).
+                - ``ownerId`` (int): ID of the user who owns the order.
+                - ``referrerId`` (float): Sales referrer ID.
+                - ``plentyId`` (int): Client (store) ID.
+                - ``locationId`` (int): Accounting location ID.
+                - ``warehouseId`` (int): Warehouse ID.
+                - ``createdAt`` (str): ISO 8601 creation timestamp.
+                - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+                - ``orderItems`` (list[dict]): List of order item dicts.
+                - ``addressRelations`` (list[dict]): Billing/delivery address
+                  relations.
+                - ``orderProperties`` (list[dict]): Custom order properties.
+                - ``amounts`` (list[dict]): Order amount breakdowns per currency.
+                - ``dates`` (list[dict]): Significant dates (e.g. payment due).
+                - ``relations`` (list[dict]): Related contacts, warehouses, etc.
         """
         return await self._session.get(
             "/rest/orders",
@@ -75,7 +95,26 @@ class OrdersModule:
                 minimum include ``typeId`` and ``plentyId``.
 
         Returns:
-            The created order dict; same keys as ``get()``.
+            The created order dict with the following keys:
+
+            - ``id`` (int): The order ID.
+            - ``typeId`` (int): Order type. 1=order, 2=delivery, 3=returns,
+              4=credit note, 5=warranty, 6=repair, 7=offer, 8=advance order,
+              9=multiorder.
+            - ``statusId`` (float): Current order status ID (e.g. ``5.0``).
+            - ``ownerId`` (int): ID of the user who owns the order.
+            - ``referrerId`` (float): Sales referrer ID.
+            - ``plentyId`` (int): Client (store) ID.
+            - ``locationId`` (int): Accounting location ID.
+            - ``warehouseId`` (int): Warehouse ID.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+            - ``orderItems`` (list[dict]): List of order item dicts.
+            - ``addressRelations`` (list[dict]): Billing/delivery address relations.
+            - ``orderProperties`` (list[dict]): Custom order properties.
+            - ``amounts`` (list[dict]): Order amount breakdowns per currency.
+            - ``dates`` (list[dict]): Significant dates (e.g. payment due).
+            - ``relations`` (list[dict]): Related contacts, warehouses, etc.
         """
         return await self._session.post("/rest/orders", json=data)
 
@@ -88,7 +127,26 @@ class OrdersModule:
                 ``7.0`` = outgoing items booked, ``8.0`` = cancelled).
 
         Returns:
-            The updated order dict; same keys as ``get()``.
+            The updated order dict with the following keys:
+
+            - ``id`` (int): The order ID.
+            - ``typeId`` (int): Order type. 1=order, 2=delivery, 3=returns,
+              4=credit note, 5=warranty, 6=repair, 7=offer, 8=advance order,
+              9=multiorder.
+            - ``statusId`` (float): Current order status ID (e.g. ``5.0``).
+            - ``ownerId`` (int): ID of the user who owns the order.
+            - ``referrerId`` (float): Sales referrer ID.
+            - ``plentyId`` (int): Client (store) ID.
+            - ``locationId`` (int): Accounting location ID.
+            - ``warehouseId`` (int): Warehouse ID.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+            - ``orderItems`` (list[dict]): List of order item dicts.
+            - ``addressRelations`` (list[dict]): Billing/delivery address relations.
+            - ``orderProperties`` (list[dict]): Custom order properties.
+            - ``amounts`` (list[dict]): Order amount breakdowns per currency.
+            - ``dates`` (list[dict]): Significant dates (e.g. payment due).
+            - ``relations`` (list[dict]): Related contacts, warehouses, etc.
         """
         return await self._session.put(
             f"/rest/orders/{order_id}", json={"statusId": status_id}
@@ -103,7 +161,26 @@ class OrdersModule:
             items_per_page: Results per page request (max 250).
 
         Yields:
-            Individual order dicts; same keys as ``get()``.
+            Individual order dicts, each with the following keys:
+
+            - ``id`` (int): The order ID.
+            - ``typeId`` (int): Order type. 1=order, 2=delivery, 3=returns,
+              4=credit note, 5=warranty, 6=repair, 7=offer, 8=advance order,
+              9=multiorder.
+            - ``statusId`` (float): Current order status ID (e.g. ``5.0``).
+            - ``ownerId`` (int): ID of the user who owns the order.
+            - ``referrerId`` (float): Sales referrer ID.
+            - ``plentyId`` (int): Client (store) ID.
+            - ``locationId`` (int): Accounting location ID.
+            - ``warehouseId`` (int): Warehouse ID.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+            - ``orderItems`` (list[dict]): List of order item dicts.
+            - ``addressRelations`` (list[dict]): Billing/delivery address relations.
+            - ``orderProperties`` (list[dict]): Custom order properties.
+            - ``amounts`` (list[dict]): Order amount breakdowns per currency.
+            - ``dates`` (list[dict]): Significant dates (e.g. payment due).
+            - ``relations`` (list[dict]): Related contacts, warehouses, etc.
         """
         page = 1
         while True:

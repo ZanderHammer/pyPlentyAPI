@@ -67,7 +67,31 @@ class ContactsModule:
             - ``totalsCount`` (int): Total number of matching contacts.
             - ``isLastPage`` (bool): ``True`` when no further pages exist.
             - ``lastPageNumber`` (int): Number of the last page.
-            - ``entries`` (list[dict]): Contact dicts; same keys as ``get()``.
+            - ``entries`` (list[dict]): Contact dicts, each with:
+
+                - ``id`` (int): The contact ID.
+                - ``number`` (str): External contact number.
+                - ``externalId`` (str): External system ID.
+                - ``typeId`` (int): Contact type (1=customer, 2=interested party,
+                  3=sales rep, 4=supplier, 5=manufacturer, 6=partner).
+                - ``firstName`` (str): First name.
+                - ``lastName`` (str): Last name.
+                - ``fullName`` (str): Formatted full name.
+                - ``email`` (str): Primary e-mail address.
+                - ``phone`` (str): Primary phone number.
+                - ``gender`` (str): Gender (``"male"``, ``"female"``, ``"diverse"``).
+                - ``lang`` (str): Preferred language code (e.g. ``"de"``, ``"en"``).
+                - ``referrerId`` (float): Sales referrer ID.
+                - ``plentyId`` (int): Client (store) ID.
+                - ``userId`` (int): Assigned back-end user ID.
+                - ``classId`` (int): Customer class ID.
+                - ``blocked`` (int): ``0`` = active, ``1`` = blocked.
+                - ``rating`` (int): Internal rating (1–5).
+                - ``countryId`` (int): Country ID.
+                - ``vatNumber`` (str): VAT registration number.
+                - ``parentAccountId`` (int): Parent account/company ID.
+                - ``createdAt`` (str): ISO 8601 creation timestamp.
+                - ``updatedAt`` (str): ISO 8601 last-update timestamp.
         """
         return await self._session.get(
             "/rest/accounts/contacts",
@@ -82,7 +106,31 @@ class ContactsModule:
                 ``lastName``, ``email``, ``typeId``, ``plentyId``.
 
         Returns:
-            The created contact dict; same keys as ``get()``.
+            The created contact dict with the following keys:
+
+            - ``id`` (int): The contact ID.
+            - ``number`` (str): External contact number.
+            - ``externalId`` (str): External system ID.
+            - ``typeId`` (int): Contact type (1=customer, 2=interested party,
+              3=sales rep, 4=supplier, 5=manufacturer, 6=partner).
+            - ``firstName`` (str): First name.
+            - ``lastName`` (str): Last name.
+            - ``fullName`` (str): Formatted full name.
+            - ``email`` (str): Primary e-mail address.
+            - ``phone`` (str): Primary phone number.
+            - ``gender`` (str): Gender (``"male"``, ``"female"``, ``"diverse"``).
+            - ``lang`` (str): Preferred language code (e.g. ``"de"``, ``"en"``).
+            - ``referrerId`` (float): Sales referrer ID.
+            - ``plentyId`` (int): Client (store) ID.
+            - ``userId`` (int): Assigned back-end user ID.
+            - ``classId`` (int): Customer class ID.
+            - ``blocked`` (int): ``0`` = active, ``1`` = blocked.
+            - ``rating`` (int): Internal rating (1–5).
+            - ``countryId`` (int): Country ID.
+            - ``vatNumber`` (str): VAT registration number.
+            - ``parentAccountId`` (int): Parent account/company ID.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
         """
         return await self._session.post("/rest/accounts/contacts", json=data)
 
@@ -94,7 +142,31 @@ class ContactsModule:
             data: Fields to update (partial update supported).
 
         Returns:
-            The updated contact dict; same keys as ``get()``.
+            The updated contact dict with the following keys:
+
+            - ``id`` (int): The contact ID.
+            - ``number`` (str): External contact number.
+            - ``externalId`` (str): External system ID.
+            - ``typeId`` (int): Contact type (1=customer, 2=interested party,
+              3=sales rep, 4=supplier, 5=manufacturer, 6=partner).
+            - ``firstName`` (str): First name.
+            - ``lastName`` (str): Last name.
+            - ``fullName`` (str): Formatted full name.
+            - ``email`` (str): Primary e-mail address.
+            - ``phone`` (str): Primary phone number.
+            - ``gender`` (str): Gender (``"male"``, ``"female"``, ``"diverse"``).
+            - ``lang`` (str): Preferred language code (e.g. ``"de"``, ``"en"``).
+            - ``referrerId`` (float): Sales referrer ID.
+            - ``plentyId`` (int): Client (store) ID.
+            - ``userId`` (int): Assigned back-end user ID.
+            - ``classId`` (int): Customer class ID.
+            - ``blocked`` (int): ``0`` = active, ``1`` = blocked.
+            - ``rating`` (int): Internal rating (1–5).
+            - ``countryId`` (int): Country ID.
+            - ``vatNumber`` (str): VAT registration number.
+            - ``parentAccountId`` (int): Parent account/company ID.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
         """
         return await self._session.put(
             f"/rest/accounts/contacts/{contact_id}", json=data
@@ -109,7 +181,31 @@ class ContactsModule:
             items_per_page: Results per page request (max 250).
 
         Yields:
-            Individual contact dicts; same keys as ``get()``.
+            Individual contact dicts, each with the following keys:
+
+            - ``id`` (int): The contact ID.
+            - ``number`` (str): External contact number.
+            - ``externalId`` (str): External system ID.
+            - ``typeId`` (int): Contact type (1=customer, 2=interested party,
+              3=sales rep, 4=supplier, 5=manufacturer, 6=partner).
+            - ``firstName`` (str): First name.
+            - ``lastName`` (str): Last name.
+            - ``fullName`` (str): Formatted full name.
+            - ``email`` (str): Primary e-mail address.
+            - ``phone`` (str): Primary phone number.
+            - ``gender`` (str): Gender (``"male"``, ``"female"``, ``"diverse"``).
+            - ``lang`` (str): Preferred language code (e.g. ``"de"``, ``"en"``).
+            - ``referrerId`` (float): Sales referrer ID.
+            - ``plentyId`` (int): Client (store) ID.
+            - ``userId`` (int): Assigned back-end user ID.
+            - ``classId`` (int): Customer class ID.
+            - ``blocked`` (int): ``0`` = active, ``1`` = blocked.
+            - ``rating`` (int): Internal rating (1–5).
+            - ``countryId`` (int): Country ID.
+            - ``vatNumber`` (str): VAT registration number.
+            - ``parentAccountId`` (int): Parent account/company ID.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
         """
         page = 1
         while True:

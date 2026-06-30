@@ -55,7 +55,22 @@ class ItemsModule:
             - ``totalsCount`` (int): Total number of matching items.
             - ``isLastPage`` (bool): ``True`` when no further pages exist.
             - ``lastPageNumber`` (int): Number of the last page.
-            - ``entries`` (list[dict]): Item dicts; same keys as ``get()``.
+            - ``entries`` (list[dict]): Item dicts, each with:
+
+                - ``id`` (int): The item ID.
+                - ``position`` (int): Item sort position.
+                - ``manufacturerId`` (int): Manufacturer ID.
+                - ``stockType`` (int): Stock type. 0=stocked, 1=production,
+                  2=colli, 3=special order.
+                - ``vatId`` (int): VAT configuration ID.
+                - ``producingCountryId`` (int): Country of origin ID.
+                - ``condition`` (int): Item condition (0–5).
+                - ``conditionApi`` (int): Condition exposed via API (0–5).
+                - ``mainVariationId`` (int): ID of the main variation.
+                - ``createdAt`` (str): ISO 8601 creation timestamp.
+                - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+                - ``itemProperties`` (list[dict]): Custom item properties.
+                - ``texts`` (list[dict]): Multilingual name/description texts.
         """
         return await self._session.get(
             "/rest/items",
@@ -70,7 +85,22 @@ class ItemsModule:
                 ``producingCountryId``, ``stockType``.
 
         Returns:
-            The created item dict; same keys as ``get()``.
+            The created item dict with the following keys:
+
+            - ``id`` (int): The item ID.
+            - ``position`` (int): Item sort position.
+            - ``manufacturerId`` (int): Manufacturer ID.
+            - ``stockType`` (int): Stock type. 0=stocked, 1=production,
+              2=colli, 3=special order.
+            - ``vatId`` (int): VAT configuration ID.
+            - ``producingCountryId`` (int): Country of origin ID.
+            - ``condition`` (int): Item condition (0–5).
+            - ``conditionApi`` (int): Condition exposed via API (0–5).
+            - ``mainVariationId`` (int): ID of the main variation.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+            - ``itemProperties`` (list[dict]): Custom item properties.
+            - ``texts`` (list[dict]): Multilingual name/description texts.
         """
         return await self._session.post("/rest/items", json=data)
 
@@ -82,7 +112,22 @@ class ItemsModule:
             data: Fields to update (partial update supported).
 
         Returns:
-            The updated item dict; same keys as ``get()``.
+            The updated item dict with the following keys:
+
+            - ``id`` (int): The item ID.
+            - ``position`` (int): Item sort position.
+            - ``manufacturerId`` (int): Manufacturer ID.
+            - ``stockType`` (int): Stock type. 0=stocked, 1=production,
+              2=colli, 3=special order.
+            - ``vatId`` (int): VAT configuration ID.
+            - ``producingCountryId`` (int): Country of origin ID.
+            - ``condition`` (int): Item condition (0–5).
+            - ``conditionApi`` (int): Condition exposed via API (0–5).
+            - ``mainVariationId`` (int): ID of the main variation.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+            - ``itemProperties`` (list[dict]): Custom item properties.
+            - ``texts`` (list[dict]): Multilingual name/description texts.
         """
         return await self._session.put(f"/rest/items/{item_id}", json=data)
 
@@ -95,7 +140,22 @@ class ItemsModule:
             items_per_page: Results per page request (max 250).
 
         Yields:
-            Individual item dicts; same keys as ``get()``.
+            Individual item dicts, each with the following keys:
+
+            - ``id`` (int): The item ID.
+            - ``position`` (int): Item sort position.
+            - ``manufacturerId`` (int): Manufacturer ID.
+            - ``stockType`` (int): Stock type. 0=stocked, 1=production,
+              2=colli, 3=special order.
+            - ``vatId`` (int): VAT configuration ID.
+            - ``producingCountryId`` (int): Country of origin ID.
+            - ``condition`` (int): Item condition (0–5).
+            - ``conditionApi`` (int): Condition exposed via API (0–5).
+            - ``mainVariationId`` (int): ID of the main variation.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+            - ``itemProperties`` (list[dict]): Custom item properties.
+            - ``texts`` (list[dict]): Multilingual name/description texts.
         """
         page = 1
         while True:

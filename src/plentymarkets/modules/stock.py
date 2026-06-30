@@ -84,8 +84,17 @@ class StockModule:
             items_per_page: Results per page request (max 250).
 
         Yields:
-            Individual stock entry dicts; same keys as ``get_by_warehouse()``
-            entries.
+            Individual stock entry dicts, each with the following keys:
+
+            - ``warehouseId`` (int): Warehouse ID.
+            - ``itemId`` (int): Item ID.
+            - ``variationId`` (int): Variation ID.
+            - ``netStock`` (float): Stock available for sale.
+            - ``physicalStock`` (float): Total physical stock on hand.
+            - ``reservedStock`` (float): Stock reserved by open orders.
+            - ``reorderLevel`` (float): Reorder trigger threshold.
+            - ``maximumStock`` (float): Maximum stock threshold.
+            - ``averagePurchasePrice`` (float): Average net purchase price.
         """
         page = 1
         while True:
