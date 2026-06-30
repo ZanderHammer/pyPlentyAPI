@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-06-30
+
 ### CI
 - `release`: publish built distributions to PyPI via `uv publish` after the Codeberg release build ([`c450759`](https://codeberg.org/ZanderHammer/pyPlentyAPI/commit/c450759))
 - `release`: use the matching `CHANGELOG.md` `## [VERSION]` section as the Codeberg release body instead of a generic link ([`07730aa`](https://codeberg.org/ZanderHammer/pyPlentyAPI/commit/07730aa))
