@@ -34,7 +34,13 @@ class _Session:
         password: str,
         client: httpx.AsyncClient,
     ) -> None:
-        self._base_url = base_url.rstrip("/")
+        stripped = base_url.rstrip("/")
+        if "/rest" in stripped.split("//", 1)[-1]:
+            raise ValueError(
+                f"base_url must be the shop root without '/rest', got: {base_url!r}. "
+                "Example: 'https://your-shop.plentymarkets.com'"
+            )
+        self._base_url = stripped
         self._username = username
         self._password = password
         self._client = client
