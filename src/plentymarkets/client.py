@@ -38,6 +38,13 @@ class PlentyClient:
         self._stock: StockModule | None = None
         self._contacts: ContactsModule | None = None
 
+    def __repr__(self) -> str:
+        authenticated = self._session._access_token is not None
+        return (
+            f"PlentyClient(base_url={self._session._base_url!r}, "
+            f"authenticated={authenticated})"
+        )
+
     async def __aenter__(self) -> PlentyClient:
         await self.login()
         return self

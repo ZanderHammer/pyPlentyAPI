@@ -21,6 +21,9 @@ class ContactsModule:
     def __init__(self, session: _Session) -> None:
         self._session = session
 
+    def __repr__(self) -> str:
+        return "<ContactsModule /rest/accounts/contacts>"
+
     async def get(self, contact_id: int) -> dict[str, Any]:
         """Get a single contact by ID.
 

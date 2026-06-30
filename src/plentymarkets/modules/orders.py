@@ -18,6 +18,9 @@ class OrdersModule:
     def __init__(self, session: _Session) -> None:
         self._session = session
 
+    def __repr__(self) -> str:
+        return "<OrdersModule /rest/orders>"
+
     async def get(self, order_id: int) -> dict[str, Any]:
         """Get a single order by ID.
 

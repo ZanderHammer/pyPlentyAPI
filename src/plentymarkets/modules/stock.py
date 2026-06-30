@@ -18,6 +18,9 @@ class StockModule:
     def __init__(self, session: _Session) -> None:
         self._session = session
 
+    def __repr__(self) -> str:
+        return "<StockModule /rest/stock>"
+
     async def get_by_warehouse(
         self,
         warehouse_id: int,

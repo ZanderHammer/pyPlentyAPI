@@ -18,6 +18,9 @@ class ItemsModule:
     def __init__(self, session: _Session) -> None:
         self._session = session
 
+    def __repr__(self) -> str:
+        return "<ItemsModule /rest/items>"
+
     async def get(self, item_id: int) -> dict[str, Any]:
         """Get a single item by ID.
 
