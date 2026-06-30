@@ -9,6 +9,7 @@ from ._exceptions import (
     AuthError,
     ConnectionError,
     NotFoundError,
+    PlentyError,
     RateLimitError,
     ServerError,
 )
@@ -40,6 +41,30 @@ class _Session:
         self._access_token: str | None = None
         self._token_expiry: datetime | None = None
 
+    @staticmethod
+    def _raise_for_status(response: httpx.Response, path: str = "/rest/login") -> None:
+        """Map HTTP error responses to PlentyError subclasses.
+
+        Args:
+            response: The httpx response to check.
+            path: Path string used in error messages.
+
+        Raises:
+            AuthError: On 401 responses.
+            NotFoundError: On 404 responses.
+            RateLimitError: On 429 responses.
+            ServerError: On 5xx responses.
+        """
+        if response.status_code == 401:
+            raise AuthError(f"Authentication failed: {path}")
+        if response.status_code == 404:
+            raise NotFoundError(f"{path} returned 404")
+        if response.status_code == 429:
+            retry_after = int(response.headers.get("Retry-After", 0))
+            raise RateLimitError("Rate limit exceeded", retry_after=retry_after)
+        if response.status_code >= 500:
+            raise ServerError(f"Server error {response.status_code}: {path}")
+
     def _is_token_expiring(self) -> bool:
         """Return True if the token is absent or within the refresh buffer window.
 
@@ -57,13 +82,18 @@ class _Session:
 
         Raises:
             AuthError: If the server rejects the credentials (HTTP 401).
+            ServerError: On 5xx responses from the login endpoint.
+            RateLimitError: On 429 responses from the login endpoint.
+            ConnectionError: On network failures reaching the login endpoint.
         """
-        response = await self._client.post(
-            f"{self._base_url}/rest/login",
-            json={"username": self._username, "password": self._password},
-        )
-        if response.status_code == 401:
-            raise AuthError("Login failed: invalid credentials")
+        try:
+            response = await self._client.post(
+                f"{self._base_url}/rest/login",
+                json={"username": self._username, "password": self._password},
+            )
+        except (httpx.ConnectError, httpx.TimeoutException) as exc:
+            raise ConnectionError(str(exc)) from exc
+        self._raise_for_status(response, "/rest/login")
         response.raise_for_status()
         data = response.json()
         self._access_token = data["accessToken"]
@@ -144,6 +174,8 @@ class _Session:
             raise RateLimitError("Rate limit exceeded", retry_after=retry_after)
         if response.status_code >= 500:
             raise ServerError(f"Server error {response.status_code}: {method} {path}")
+        if response.status_code >= 400:
+            raise PlentyError(f"Client error {response.status_code}: {method} {path}")
 
         response.raise_for_status()
         if not response.content:

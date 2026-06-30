@@ -7,6 +7,7 @@ from plentymarkets._exceptions import (
     AuthError,
     ConnectionError,
     NotFoundError,
+    PlentyError,
     RateLimitError,
     ServerError,
 )
@@ -290,3 +291,34 @@ async def test_request_returns_empty_dict_for_no_content(httpx_mock):
 
     result = await session.delete("/rest/orders/1")
     assert result == {}
+
+
+async def test_login_raises_server_error_on_500(httpx_mock):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/login",
+        status_code=500,
+    )
+    session = make_session(httpx_mock)
+    with pytest.raises(ServerError):
+        await session.login()
+
+
+async def test_login_raises_connection_error_on_network_failure(httpx_mock):
+    httpx_mock.add_exception(httpx.ConnectError("refused"))
+    session = make_session(httpx_mock)
+    with pytest.raises(ConnectionError):
+        await session.login()
+
+
+async def test_request_raises_plenty_error_on_unhandled_4xx(httpx_mock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders",
+        status_code=403,
+    )
+    session = make_session(httpx_mock)
+    session._access_token = "tok"
+    session._token_expiry = datetime.now(tz=timezone.utc) + timedelta(hours=1)
+    with pytest.raises(PlentyError):
+        await session.get("/rest/orders")

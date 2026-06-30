@@ -43,8 +43,10 @@ class PlentyClient:
         return self
 
     async def __aexit__(self, *_: object) -> None:
-        await self.logout()
-        await self.aclose()
+        try:
+            await self.logout()
+        finally:
+            await self.aclose()
 
     async def login(self) -> None:
         """Authenticate and acquire an access token."""

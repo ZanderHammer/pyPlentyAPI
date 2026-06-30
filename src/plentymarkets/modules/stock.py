@@ -67,7 +67,7 @@ class StockModule:
                   the warehouse default).
 
         Returns:
-            An empty dict on success (the API returns no body).
+            The API response dict on success, or ``{}`` if the response has no body.
         """
         return await self._session.put(
             f"/rest/stock/warehouses/{warehouse_id}/stock/correction",
