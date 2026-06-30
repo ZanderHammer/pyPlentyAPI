@@ -68,18 +68,21 @@ jobs:
             "https://codeberg.org/api/v1/repos/$REPO/releases/tags/$TAG")
 
           if [ "$STATUS" != "200" ]; then
-            python3 -c "
-import json
-body = open('changelog_entry.md').read()
-print(json.dumps({
-    'tag_name': '$TAG',
-    'target_commitish': '${{ github.sha }}',
-    'name': '$TAG',
-    'body': body,
-    'draft': False,
-    'prerelease': False,
-}))
-" > release_payload.json
+            python3 - "$TAG" "${{ github.sha }}" <<'EOF' > release_payload.json
+          import json
+          import sys
+
+          tag, sha = sys.argv[1], sys.argv[2]
+          body = open("changelog_entry.md").read()
+          print(json.dumps({
+              "tag_name": tag,
+              "target_commitish": sha,
+              "name": tag,
+              "body": body,
+              "draft": False,
+              "prerelease": False,
+          }))
+          EOF
 
             curl -X POST \
               -H "Authorization: token $GITEA_TOKEN" \
