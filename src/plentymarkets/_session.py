@@ -94,7 +94,8 @@ class _Session:
         except (httpx.ConnectError, httpx.TimeoutException) as exc:
             raise ConnectionError(str(exc)) from exc
         self._raise_for_status(response, "/rest/login")
-        response.raise_for_status()
+        if response.status_code >= 400:
+            raise PlentyError(f"Login error {response.status_code}")
         data = response.json()
         self._access_token = data["accessToken"]
         self._token_expiry = datetime.now(tz=timezone.utc) + timedelta(
