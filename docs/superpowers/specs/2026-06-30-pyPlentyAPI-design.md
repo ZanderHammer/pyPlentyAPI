@@ -57,7 +57,9 @@ pyPlentyAPI/
 ## Authentication & Session Lifecycle
 
 PlentyMarkets uses a login-based session: `POST /rest/login` with username + password returns an
-access token (Bearer) with an expiry timestamp. The token must be sent on every subsequent request.
+access token (Bearer) and `expiresIn` (seconds). The session stores `login_time + expires_in` as
+the absolute expiry and compares against the current time before each request. The token must be
+sent on every subsequent request.
 
 **Auto-managed with explicit control (Option C):**
 - On first request (or `async with` entry), the client logs in automatically.
@@ -101,7 +103,8 @@ client.orders.get(42)
 ```
 
 **Pagination:** list methods accept `page: int` and `items_per_page: int`. Each module also exposes
-a `paginate_*()` async generator that yields pages automatically until exhausted.
+a `paginate_*()` async generator that yields individual items (not pages) across all pages
+automatically until the API returns an empty page.
 
 ## Error Handling
 
