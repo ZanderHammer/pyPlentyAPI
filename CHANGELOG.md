@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-06-30
+
 ### Changed
 - `pyproject`: rename PyPI distribution from `plentymarkets` to `plentymarkets-api-client` — the import package stays `plentymarkets` (`from plentymarkets import PlentyClient`)
 - `pyproject`: add full PyPI metadata — `readme`, `license`, `authors`, `keywords`, `classifiers`, `project.urls` (Homepage, Repository, Issues, Changelog)
