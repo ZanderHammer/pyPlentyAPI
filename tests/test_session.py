@@ -262,3 +262,31 @@ async def test_logout_is_noop_when_not_logged_in(httpx_mock):
     await session.logout()  # must not raise or make any network calls
 
     assert httpx_mock.get_requests() == []
+
+
+async def test_logout_clears_token_even_when_delete_fails(httpx_mock):
+    httpx_mock.add_exception(httpx.ConnectError("gone"))
+    session = make_session(httpx_mock)
+    session._access_token = "tok"
+    session._token_expiry = datetime.now(tz=timezone.utc) + timedelta(hours=1)
+
+    with pytest.raises(Exception):
+        await session.logout()
+
+    assert session._access_token is None
+    assert session._token_expiry is None
+
+
+async def test_request_returns_empty_dict_for_no_content(httpx_mock):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/orders/1",
+        status_code=204,
+        content=b"",
+    )
+    session = make_session(httpx_mock)
+    session._access_token = "tok"
+    session._token_expiry = datetime.now(tz=timezone.utc) + timedelta(hours=1)
+
+    result = await session.delete("/rest/orders/1")
+    assert result == {}
