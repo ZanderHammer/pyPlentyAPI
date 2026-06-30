@@ -26,6 +26,7 @@ uv run pytest -m integration         # requires live credentials
 - CHANGELOG.md: only ever write to `[Unreleased]` — never add a release section
 - CHANGELOG.md: Group changes by module. Use the same prefix as in commit messages.
 - Small focused commits, one logical change each
+- **Branch workflow:** All changes must branch off `staging` and be merged back into `staging`. `main` is protected and only updated via merges from `staging`.
 
 ## Package structure
 ```
