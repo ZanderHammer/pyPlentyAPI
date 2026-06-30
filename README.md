@@ -17,12 +17,12 @@ Async Python client for the [PlentyMarkets REST API](https://developers.plentyma
 
 ## Installation
 ```bash
-pip install plentymarkets
+pip install plentymarkets-api-client
 ```
 
 Or with `uv`:
 ```bash
-uv add plentymarkets
+uv add plentymarkets-api-client
 ```
 
 ## Quickstart
