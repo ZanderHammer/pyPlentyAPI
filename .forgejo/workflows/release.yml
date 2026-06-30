@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Run tests
+        run: uv run pytest
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=$(grep '^version' pyproject.toml | head -1 | cut -d'"' -f2)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build distribution
+        run: uv build
+
+      - name: Create release and upload artifacts
+        env:
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+        run: |
+          set -e
+          REPO="${{ github.repository }}"
+          TAG="${{ steps.version.outputs.tag }}"
+          VERSION="${{ steps.version.outputs.version }}"
+
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: token $GITEA_TOKEN" \
+            "https://codeberg.org/api/v1/repos/$REPO/releases/tags/$TAG")
+
+          if [ "$STATUS" != "200" ]; then
+            curl -X POST \
+              -H "Authorization: token $GITEA_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d "{\"tag_name\":\"$TAG\",\"target_commitish\":\"${{ github.sha }}\",\"name\":\"$TAG\",\"body\":\"See [CHANGELOG](./CHANGELOG.md) for details.\",\"draft\":false,\"prerelease\":false}" \
+              "https://codeberg.org/api/v1/repos/$REPO/releases"
+          fi
+
+          RELEASE_ID=$(curl -s \
+            -H "Authorization: token $GITEA_TOKEN" \
+            "https://codeberg.org/api/v1/repos/$REPO/releases/tags/$TAG" | jq '.id')
+
+          for file in dist/*; do
+            [ -f "$file" ] || continue
+            curl -X POST \
+              -H "Authorization: token $GITEA_TOKEN" \
+              -F "attachment=@$file" \
+              "https://codeberg.org/api/v1/repos/$REPO/releases/$RELEASE_ID/assets"
+          done
