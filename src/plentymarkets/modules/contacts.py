@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, AsyncIterator
+from typing import TYPE_CHECKING, Any, AsyncIterator
 
 if TYPE_CHECKING:
     from .._types import ContactCreatePayload, ContactUpdatePayload
@@ -21,7 +21,7 @@ class ContactsModule:
     def __init__(self, session: _Session) -> None:
         self._session = session
 
-    async def get(self, contact_id: int) -> dict:
+    async def get(self, contact_id: int) -> dict[str, Any]:
         """Get a single contact by ID.
 
         Args:
@@ -56,7 +56,7 @@ class ContactsModule:
         """
         return await self._session.get(f"/rest/accounts/contacts/{contact_id}")
 
-    async def list(self, page: int = 1, items_per_page: int = 50) -> dict:
+    async def list(self, page: int = 1, items_per_page: int = 50) -> dict[str, Any]:
         """List contacts with pagination.
 
         Args:
@@ -101,7 +101,7 @@ class ContactsModule:
             params={"page": page, "itemsPerPage": items_per_page},
         )
 
-    async def create(self, data: ContactCreatePayload) -> dict:
+    async def create(self, data: ContactCreatePayload) -> dict[str, Any]:
         """Create a new contact.
 
         Args:
@@ -139,7 +139,7 @@ class ContactsModule:
         """
         return await self._session.post("/rest/accounts/contacts", json=data)
 
-    async def update(self, contact_id: int, data: ContactUpdatePayload) -> dict:
+    async def update(self, contact_id: int, data: ContactUpdatePayload) -> dict[str, Any]:
         """Update an existing contact.
 
         Args:
@@ -181,7 +181,7 @@ class ContactsModule:
 
     async def paginate_contacts(
         self, items_per_page: int = 50
-    ) -> AsyncIterator[dict]:
+    ) -> AsyncIterator[dict[str, Any]]:
         """Async generator that yields every contact across all pages.
 
         Args:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, AsyncIterator
+from typing import TYPE_CHECKING, Any, AsyncIterator
 
 if TYPE_CHECKING:
     from .._types import OrderCreatePayload
@@ -18,7 +18,7 @@ class OrdersModule:
     def __init__(self, session: _Session) -> None:
         self._session = session
 
-    async def get(self, order_id: int) -> dict:
+    async def get(self, order_id: int) -> dict[str, Any]:
         """Get a single order by ID.
 
         Args:
@@ -49,7 +49,7 @@ class OrdersModule:
         """
         return await self._session.get(f"/rest/orders/{order_id}")
 
-    async def list(self, page: int = 1, items_per_page: int = 50) -> dict:
+    async def list(self, page: int = 1, items_per_page: int = 50) -> dict[str, Any]:
         """List orders with pagination.
 
         Args:
@@ -90,7 +90,7 @@ class OrdersModule:
             params={"page": page, "itemsPerPage": items_per_page},
         )
 
-    async def create(self, data: OrderCreatePayload) -> dict:
+    async def create(self, data: OrderCreatePayload) -> dict[str, Any]:
         """Create a new order.
 
         Args:
@@ -123,7 +123,7 @@ class OrdersModule:
         """
         return await self._session.post("/rest/orders", json=data)
 
-    async def update_status(self, order_id: int, status_id: float) -> dict:
+    async def update_status(self, order_id: int, status_id: float) -> dict[str, Any]:
         """Update the status of an order.
 
         Args:
@@ -159,7 +159,7 @@ class OrdersModule:
 
     async def paginate_orders(
         self, items_per_page: int = 50
-    ) -> AsyncIterator[dict]:
+    ) -> AsyncIterator[dict[str, Any]]:
         """Async generator that yields every order across all pages.
 
         Args:

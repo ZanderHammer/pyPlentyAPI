@@ -3,6 +3,8 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
+_JsonDict = dict[str, Any]
+
 import httpx
 
 from ._exceptions import (
@@ -125,7 +127,7 @@ class _Session:
             self._access_token = None
             self._token_expiry = None
 
-    async def _request(self, method: str, path: str, **kwargs: Any) -> dict:
+    async def _request(self, method: str, path: str, **kwargs: Any) -> _JsonDict:
         """Send an authenticated HTTP request, refreshing the token if needed.
 
         Args:
@@ -189,7 +191,7 @@ class _Session:
             return {}
         return response.json()
 
-    async def get(self, path: str, **kwargs: Any) -> dict:
+    async def get(self, path: str, **kwargs: Any) -> _JsonDict:
         """Send an authenticated GET request.
 
         Args:
@@ -201,7 +203,7 @@ class _Session:
         """
         return await self._request("GET", path, **kwargs)
 
-    async def post(self, path: str, **kwargs: Any) -> dict:
+    async def post(self, path: str, **kwargs: Any) -> _JsonDict:
         """Send an authenticated POST request.
 
         Args:
@@ -213,7 +215,7 @@ class _Session:
         """
         return await self._request("POST", path, **kwargs)
 
-    async def put(self, path: str, **kwargs: Any) -> dict:
+    async def put(self, path: str, **kwargs: Any) -> _JsonDict:
         """Send an authenticated PUT request.
 
         Args:
@@ -225,7 +227,7 @@ class _Session:
         """
         return await self._request("PUT", path, **kwargs)
 
-    async def delete(self, path: str, **kwargs: Any) -> dict:
+    async def delete(self, path: str, **kwargs: Any) -> _JsonDict:
         """Send an authenticated DELETE request.
 
         Args:

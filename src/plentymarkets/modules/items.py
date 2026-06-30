@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, AsyncIterator
+from typing import TYPE_CHECKING, Any, AsyncIterator
 
 if TYPE_CHECKING:
     from .._types import ItemCreatePayload, ItemUpdatePayload
@@ -18,7 +18,7 @@ class ItemsModule:
     def __init__(self, session: _Session) -> None:
         self._session = session
 
-    async def get(self, item_id: int) -> dict:
+    async def get(self, item_id: int) -> dict[str, Any]:
         """Get a single item by ID.
 
         Args:
@@ -44,7 +44,7 @@ class ItemsModule:
         """
         return await self._session.get(f"/rest/items/{item_id}")
 
-    async def list(self, page: int = 1, items_per_page: int = 50) -> dict:
+    async def list(self, page: int = 1, items_per_page: int = 50) -> dict[str, Any]:
         """List items with pagination.
 
         Args:
@@ -80,7 +80,7 @@ class ItemsModule:
             params={"page": page, "itemsPerPage": items_per_page},
         )
 
-    async def create(self, data: ItemCreatePayload) -> dict:
+    async def create(self, data: ItemCreatePayload) -> dict[str, Any]:
         """Create a new item.
 
         Args:
@@ -109,7 +109,7 @@ class ItemsModule:
         """
         return await self._session.post("/rest/items", json=data)
 
-    async def update(self, item_id: int, data: ItemUpdatePayload) -> dict:
+    async def update(self, item_id: int, data: ItemUpdatePayload) -> dict[str, Any]:
         """Update an existing item.
 
         Args:
@@ -139,7 +139,7 @@ class ItemsModule:
 
     async def paginate_items(
         self, items_per_page: int = 50
-    ) -> AsyncIterator[dict]:
+    ) -> AsyncIterator[dict[str, Any]]:
         """Async generator that yields every item across all pages.
 
         Args:

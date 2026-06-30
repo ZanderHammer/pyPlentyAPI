@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, AsyncIterator
+from typing import TYPE_CHECKING, Any, AsyncIterator
 
 if TYPE_CHECKING:
     from .._types import StockCorrectionPayload
@@ -23,7 +23,7 @@ class StockModule:
         warehouse_id: int,
         page: int = 1,
         items_per_page: int = 50,
-    ) -> dict:
+    ) -> dict[str, Any]:
         """Get stock levels for all variations in a warehouse.
 
         Args:
@@ -55,7 +55,7 @@ class StockModule:
             params={"page": page, "itemsPerPage": items_per_page},
         )
 
-    async def correct(self, warehouse_id: int, data: StockCorrectionPayload) -> dict:
+    async def correct(self, warehouse_id: int, data: StockCorrectionPayload) -> dict[str, Any]:
         """Correct the stock of a variation in a warehouse.
 
         Args:
@@ -81,7 +81,7 @@ class StockModule:
 
     async def paginate_stock(
         self, warehouse_id: int, items_per_page: int = 50
-    ) -> AsyncIterator[dict]:
+    ) -> AsyncIterator[dict[str, Any]]:
         """Async generator that yields every stock entry in a warehouse.
 
         Args:
