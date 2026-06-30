@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from typing import AsyncIterator
+from typing import TYPE_CHECKING, AsyncIterator
+
+if TYPE_CHECKING:
+    from .._types import ItemCreatePayload, ItemUpdatePayload
 
 from .._session import _Session
 
@@ -77,12 +80,14 @@ class ItemsModule:
             params={"page": page, "itemsPerPage": items_per_page},
         )
 
-    async def create(self, data: dict) -> dict:
+    async def create(self, data: ItemCreatePayload) -> dict:
         """Create a new item.
 
         Args:
-            data: Item payload dict. Recommended keys: ``vatId``,
-                ``producingCountryId``, ``stockType``.
+            data: Item payload. Use :class:`~plentymarkets._types.ItemCreatePayload`
+                for IDE autocomplete. Common keys: ``vatId``, ``producingCountryId``,
+                ``stockType``. Include ``variations`` with at least one entry
+                (``isMain: true``) to create a usable item.
 
         Returns:
             The created item dict with the following keys:
@@ -104,12 +109,13 @@ class ItemsModule:
         """
         return await self._session.post("/rest/items", json=data)
 
-    async def update(self, item_id: int, data: dict) -> dict:
+    async def update(self, item_id: int, data: ItemUpdatePayload) -> dict:
         """Update an existing item.
 
         Args:
             item_id: The PlentyMarkets item ID.
-            data: Fields to update (partial update supported).
+            data: Fields to update. Use :class:`~plentymarkets._types.ItemUpdatePayload`
+                for IDE autocomplete. Only provided keys are changed.
 
         Returns:
             The updated item dict with the following keys:

@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from typing import AsyncIterator
+from typing import TYPE_CHECKING, AsyncIterator
+
+if TYPE_CHECKING:
+    from .._types import ContactCreatePayload, ContactUpdatePayload
 
 from .._session import _Session
 
@@ -98,12 +101,14 @@ class ContactsModule:
             params={"page": page, "itemsPerPage": items_per_page},
         )
 
-    async def create(self, data: dict) -> dict:
+    async def create(self, data: ContactCreatePayload) -> dict:
         """Create a new contact.
 
         Args:
-            data: Contact payload dict. Common keys: ``firstName``,
-                ``lastName``, ``email``, ``typeId``, ``plentyId``.
+            data: Contact payload. Use
+                :class:`~plentymarkets._types.ContactCreatePayload` for IDE
+                autocomplete. Common keys: ``firstName``, ``lastName``,
+                ``email``, ``typeId``, ``plentyId``.
 
         Returns:
             The created contact dict with the following keys:
@@ -134,12 +139,14 @@ class ContactsModule:
         """
         return await self._session.post("/rest/accounts/contacts", json=data)
 
-    async def update(self, contact_id: int, data: dict) -> dict:
+    async def update(self, contact_id: int, data: ContactUpdatePayload) -> dict:
         """Update an existing contact.
 
         Args:
             contact_id: The PlentyMarkets contact ID.
-            data: Fields to update (partial update supported).
+            data: Fields to update. Use
+                :class:`~plentymarkets._types.ContactUpdatePayload` for IDE
+                autocomplete. Only provided keys are changed.
 
         Returns:
             The updated contact dict with the following keys:

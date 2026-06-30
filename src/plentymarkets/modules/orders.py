@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from typing import AsyncIterator
+from typing import TYPE_CHECKING, AsyncIterator
+
+if TYPE_CHECKING:
+    from .._types import OrderCreatePayload
 
 from .._session import _Session
 
@@ -87,12 +90,14 @@ class OrdersModule:
             params={"page": page, "itemsPerPage": items_per_page},
         )
 
-    async def create(self, data: dict) -> dict:
+    async def create(self, data: OrderCreatePayload) -> dict:
         """Create a new order.
 
         Args:
-            data: Order payload dict. Required keys vary by order type; at
-                minimum include ``typeId`` and ``plentyId``.
+            data: Order payload. Use :class:`~plentymarkets._types.OrderCreatePayload`
+                for IDE autocomplete. Required keys: ``typeId``, ``plentyId``.
+                Optional keys: ``statusId``, ``ownerId``, ``lockStatus``,
+                ``orderItems``, ``properties``, ``addressRelations``, ``relations``.
 
         Returns:
             The created order dict with the following keys:

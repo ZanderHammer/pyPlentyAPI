@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from typing import AsyncIterator
+from typing import TYPE_CHECKING, AsyncIterator
+
+if TYPE_CHECKING:
+    from .._types import StockCorrectionPayload
 
 from .._session import _Session
 
@@ -52,12 +55,14 @@ class StockModule:
             params={"page": page, "itemsPerPage": items_per_page},
         )
 
-    async def correct(self, warehouse_id: int, data: dict) -> dict:
+    async def correct(self, warehouse_id: int, data: StockCorrectionPayload) -> dict:
         """Correct the stock of a variation in a warehouse.
 
         Args:
             warehouse_id: The PlentyMarkets warehouse ID.
-            data: Correction payload dict with the following keys:
+            data: Correction payload. Use
+                :class:`~plentymarkets._types.StockCorrectionPayload` for IDE
+                autocomplete. Required keys:
 
                 - ``variationId`` (int): Variation ID to correct.
                 - ``quantity`` (float): New absolute stock quantity.
