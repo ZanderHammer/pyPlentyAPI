@@ -131,6 +131,7 @@ uv run pytest -m integration         # requires live credentials
 - Conventional commits enforced via commitizen (`feat:`, `fix:`, `docs:`, `chore:`, `test:`, `refactor:`)
 - Google-style docstrings on ALL public methods; document every response dict key
 - CHANGELOG.md: only ever write to `[Unreleased]` — never add a release section
+- CHANGELOG.md: Group changes by module. Use the same prefix as in commit messages.
 - Small focused commits, one logical change each
 
 ## Package structure
