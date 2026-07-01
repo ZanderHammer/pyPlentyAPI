@@ -54,6 +54,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `PimModule.create_sales_prices` — bulk create sales price configurations via `POST /rest/pim/sales_prices`
 - feat: `PimModule.update_sales_prices` — bulk update sales price configurations via `PUT /rest/pim/sales_prices`
 - feat: `PimModule.delete_sales_prices` — bulk delete sales price configurations via `DELETE /rest/pim/sales_prices`
+- feat: `PimModule.list_barcodes` — search barcode configurations via `GET /rest/pim/barcodes`
+- feat: `PimModule.create_barcodes` — bulk create barcode configurations via `POST /rest/pim/barcodes`
+- feat: `PimModule.update_barcodes` — bulk update barcode configurations via `PUT /rest/pim/barcodes`
+- feat: `PimModule.delete_barcodes` — bulk delete barcode configurations via `DELETE /rest/pim/barcodes`
+- feat: `PimModule.list_barcode_duplicates` — list duplicate barcodes via `GET /rest/pim/barcodes/duplicates`
+- feat: `PimModule.count_barcode_duplicates` — count duplicate barcodes via `GET /rest/pim/barcodes/duplicates/count`
+- feat: `PimModule.get_barcode_duplicate_settings` — get duplicate-detection settings via `GET /rest/pim/barcodes/duplicates/settings`
 - feat: `PimModule.list_category_branches` — search category branches via `GET /rest/pim/categories/branches`
 - feat: `PimModule.list_category_clients` — search category client visibility via `GET /rest/pim/categories/clients`
 - feat: `PimModule.list_category_details` — search category detail records via `GET /rest/pim/categories/details`

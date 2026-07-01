@@ -909,3 +909,44 @@ class SalesPriceUpdatePayload(TypedDict, total=False):
     referrers: NotRequired[list[dict[str, Any]]]
     clients: NotRequired[list[dict[str, Any]]]
     accounts: NotRequired[list[dict[str, Any]]]
+
+
+# ---------------------------------------------------------------------------
+# PIM Barcodes  (/rest/pim/barcodes)
+# ---------------------------------------------------------------------------
+
+
+class BarcodeCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.create_barcodes` (``POST /rest/pim/barcodes``).
+
+    Keys:
+        name: Display name for the barcode type. **Required.**
+        type: Barcode symbology/type, e.g. ``"EAN13"``, ``"EAN8"``,
+            ``"CODE128"``, ``"GTIN"``. **Required.**
+        referrers: List of referrer restriction dicts, each with
+            ``referrerId`` (float — the spec declares this field as a
+            number rather than an integer).
+    """
+
+    name: Required[str]
+    type: Required[str]
+    referrers: NotRequired[list[dict[str, Any]]]
+
+
+class BarcodeUpdatePayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.update_barcodes` (``PUT /rest/pim/barcodes``).
+
+    Keys:
+        id: Barcode configuration ID to update. **Required.**
+        name: Display name for the barcode type.
+        type: Barcode symbology/type, e.g. ``"EAN13"``, ``"EAN8"``,
+            ``"CODE128"``, ``"GTIN"``.
+        referrers: List of referrer restriction dicts, each with
+            ``referrerId`` (float — the spec declares this field as a
+            number rather than an integer).
+    """
+
+    id: Required[int]
+    name: NotRequired[str]
+    type: NotRequired[str]
+    referrers: NotRequired[list[dict[str, Any]]]

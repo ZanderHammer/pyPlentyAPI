@@ -124,10 +124,10 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 
 | Endpoint | Methods | Description | Status |
 |---|---|---|---|
-| `/rest/pim/barcodes` | GET, PUT, POST, DELETE | Search, create, update, and delete barcode type configurations | planned |
-| `/rest/pim/barcodes/duplicates` | GET | List all variations that share a duplicate barcode value | planned |
-| `/rest/pim/barcodes/duplicates/count` | GET | Count of duplicate barcodes across the catalogue | planned |
-| `/rest/pim/barcodes/duplicates/settings` | GET | Settings controlling barcode duplicate detection behaviour | planned |
+| `/rest/pim/barcodes` | GET, PUT, POST, DELETE (all **implemented**) | Search, create, update, and delete barcode type configurations | **implemented** |
+| `/rest/pim/barcodes/duplicates` | GET | List all variations that share a duplicate barcode value | **implemented** |
+| `/rest/pim/barcodes/duplicates/count` | GET | Count of duplicate barcodes across the catalogue | **implemented** |
+| `/rest/pim/barcodes/duplicates/settings` | GET | Settings controlling barcode duplicate detection behaviour | **implemented** |
 
 #### Item Serial Numbers
 
