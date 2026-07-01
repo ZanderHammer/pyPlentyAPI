@@ -9,6 +9,8 @@ if TYPE_CHECKING:
         AttributeUpdatePayload,
         AttributeValuePayload,
         AttributeValueNamePayload,
+        SalesPriceCreatePayload,
+        SalesPriceUpdatePayload,
         VariationAdditionalSkuPayload,
         VariationBaseUpdatePayload,
         VariationBarcodePayload,
@@ -1434,3 +1436,55 @@ class PimModule:
             - ``updatedAt`` (str): ISO 8601 last-update timestamp.
         """
         return await self._session.get(f"/rest/pim/sales_prices/{price_id}")
+
+    async def create_sales_prices(
+        self,
+        data: list[SalesPriceCreatePayload],
+    ) -> dict[str, Any]:
+        """Bulk create sales price configurations.
+
+        Args:
+            data: List of sales price payloads. Use
+                :class:`~plentymarkets._types.SalesPriceCreatePayload` for IDE
+                autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``created`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.post("/rest/pim/sales_prices", json=data)
+
+    async def update_sales_prices(
+        self,
+        data: list[SalesPriceUpdatePayload],
+    ) -> dict[str, Any]:
+        """Bulk update sales price configurations.
+
+        Args:
+            data: List of sales price update payloads. Use
+                :class:`~plentymarkets._types.SalesPriceUpdatePayload` for IDE
+                autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/sales_prices", json=data)
+
+    async def delete_sales_prices(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete sales price configurations by ID.
+
+        Args:
+            ids: List of sales price configuration IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete("/rest/pim/sales_prices", json=ids)

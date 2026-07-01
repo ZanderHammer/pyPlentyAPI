@@ -781,3 +781,35 @@ async def test_list_category_properties(httpx_mock, pim):
     )
     result = await pim.list_category_properties(category_id=5)
     assert result["totalsCount"] == 0
+
+
+async def test_create_sales_prices_posts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/pim/sales_prices",
+        json={"created": 1},
+    )
+    result = await pim.create_sales_prices(
+        [{"type": "specialOffer", "position": 3, "isCustomerPrice": False}]
+    )
+    assert result["created"] == 1
+
+
+async def test_update_sales_prices_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/sales_prices",
+        json={"updated": 1},
+    )
+    result = await pim.update_sales_prices([{"id": 1, "position": 2}])
+    assert result["updated"] == 1
+
+
+async def test_delete_sales_prices_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/sales_prices",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_sales_prices([1])
+    assert result["deleted"] == 1

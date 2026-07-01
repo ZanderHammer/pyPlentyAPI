@@ -812,3 +812,100 @@ class AttributeValueNamePayload(TypedDict, total=False):
     valueId: Required[int]
     lang: Required[str]
     name: Required[str]
+
+
+# ---------------------------------------------------------------------------
+# PIM Sales Prices  (/rest/pim/sales_prices)
+# ---------------------------------------------------------------------------
+
+
+class SalesPriceCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.create_sales_prices` (``POST /rest/pim/sales_prices``).
+
+    Keys:
+        type: Price type. Common values: ``"default"``, ``"rrp"``,
+            ``"specialOffer"``, ``"setPrice"``. **Required.**
+        position: Display sort position.
+        minimumOrderQuantity: Minimum quantity for this price to apply.
+        isCustomerPrice: Whether the price is customer-class specific.
+        isDisplayedByDefault: Whether this price is shown by default in
+            the online store.
+        isLiveConversion: Whether to apply live FX conversion.
+        interval: Interval this price applies over, e.g. ``"weekly"``.
+        names: List of multilingual name dicts, each with ``lang``,
+            ``nameInternal``, and ``nameExternal``.
+        countries: List of dicts restricting the price to specific
+            countries, each with ``countryId``.
+        currencies: List of dicts declaring supported currencies, each
+            with ``currency`` (ISO 4217 code, e.g. ``"EUR"``).
+        customerClasses: List of dicts restricting the price to specific
+            customer classes, each with ``customerClassId``.
+        referrers: List of dicts restricting the price to specific
+            referrers, each with ``referrerId``.
+        clients: List of dicts restricting the price to specific clients
+            (stores), each with ``plentyId``.
+        accounts: List of dicts linking the price to specific accounts,
+            each with ``accountId``.
+    """
+
+    type: Required[str]
+    position: NotRequired[int]
+    minimumOrderQuantity: NotRequired[float]
+    isCustomerPrice: NotRequired[bool]
+    isDisplayedByDefault: NotRequired[bool]
+    isLiveConversion: NotRequired[bool]
+    interval: NotRequired[str]
+    names: NotRequired[list[dict[str, Any]]]
+    countries: NotRequired[list[dict[str, Any]]]
+    currencies: NotRequired[list[dict[str, Any]]]
+    customerClasses: NotRequired[list[dict[str, Any]]]
+    referrers: NotRequired[list[dict[str, Any]]]
+    clients: NotRequired[list[dict[str, Any]]]
+    accounts: NotRequired[list[dict[str, Any]]]
+
+
+class SalesPriceUpdatePayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.update_sales_prices` (``PUT /rest/pim/sales_prices``).
+
+    Keys:
+        id: Sales price configuration ID to update. **Required.**
+        type: Price type. Common values: ``"default"``, ``"rrp"``,
+            ``"specialOffer"``, ``"setPrice"``.
+        position: Display sort position.
+        minimumOrderQuantity: Minimum quantity for this price to apply.
+        isCustomerPrice: Whether the price is customer-class specific.
+        isDisplayedByDefault: Whether this price is shown by default in
+            the online store.
+        isLiveConversion: Whether to apply live FX conversion.
+        interval: Interval this price applies over, e.g. ``"weekly"``.
+        names: List of multilingual name dicts, each with ``lang``,
+            ``nameInternal``, and ``nameExternal``.
+        countries: List of dicts restricting the price to specific
+            countries, each with ``countryId``.
+        currencies: List of dicts declaring supported currencies, each
+            with ``currency`` (ISO 4217 code, e.g. ``"EUR"``).
+        customerClasses: List of dicts restricting the price to specific
+            customer classes, each with ``customerClassId``.
+        referrers: List of dicts restricting the price to specific
+            referrers, each with ``referrerId``.
+        clients: List of dicts restricting the price to specific clients
+            (stores), each with ``plentyId``.
+        accounts: List of dicts linking the price to specific accounts,
+            each with ``accountId``.
+    """
+
+    id: Required[int]
+    type: NotRequired[str]
+    position: NotRequired[int]
+    minimumOrderQuantity: NotRequired[float]
+    isCustomerPrice: NotRequired[bool]
+    isDisplayedByDefault: NotRequired[bool]
+    isLiveConversion: NotRequired[bool]
+    interval: NotRequired[str]
+    names: NotRequired[list[dict[str, Any]]]
+    countries: NotRequired[list[dict[str, Any]]]
+    currencies: NotRequired[list[dict[str, Any]]]
+    customerClasses: NotRequired[list[dict[str, Any]]]
+    referrers: NotRequired[list[dict[str, Any]]]
+    clients: NotRequired[list[dict[str, Any]]]
+    accounts: NotRequired[list[dict[str, Any]]]

@@ -117,7 +117,7 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 
 | Endpoint | Methods | Description | Status |
 |---|---|---|---|
-| `/rest/pim/sales_prices` | GET, PUT, POST, DELETE | Search, create, update, and delete sales price configurations | partial |
+| `/rest/pim/sales_prices` | GET, PUT, POST, DELETE (all **implemented**) | Search, create, update, and delete sales price configurations | **implemented** |
 | `/rest/pim/sales_prices/{id}` | GET | Get one sales price configuration by ID | **implemented** |
 
 #### Barcodes
