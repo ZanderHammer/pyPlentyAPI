@@ -748,3 +748,21 @@ class AttributeUpdatePayload(TypedDict, total=False):
     neckermannAtEpAttribute: NotRequired[int]
     typeOfSelectionInOnlineStore: NotRequired[str]
     laRedouteAttribute: NotRequired[int]
+
+
+class AttributeNamePayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.create_attribute_names` and
+    :meth:`PimModule.update_attribute_names`
+    (``POST``/``PUT /rest/pim/attributes/names``).
+
+    Keys:
+        attributeId: Attribute ID the name belongs to. **Required.**
+        lang: Two-letter language code, e.g. ``"en"``, ``"de"``.
+            **Required.**
+        name: Display name shown in the back end and online store for this
+            language. **Required.**
+    """
+
+    attributeId: Required[int]
+    lang: Required[str]
+    name: Required[str]

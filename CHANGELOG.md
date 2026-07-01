@@ -36,6 +36,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `PimModule.create_attributes` — bulk create attributes via `POST /rest/pim/attributes`
 - feat: `PimModule.update_attributes` — bulk update attributes via `PUT /rest/pim/attributes`
 - feat: `PimModule.delete_attributes` — bulk delete attributes via `DELETE /rest/pim/attributes`
+- feat: `PimModule.list_attribute_names` — search attribute names via `GET /rest/pim/attributes/names`
+- feat: `PimModule.create_attribute_names` — bulk create attribute names via `POST /rest/pim/attributes/names`
+- feat: `PimModule.update_attribute_names` — bulk update attribute names via `PUT /rest/pim/attributes/names`
+- feat: `PimModule.delete_attribute_names` — bulk delete attribute names via `DELETE /rest/pim/attributes/names`
 - feat: `PimModule.list_sales_prices` — search sales prices via `GET /rest/pim/sales_prices`
 - feat: `PimModule.get_sales_price` — get one sales price via `GET /rest/pim/sales_prices/{id}`
 

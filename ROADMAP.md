@@ -97,7 +97,7 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 |---|---|---|---|
 | `/rest/pim/attributes` | GET, PUT, POST, DELETE (all **implemented**) | Search, create, update, and delete attributes (defines variation axes like colour, size) | **implemented** |
 | `/rest/pim/attributes/{id}` | GET | Get one attribute by ID | **implemented** |
-| `/rest/pim/attributes/names` | GET, PUT, POST, DELETE | Manage multilingual attribute display names | planned |
+| `/rest/pim/attributes/names` | GET, PUT, POST, DELETE (all **implemented**) | Manage multilingual attribute display names | **implemented** |
 | `/rest/pim/attributes/values` | GET, PUT, POST, DELETE | Manage attribute values (e.g. "Red", "Blue" for a colour attribute) | planned |
 | `/rest/pim/attributes/values/{id}` | GET | Get one attribute value by ID | planned |
 | `/rest/pim/attributes/values/names` | GET, PUT, POST, DELETE | Manage multilingual display names for attribute values | planned |
