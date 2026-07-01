@@ -957,3 +957,13 @@ async def test_get_item_combinations(httpx_mock, pim):
     )
     result = await pim.get_item_combinations(42)
     assert result[0]["attributeValueSetIds"] == [10, 20]
+
+
+async def test_list_amazon_product_types(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/amazon-product-types",
+        json={"entries": [{"productType": "SHOES"}]},
+    )
+    result = await pim.list_amazon_product_types()
+    assert result["entries"][0]["productType"] == "SHOES"

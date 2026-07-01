@@ -146,4 +146,4 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 
 | Endpoint | Methods | Description | Status |
 |---|---|---|---|
-| `/rest/pim/amazon-product-types` | GET | List Amazon product type definitions available for attribute mapping | planned |
+| `/rest/pim/amazon-product-types` | GET | List Amazon product type definitions available for attribute mapping | **implemented** |

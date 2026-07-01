@@ -1738,3 +1738,15 @@ class PimModule:
             (list[int]). Verify against a live system.
         """
         return await self._session.get(f"/rest/pim/items/{item_id}/combinations")
+
+    # -- Amazon product types ----------------------------------------------------
+
+    async def list_amazon_product_types(self) -> dict[str, Any]:
+        """List Amazon product type definitions available for attribute mapping.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; verify against
+            a live system before relying on its keys.
+        """
+        return await self._session.get("/rest/pim/amazon-product-types")
