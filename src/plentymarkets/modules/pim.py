@@ -122,7 +122,8 @@ class PimModule:
                 IDE autocomplete. Only provided keys are changed.
 
         Returns:
-            A dict with the following keys:
+            A dict with the following keys (based on the standard bulk-endpoint
+            pattern — verify against a live system before relying on these):
 
             - ``updated`` (int): Number of variations successfully updated.
             - ``invalid`` (list[dict]): Entries that failed validation, each
@@ -253,7 +254,7 @@ class PimModule:
             A dict with the following keys:
 
             - ``id`` (int): The attribute ID.
-            - ``backendName`` (str): Internal back-end name (unique, no commas
+            - ``backendName`` (str): Internal back-end name (unique, no commas,
               colons, semicolons, or quotes).
             - ``position`` (int): Display sort position in the attribute list.
             - ``isSurchargePercental`` (bool): Whether value surcharges are

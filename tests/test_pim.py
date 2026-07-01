@@ -74,6 +74,25 @@ async def test_paginate_variations_stops_on_empty_entries(httpx_mock, pim):
     assert results == []
 
 
+async def test_paginate_variations_preserves_filters_across_cursors(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/variations/scroll?isActive=true&with=base",
+        json={"entries": [{"id": 20}], "cursor": "tok99"},
+    )
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/variations/scroll?isActive=true&with=base&cursor=tok99",
+        json={"entries": [{"id": 21}], "cursor": None},
+    )
+    results = [
+        v async for v in pim.paginate_variations(
+            filters={"isActive": "true"}, with_=["base"]
+        )
+    ]
+    assert [r["id"] for r in results] == [20, 21]
+
+
 async def test_update_variation_bases_puts_data(httpx_mock, pim):
     httpx_mock.add_response(
         method="PUT",
