@@ -794,3 +794,21 @@ class AttributeValuePayload(TypedDict, total=False):
     backendName: Required[str]
     position: NotRequired[int]
     image: NotRequired[str]
+
+
+class AttributeValueNamePayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.create_attribute_value_names` and
+    :meth:`PimModule.update_attribute_value_names`
+    (``POST``/``PUT /rest/pim/attributes/values/names``).
+
+    Keys:
+        valueId: Attribute value ID the name belongs to. **Required.**
+        lang: Two-letter language code, e.g. ``"en"``, ``"de"``.
+            **Required.**
+        name: Display name shown in the back end and online store for this
+            language. **Required.**
+    """
+
+    valueId: Required[int]
+    lang: Required[str]
+    name: Required[str]

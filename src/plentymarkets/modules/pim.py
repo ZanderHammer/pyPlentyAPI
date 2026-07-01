@@ -8,6 +8,7 @@ if TYPE_CHECKING:
         AttributeNamePayload,
         AttributeUpdatePayload,
         AttributeValuePayload,
+        AttributeValueNamePayload,
         VariationAdditionalSkuPayload,
         VariationBaseUpdatePayload,
         VariationBarcodePayload,
@@ -995,6 +996,98 @@ class PimModule:
             - ``image`` (str | None): Linked image path or URL, if any.
         """
         return await self._session.get(f"/rest/pim/attributes/values/{value_id}")
+
+    async def list_attribute_value_names(
+        self,
+        value_id: int | None = None,
+        lang: str | None = None,
+        name: str | None = None,
+        with_: list[str] | None = None,
+    ) -> dict[str, Any]:
+        """Search multilingual display names for attribute values.
+
+        Args:
+            value_id: Restrict results to names belonging to this attribute
+                value ID.
+            lang: Restrict results to this two-letter language code.
+            name: Restrict results to names containing this string.
+            with_: Optional list of related data to embed.
+
+        Returns:
+            A dict with the following keys:
+
+            - ``entries`` (list[dict]): Matched name records, each with
+              ``valueId``, ``lang``, and ``name``.
+            - ``totalsCount`` (int): Total number of matching records.
+            - ``isLastPage`` (bool): ``True`` when no further pages exist.
+            - ``lastPageNumber`` (int): Number of the last page.
+            - ``page`` (int): Current page number.
+        """
+        filters: dict[str, Any] = {}
+        if value_id is not None:
+            filters["valueId"] = value_id
+        if lang is not None:
+            filters["lang"] = lang
+        if name is not None:
+            filters["name"] = name
+        params = self._build_params(filters or None, with_)
+        return await self._session.get(
+            "/rest/pim/attributes/values/names", params=params or None
+        )
+
+    async def create_attribute_value_names(
+        self,
+        data: list[AttributeValueNamePayload],
+    ) -> dict[str, Any]:
+        """Bulk create multilingual display names for attribute values.
+
+        Args:
+            data: List of name payloads. Use
+                :class:`~plentymarkets._types.AttributeValueNamePayload` for
+                IDE autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``created`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.post("/rest/pim/attributes/values/names", json=data)
+
+    async def update_attribute_value_names(
+        self,
+        data: list[AttributeValueNamePayload],
+    ) -> dict[str, Any]:
+        """Bulk update multilingual display names for attribute values.
+
+        Args:
+            data: List of name payloads. Use
+                :class:`~plentymarkets._types.AttributeValueNamePayload` for
+                IDE autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/attributes/values/names", json=data)
+
+    async def delete_attribute_value_names(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete attribute value names by ID.
+
+        Args:
+            ids: List of attribute-value-name record IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete(
+            "/rest/pim/attributes/values/names", json=ids
+        )
 
     async def list_categories(
         self,
