@@ -9,10 +9,4 @@ uv.lock
 .ruff_cache/
 .superpowers/
 docs/openApiV3.json
-/.idea/vcs.xml
-/.idea/pyProjectModel.xml
-/.idea/inspectionProfiles/profiles_settings.xml
-/.idea/plentymarkets.iml
-/.idea/modules.xml
-/.idea/.gitignore
-/.idea/plentymarkets-api-client.iml
+/.idea/*
