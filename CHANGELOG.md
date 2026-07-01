@@ -51,6 +51,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `PimModule.delete_attribute_value_names` — bulk delete attribute value names via `DELETE /rest/pim/attributes/values/names`
 - feat: `PimModule.list_sales_prices` — search sales prices via `GET /rest/pim/sales_prices`
 - feat: `PimModule.get_sales_price` — get one sales price via `GET /rest/pim/sales_prices/{id}`
+- feat: `PimModule.list_category_branches` — search category branches via `GET /rest/pim/categories/branches`
+- feat: `PimModule.list_category_clients` — search category client visibility via `GET /rest/pim/categories/clients`
+- feat: `PimModule.list_category_details` — search category detail records via `GET /rest/pim/categories/details`
+- feat: `PimModule.list_category_properties` — search category property links via `GET /rest/pim/categories/properties`
 
 ## [0.1.2] - 2026-06-30
 

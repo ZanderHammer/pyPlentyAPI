@@ -741,3 +741,43 @@ async def test_delete_attribute_value_names_sends_ids(httpx_mock, pim):
     )
     result = await pim.delete_attribute_value_names([21])
     assert result["deleted"] == 1
+
+
+async def test_list_category_branches(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/categories/branches",
+        json={"entries": [{"categoryId": 5, "branch": [1, 2, 5]}], "totalsCount": 1},
+    )
+    result = await pim.list_category_branches()
+    assert result["totalsCount"] == 1
+
+
+async def test_list_category_clients(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/categories/clients?categoryId=5&plentyId=1",
+        json={"entries": [{"categoryId": 5, "plentyId": 1}], "totalsCount": 1},
+    )
+    result = await pim.list_category_clients(category_id=5, plenty_id=1)
+    assert result["totalsCount"] == 1
+
+
+async def test_list_category_details(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/categories/details?categoryId=5&lang=en",
+        json={"entries": [{"categoryId": 5, "lang": "en", "name": "Shoes"}], "totalsCount": 1},
+    )
+    result = await pim.list_category_details(category_id=5, lang="en")
+    assert result["entries"][0]["name"] == "Shoes"
+
+
+async def test_list_category_properties(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/categories/properties?categoryId=5",
+        json={"entries": [], "totalsCount": 0},
+    )
+    result = await pim.list_category_properties(category_id=5)
+    assert result["totalsCount"] == 0

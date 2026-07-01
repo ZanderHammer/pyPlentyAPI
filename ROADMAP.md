@@ -108,10 +108,10 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 |---|---|---|---|
 | `/rest/pim/categories` | GET | Search categories (filter by ID, type, level, name) | **implemented** |
 | `/rest/pim/categories/{id}` | GET | Get one category by ID | **implemented** |
-| `/rest/pim/categories/branches` | GET | Search category branches (full path from root to leaf) | planned |
-| `/rest/pim/categories/clients` | GET | Search which clients (stores) have each category active | planned |
-| `/rest/pim/categories/details` | GET | Search category detail records (multilingual names, descriptions, meta data) | planned |
-| `/rest/pim/categories/properties` | GET | Search category property links | planned |
+| `/rest/pim/categories/branches` | GET | Search category branches (full path from root to leaf) | **implemented** |
+| `/rest/pim/categories/clients` | GET | Search which clients (stores) have each category active | **implemented** |
+| `/rest/pim/categories/details` | GET | Search category detail records (multilingual names, descriptions, meta data) | **implemented** |
+| `/rest/pim/categories/properties` | GET | Search category property links | **implemented** |
 
 #### Sales Prices
 
