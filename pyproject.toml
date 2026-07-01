@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
 authors = [
-    { name = "Alexander Hammer", email = "acj259@gmail.com" },
+    { name = "Alexander Hammer", email = "alexander@hmmr.online" },
 ]
 keywords = ["plentymarkets", "rest-api", "async", "httpx", "ecommerce"]
 classifiers = [
