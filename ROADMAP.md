@@ -46,7 +46,7 @@ initial implementation scope. All others are planned for future incremental addi
 | `Property` | Item and contact properties — property groups and values | planned |
 | `Returns` | Return orders, return reasons, and return processing | planned |
 | `ShopBuilder` | Webshop layout and drag-and-drop page builder configuration | planned |
-| `Stock` | Item stock levels, stock movements, and manual corrections | **[core]** |
+| `Stock` | Item stock levels, stock movements, and manual corrections | **[core]** — full coverage |
 | `StockManagement` | Warehouse-level stock redistribution and incoming goods | planned |
 | `Sync` | Data synchronisation jobs and field mapping configuration | planned |
 | `Tag` | Tags for labelling orders, contacts, variations, etc. | planned |
@@ -147,3 +147,24 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 | Endpoint | Methods | Description | Status |
 |---|---|---|---|
 | `/rest/pim/amazon-product-types` | GET | List Amazon product type definitions available for attribute mapping | **implemented** |
+
+### `Stock` — `/rest/stockmanagement/`
+
+| Endpoint | Methods | Description | Status |
+|---|---|---|---|
+| `/rest/stockmanagement/stock` | GET | List stock levels across all warehouses | **implemented** |
+| `/rest/stockmanagement/stock/archives` | GET | List archive years of stock movements | **implemented** |
+| `/rest/stockmanagement/stock/redistribute` | PUT | Move stock of a variation from one warehouse to another; bulk via `redistributions` | **implemented** |
+| `/rest/stockmanagement/stock/types/{type}` | GET | List stock by warehouse type (currently only `"sales"` is valid) | **implemented** |
+| `/rest/stockmanagement/warehouses` | GET, POST (both **implemented**) | List all warehouses; create a warehouse | **implemented** |
+| `/rest/stockmanagement/warehouses/{warehouseId}` | GET | Get one warehouse by ID | **implemented** |
+| `/rest/stockmanagement/warehouses/{warehouseId}/management/storageLocations/{storageLocationId}` | GET | Get one storage location by ID | **implemented** |
+| `/rest/stockmanagement/warehouses/{warehouseId}/stock` | GET | List stock levels for all variations in a warehouse | **implemented** |
+| `/rest/stockmanagement/warehouses/{warehouseId}/stock/correction` | PUT | Correct the stock of a variation; bulk via `corrections` | **implemented** |
+| `/rest/stockmanagement/warehouses/{warehouseId}/stock/bookIncomingItems` | PUT | Book incoming stock (deliveries); bulk via `incomingItems` | **implemented** |
+| `/rest/stockmanagement/warehouses/{warehouseId}/stock/bookOutgoingItems` | PUT | Book outgoing stock (write-offs); bulk via `outgoingItems` | **implemented** |
+| `/rest/stockmanagement/warehouses/{warehouseId}/stock/unpackVariation` | PUT | Unpack a bundle/set variation into its components | **implemented** — request schema undocumented upstream, verify against a live system |
+| `/rest/stockmanagement/warehouses/{warehouseId}/{warehouseLocationId}/stock/bookStocktaking` | PUT | Book a stocktaking correction for a storage location | **implemented** |
+| `/rest/stockmanagement/warehouses/{warehouseId}/stock/movements` | GET | List stock movement history for a warehouse | **implemented** |
+| `/rest/stockmanagement/warehouses/{warehouseId}/stock/storageLocations` | GET | List stock per storage location within a warehouse | **implemented** |
+| `/rest/stockmanagement/warehouses/{warehouseId}/stock/storageLocationsPim` | GET | List stock per storage location, with linked PIM entry embedded | **implemented** |

@@ -245,6 +245,295 @@ class VariationStockCorrectionPayload(TypedDict, total=False):
     reasonId: NotRequired[int]
 
 
+class WarehouseCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`StockModule.create_warehouse`
+    (``POST /rest/stockmanagement/warehouses``).
+
+    Keys:
+        name: Name of the warehouse. **Required.**
+        typeId: Warehouse type ID. **Required.** 0=sales warehouse,
+            1=repair warehouse, 4=storage warehouse, 5=transit warehouse,
+            6=distribution warehouse, 7=other.
+        logisticsType: Fulfilment provider for the warehouse. **Required.**
+            ``"own"``, ``"amazon"``, or ``"dhlFulfillment"``.
+        note: Free-text note for this warehouse.
+        onStockAvailability: Availability ID displayed for a variation when
+            stock is available.
+        outOfStockAvailability: Availability ID displayed for a variation
+            when no stock is available.
+        splitByShippingProfile: Whether orders from this warehouse are
+            split by shipping profile.
+        storageLocationType: Storage location size class. ``"none"``,
+            ``"smallmedium"``, ``"large"``, or ``"europallet"``.
+        storageLocationZone: Zone ID the storage location belongs to.
+        repairWarehouseId: ID of the associated repair warehouse.
+        isInventoryModeActive: Whether stocktaking mode is active for this
+            warehouse.
+    """
+
+    name: Required[str]
+    typeId: Required[int]
+    logisticsType: Required[str]
+    note: NotRequired[str]
+    onStockAvailability: NotRequired[int]
+    outOfStockAvailability: NotRequired[int]
+    splitByShippingProfile: NotRequired[bool]
+    storageLocationType: NotRequired[str]
+    storageLocationZone: NotRequired[int]
+    repairWarehouseId: NotRequired[int]
+    isInventoryModeActive: NotRequired[bool]
+
+
+class VariationStockRedistributionPayload(TypedDict, total=False):
+    """One entry in :attr:`StockRedistributionPayload`'s ``redistributions``
+    list, for bulk stock redistribution across several variations in one
+    request.
+
+    Keys:
+        variationId: Variation ID whose stock should be redistributed.
+        currentWarehouseId: Warehouse ID the stock is currently in.
+        currentStorageLocationId: Storage location ID within the current
+            warehouse.
+        newWarehouseId: Warehouse ID the stock is moved to.
+        newStorageLocationId: Storage location ID within the new warehouse.
+        quantity: Quantity to redistribute.
+        reasonId: Redistribution reason ID. 401=stock transfer,
+            402=stock correction by stocktaking, 403=stock transfer because
+            of need for repair.
+        batch: Batch identifier for the redistributed quantity.
+        bestBeforeDate: Best-before date for the redistributed quantity,
+            ISO 8601.
+    """
+
+    variationId: NotRequired[int]
+    currentWarehouseId: NotRequired[int]
+    currentStorageLocationId: NotRequired[int]
+    newWarehouseId: NotRequired[int]
+    newStorageLocationId: NotRequired[int]
+    quantity: NotRequired[float]
+    reasonId: NotRequired[int]
+    batch: NotRequired[str]
+    bestBeforeDate: NotRequired[str]
+
+
+class StockRedistributionPayload(TypedDict, total=False):
+    """Payload for :meth:`StockModule.redistribute_stock`
+    (``PUT /rest/stockmanagement/stock/redistribute``).
+
+    Keys:
+        currentWarehouseId: Warehouse ID the stock is currently in.
+            **Required.**
+        newWarehouseId: Warehouse ID the stock is moved to. **Required.**
+        quantity: Quantity to redistribute. **Required.**
+        variationId: Variation ID whose stock should be redistributed. Omit
+            when using ``redistributions`` for a bulk request.
+        currentStorageLocationId: Storage location ID within the current
+            warehouse.
+        newStorageLocationId: Storage location ID within the new warehouse.
+        reasonId: Redistribution reason ID. 401=stock transfer,
+            402=stock correction by stocktaking, 403=stock transfer because
+            of need for repair.
+        batch: Batch identifier for the redistributed quantity.
+        bestBeforeDate: Best-before date for the redistributed quantity,
+            ISO 8601.
+        redistributions: List of :class:`VariationStockRedistributionPayload`
+            dicts for redistributing several variations in one request.
+            When present, the top-level ``variationId``/``quantity``/etc.
+            keys are ignored.
+    """
+
+    currentWarehouseId: Required[int]
+    newWarehouseId: Required[int]
+    quantity: Required[float]
+    variationId: NotRequired[int]
+    currentStorageLocationId: NotRequired[int]
+    newStorageLocationId: NotRequired[int]
+    reasonId: NotRequired[int]
+    batch: NotRequired[str]
+    bestBeforeDate: NotRequired[str]
+    redistributions: NotRequired[list["VariationStockRedistributionPayload"]]
+
+
+class VariationStockIntakePayload(TypedDict, total=False):
+    """One entry in :attr:`StockIntakePayload`'s ``incomingItems`` list, for
+    bulk stock intake across several variations in one request.
+
+    Keys:
+        variationId: Variation ID stock is booked in for.
+        warehouseId: Warehouse ID the stock is booked into.
+        storageLocationId: Storage location ID within the warehouse.
+        deliveredAt: Date stock was booked in, W3C format.
+        orderNumber: Purchase/order number the delivery relates to.
+        supplierId: Supplier contact ID.
+        currency: ISO 4217 currency code of ``purchasePrice``.
+        exchangeRate: Exchange rate applied to ``purchasePrice``.
+        quantity: Quantity booked in.
+        purchasePrice: Net purchase price per unit.
+        bestBeforeDate: Best-before date of the booked-in stock, ISO 8601.
+        batch: Batch identifier of the booked-in stock.
+        reasonId: Intake reason ID (see :class:`StockIntakePayload` for the
+            full list of values).
+    """
+
+    variationId: NotRequired[int]
+    warehouseId: NotRequired[int]
+    storageLocationId: NotRequired[int]
+    deliveredAt: NotRequired[str]
+    orderNumber: NotRequired[str]
+    supplierId: NotRequired[int]
+    currency: NotRequired[str]
+    exchangeRate: NotRequired[float]
+    quantity: NotRequired[float]
+    purchasePrice: NotRequired[float]
+    bestBeforeDate: NotRequired[str]
+    batch: NotRequired[str]
+    reasonId: NotRequired[int]
+
+
+class StockIntakePayload(TypedDict, total=False):
+    """Payload for :meth:`StockModule.book_incoming_items`
+    (``PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/bookIncomingItems``).
+
+    Keys:
+        deliveredAt: Date stock was booked in, W3C format. **Required.**
+        quantity: Quantity booked in. **Required.**
+        reasonId: Intake reason ID. **Required.** Common values:
+            101=incoming items, 102=booked in by stocktaking,
+            104=rebooked into stock (no production errors found),
+            106=maculation cancelled, 107=packing error re-book,
+            109=incoming items (logistics), 115=incoming items
+            (second choice), 116=booked in by correction,
+            117=unpacked item, 180=incoming items (purchase order),
+            181=incoming items (warehousing).
+        variationId: Variation ID stock is booked in for. Omit when using
+            ``incomingItems`` for a bulk request.
+        orderNumber: Purchase/order number the delivery relates to.
+        currency: ISO 4217 currency code of ``purchasePrice``.
+        purchasePrice: Net purchase price per unit.
+        storageLocationId: Storage location ID within the warehouse.
+        supplierId: Supplier contact ID.
+        exchangeRate: Exchange rate applied to ``purchasePrice``.
+        batch: Batch identifier of the booked-in stock.
+        bestBeforeDate: Best-before date of the booked-in stock, ISO 8601.
+        incomingItems: List of :class:`VariationStockIntakePayload` dicts
+            for booking in several variations in one request. When present,
+            the top-level ``variationId``/``quantity``/etc. keys are
+            ignored.
+    """
+
+    deliveredAt: Required[str]
+    quantity: Required[float]
+    reasonId: Required[int]
+    variationId: NotRequired[int]
+    orderNumber: NotRequired[str]
+    currency: NotRequired[str]
+    purchasePrice: NotRequired[float]
+    storageLocationId: NotRequired[int]
+    supplierId: NotRequired[int]
+    exchangeRate: NotRequired[float]
+    batch: NotRequired[str]
+    bestBeforeDate: NotRequired[str]
+    incomingItems: NotRequired[list["VariationStockIntakePayload"]]
+
+
+class VariationStockDischargePayload(TypedDict, total=False):
+    """One entry in :attr:`StockDischargePayload`'s ``outgoingItems`` list,
+    for bulk stock discharge across several variations in one request.
+
+    Keys:
+        variationId: Variation ID stock is booked out from.
+        warehouseId: Warehouse ID the stock is booked out of.
+        storageLocationId: Storage location ID within the warehouse.
+        deliveredAt: Date stock was booked out, W3C format.
+        orderNumber: Order number the outbound relates to.
+        supplierId: Supplier contact ID.
+        currency: ISO 4217 currency code.
+        exchangeRate: Exchange rate applied.
+        quantity: Quantity booked out.
+        bestBeforeDate: Best-before date of the booked-out stock, ISO 8601.
+        batch: Batch identifier of the booked-out stock.
+        reasonId: Discharge reason ID (see :class:`StockDischargePayload`
+            for the full list of values).
+    """
+
+    variationId: NotRequired[int]
+    warehouseId: NotRequired[int]
+    storageLocationId: NotRequired[int]
+    deliveredAt: NotRequired[str]
+    orderNumber: NotRequired[str]
+    supplierId: NotRequired[int]
+    currency: NotRequired[str]
+    exchangeRate: NotRequired[float]
+    quantity: NotRequired[float]
+    bestBeforeDate: NotRequired[str]
+    batch: NotRequired[str]
+    reasonId: NotRequired[int]
+
+
+class StockDischargePayload(TypedDict, total=False):
+    """Payload for :meth:`StockModule.book_outgoing_items`
+    (``PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/bookOutgoingItems``).
+
+    Keys:
+        deliveredAt: Date stock was booked out, W3C format. **Required.**
+        quantity: Quantity booked out. **Required.**
+        reasonId: Discharge reason ID. **Required.** Common values:
+            201=outbound items, 202=outbound inventur, 205=outbound
+            rubbish, 206=outbound packing error, 207=outbound defect,
+            208=outbound complaint, 209=outbound logistic, 214=outbound
+            warehouse movement, 215=outbound second choice, 216=outbound
+            correction, 280=outbound purchase order, 281=outbound loss.
+        variationId: Variation ID stock is booked out from. Omit when
+            using ``outgoingItems`` for a bulk request.
+        orderNumber: Order number the outbound relates to.
+        currency: ISO 4217 currency code.
+        storageLocationId: Storage location ID within the warehouse.
+        supplierId: Supplier contact ID.
+        exchangeRate: Exchange rate applied.
+        batch: Batch identifier of the booked-out stock.
+        bestBeforeDate: Best-before date of the booked-out stock, ISO 8601.
+        outgoingItems: List of :class:`VariationStockDischargePayload`
+            dicts for booking out several variations in one request. When
+            present, the top-level ``variationId``/``quantity``/etc. keys
+            are ignored.
+    """
+
+    deliveredAt: Required[str]
+    quantity: Required[float]
+    reasonId: Required[int]
+    variationId: NotRequired[int]
+    orderNumber: NotRequired[str]
+    currency: NotRequired[str]
+    storageLocationId: NotRequired[int]
+    supplierId: NotRequired[int]
+    exchangeRate: NotRequired[float]
+    batch: NotRequired[str]
+    bestBeforeDate: NotRequired[str]
+    outgoingItems: NotRequired[list["VariationStockDischargePayload"]]
+
+
+class UnpackVariationPayload(TypedDict, total=False):
+    """Payload for :meth:`StockModule.unpack_variation`
+    (``PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/unpackVariation``).
+
+    PlentyMarkets' published OpenAPI spec declares this endpoint's body as
+    two malformed query parameters (``VariationStockIntake`` /
+    ``VariationStockCorrection``, each typed as a bare string array) rather
+    than a JSON schema, so the shape below is inferred from those parameter
+    descriptions and the sibling ``bookIncomingItems``/``correction``
+    endpoints. Verify against a live system before relying on this payload.
+
+    Keys:
+        incomingItems: List of :class:`VariationStockIntakePayload` dicts —
+            the new item(s) booked in as a result of unpacking.
+        corrections: List of :class:`VariationStockCorrectionPayload`
+            dicts — the packed item being unpacked (booked out).
+    """
+
+    incomingItems: NotRequired[list["VariationStockIntakePayload"]]
+    corrections: NotRequired[list["VariationStockCorrectionPayload"]]
+
+
 # ---------------------------------------------------------------------------
 # Contacts  (/rest/accounts/contacts)
 # ---------------------------------------------------------------------------
