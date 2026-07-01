@@ -3,6 +3,18 @@
 All 53 modules available in the PlentyMarkets REST API. Modules marked **[core]** are in the
 initial implementation scope. All others are planned for future incremental additions.
 
+## Known Issues
+
+- **`StockModule` endpoints are stale.** `get_by_warehouse()` and `correct()` call
+  `/rest/stock/warehouses/{warehouseId}/items` and
+  `/rest/stock/warehouses/{warehouseId}/stock/correction`. Neither path exists in the current
+  PlentyMarkets OpenAPI spec — the live API's `Stock` tag has exactly one endpoint
+  (`/rest/stock/reservations`), and the equivalent stock-correction/stock-items functionality now
+  lives under the `StockManagement` tag (e.g.
+  `/rest/stockmanagement/warehouses/{warehouseId}/stock/correction`). These methods likely fail
+  against the live API today. Needs investigation and a fix — probably a rename/re-point to the
+  `StockManagement` paths, verified against a live system.
+
 | API Tag | Description | Status |
 |---|---|---|
 | `Account` | Customer accounts and contacts — addresses, contact data, bank details | **[core]** |
