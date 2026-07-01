@@ -139,8 +139,8 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 
 | Endpoint | Methods | Description | Status |
 |---|---|---|---|
-| `/rest/pim/items/{id}/attributes` | GET | Get all attributes linked to a given item | planned |
-| `/rest/pim/items/{id}/combinations` | GET | Get all valid variation combinations (attribute value sets) for a given item | planned |
+| `/rest/pim/items/{id}/attributes` | GET | Get all attributes linked to a given item | **implemented** |
+| `/rest/pim/items/{id}/combinations` | GET | Get all valid variation combinations (attribute value sets) for a given item | **implemented** |
 
 #### Amazon Product Types
 

@@ -937,3 +937,23 @@ async def test_delete_item_serial_numbers_sends_ids(httpx_mock, pim):
     )
     result = await pim.delete_item_serial_numbers([1])
     assert result["deleted"] == 1
+
+
+async def test_get_item_attributes(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/items/42/attributes",
+        json=[{"attributeId": 3, "backendName": "Colour"}],
+    )
+    result = await pim.get_item_attributes(42)
+    assert result[0]["attributeId"] == 3
+
+
+async def test_get_item_combinations(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/items/42/combinations",
+        json=[{"attributeValueSetIds": [10, 20]}],
+    )
+    result = await pim.get_item_combinations(42)
+    assert result[0]["attributeValueSetIds"] == [10, 20]

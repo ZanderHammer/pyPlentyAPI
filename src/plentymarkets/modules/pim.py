@@ -1702,3 +1702,39 @@ class PimModule:
             this key.
         """
         return await self._session.delete("/rest/pim/item-serial-numbers", json=ids)
+
+    # -- Item lookups -----------------------------------------------------------
+
+    async def get_item_attributes(self, item_id: int) -> dict[str, Any]:
+        """Get all attributes linked to a given item.
+
+        Args:
+            item_id: The PlentyMarkets item ID.
+
+        Returns:
+            The raw response as returned by the API. The OpenAPI spec
+            documents this endpoint's response as a JSON array (not the usual
+            ``entries``-wrapped envelope), so despite the ``dict`` type hint
+            shared by every method on this class, callers should expect a
+            ``list[dict]`` at runtime — each dict describing one linked
+            attribute, with at minimum ``attributeId`` and ``backendName``.
+            Verify against a live system.
+        """
+        return await self._session.get(f"/rest/pim/items/{item_id}/attributes")
+
+    async def get_item_combinations(self, item_id: int) -> dict[str, Any]:
+        """Get all valid variation combinations (attribute value sets) for an item.
+
+        Args:
+            item_id: The PlentyMarkets item ID.
+
+        Returns:
+            The raw response as returned by the API. The OpenAPI spec
+            documents this endpoint's response as a JSON array (not the usual
+            ``entries``-wrapped envelope), so despite the ``dict`` type hint
+            shared by every method on this class, callers should expect a
+            ``list[dict]`` at runtime — each dict describing one valid
+            combination, with at minimum ``attributeValueSetIds``
+            (list[int]). Verify against a live system.
+        """
+        return await self._session.get(f"/rest/pim/items/{item_id}/combinations")

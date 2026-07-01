@@ -69,6 +69,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `PimModule.create_item_serial_numbers` — bulk create item serial numbers via `POST /rest/pim/item-serial-numbers`
 - feat: `PimModule.update_item_serial_numbers` — bulk update item serial numbers via `PUT /rest/pim/item-serial-numbers`
 - feat: `PimModule.delete_item_serial_numbers` — bulk delete item serial numbers via `DELETE /rest/pim/item-serial-numbers`
+- feat: `PimModule.get_item_attributes` — get attributes linked to an item via `GET /rest/pim/items/{id}/attributes`
+- feat: `PimModule.get_item_combinations` — get valid variation combinations for an item via `GET /rest/pim/items/{id}/combinations`
 
 ## [0.1.2] - 2026-06-30
 
