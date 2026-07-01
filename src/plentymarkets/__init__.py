@@ -6,6 +6,7 @@ from ._types import (
     ItemUpdatePayload,
     OrderCreatePayload,
     StockCorrectionPayload,
+    VariationBaseUpdatePayload,
 )
 
 __all__ = [
@@ -16,4 +17,5 @@ __all__ = [
     "StockCorrectionPayload",
     "ContactCreatePayload",
     "ContactUpdatePayload",
+    "VariationBaseUpdatePayload",
 ]

@@ -6,6 +6,7 @@ from ._session import _Session
 from .modules.contacts import ContactsModule
 from .modules.items import ItemsModule
 from .modules.orders import OrdersModule
+from .modules.pim import PimModule
 from .modules.stock import StockModule
 
 
@@ -37,6 +38,7 @@ class PlentyClient:
         self._items: ItemsModule | None = None
         self._stock: StockModule | None = None
         self._contacts: ContactsModule | None = None
+        self._pim: PimModule | None = None
 
     def __repr__(self) -> str:
         authenticated = self._session._access_token is not None
@@ -94,3 +96,10 @@ class PlentyClient:
         if self._contacts is None:
             self._contacts = ContactsModule(self._session)
         return self._contacts
+
+    @property
+    def pim(self) -> PimModule:
+        """Access the PIM module (``/rest/pim``)."""
+        if self._pim is None:
+            self._pim = PimModule(self._session)
+        return self._pim

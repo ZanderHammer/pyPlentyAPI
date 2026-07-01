@@ -275,3 +275,54 @@ class ContactUpdatePayload(TypedDict, total=False):
     gender: NotRequired[str]
     lang: NotRequired[str]
     options: NotRequired[list[dict]]
+
+
+# ---------------------------------------------------------------------------
+# PIM  (/rest/pim/)
+# ---------------------------------------------------------------------------
+
+
+class VariationBaseUpdatePayload(TypedDict, total=False):
+    """One entry in the list passed to :meth:`PimModule.update_variation_bases`
+    (``PUT /rest/pim/variations/bases``).
+
+    Keys:
+        id: Variation ID to update. **Required.**
+        number: Variation number / internal SKU string.
+        isMain: Whether this is the item's main variation.
+        isActive: Whether the variation is active and visible.
+        model: Model identifier string shown in the back end.
+        purchasePrice: Net purchase price used for margin calculations.
+        vatId: VAT configuration ID.
+        availabilityId: Availability level (1–10, maps to availability icons).
+        weightG: Gross weight in grams.
+        weightNetG: Net weight in grams.
+        widthMM: Width in millimetres.
+        lengthMM: Length in millimetres.
+        heightMM: Height in millimetres.
+        position: Display sort position within the item.
+        stockLimitation: 0=no limit, 1=limited to net stock, 2=disabled.
+        unitId: Unit ID (e.g. piece, litre).
+        unitsContained: Quantity of base units within this variation unit.
+        mainVariationId: ID of the item's main variation (set on child
+            variations to declare the parent).
+    """
+
+    id: Required[int]
+    number: NotRequired[str]
+    isMain: NotRequired[bool]
+    isActive: NotRequired[bool]
+    model: NotRequired[str]
+    purchasePrice: NotRequired[float]
+    vatId: NotRequired[int]
+    availabilityId: NotRequired[int]
+    weightG: NotRequired[float]
+    weightNetG: NotRequired[float]
+    widthMM: NotRequired[float]
+    lengthMM: NotRequired[float]
+    heightMM: NotRequired[float]
+    position: NotRequired[int]
+    stockLimitation: NotRequired[int]
+    unitId: NotRequired[int]
+    unitsContained: NotRequired[int]
+    mainVariationId: NotRequired[int]
