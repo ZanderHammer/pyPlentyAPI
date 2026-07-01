@@ -16,6 +16,7 @@ from ._types import (
     SalesPriceCreatePayload,
     SalesPriceUpdatePayload,
     StockCorrectionPayload,
+    StockRedistributionPayload,
     VariationAdditionalSkuPayload,
     VariationBaseUpdatePayload,
     VariationBarcodePayload,
@@ -33,6 +34,7 @@ from ._types import (
     VariationSkuPayload,
     VariationSupplierPayload,
     VariationStockCorrectionPayload,
+    VariationStockRedistributionPayload,
     VariationTagPayload,
     VariationWarehousePayload,
 )
@@ -53,6 +55,7 @@ __all__ = [
     "SalesPriceCreatePayload",
     "SalesPriceUpdatePayload",
     "StockCorrectionPayload",
+    "StockRedistributionPayload",
     "ContactCreatePayload",
     "ContactUpdatePayload",
     "VariationAdditionalSkuPayload",
@@ -72,6 +75,7 @@ __all__ = [
     "VariationSkuPayload",
     "VariationSupplierPayload",
     "VariationStockCorrectionPayload",
+    "VariationStockRedistributionPayload",
     "VariationTagPayload",
     "VariationWarehousePayload",
 ]

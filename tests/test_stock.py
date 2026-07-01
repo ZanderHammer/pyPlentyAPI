@@ -87,3 +87,98 @@ async def test_paginate_stock_yields_all_items(httpx_mock, stock):
     )
     results = [s async for s in stock.paginate_stock(warehouse_id=1, items_per_page=2)]
     assert [r["variationId"] for r in results] == [1, 2, 3]
+
+
+# -- Stock (global) -----------------------------------------------------------
+
+
+async def test_list_stock_calls_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/stock?page=1&itemsPerPage=50",
+        json={"page": 1, "totalsCount": 1, "isLastPage": True, "entries": [{"variationId": 5}]},
+    )
+    result = await stock.list_stock()
+    assert result["entries"][0]["variationId"] == 5
+
+
+async def test_list_stock_sends_filters(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/stock?variationId=5&page=1&itemsPerPage=50",
+        json={"page": 1, "totalsCount": 1, "isLastPage": True, "entries": []},
+    )
+    result = await stock.list_stock(filters={"variationId": 5})
+    assert result["page"] == 1
+
+
+async def test_paginate_all_stock_yields_all_items(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/stock?page=1&itemsPerPage=2",
+        json={
+            "page": 1,
+            "totalsCount": 3,
+            "isLastPage": False,
+            "entries": [{"variationId": 1}, {"variationId": 2}],
+        },
+    )
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/stock?page=2&itemsPerPage=2",
+        json={"page": 2, "totalsCount": 3, "isLastPage": True, "entries": [{"variationId": 3}]},
+    )
+    results = [s async for s in stock.paginate_all_stock(items_per_page=2)]
+    assert [r["variationId"] for r in results] == [1, 2, 3]
+
+
+async def test_list_stock_archive_years_calls_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/stock/archives",
+        json=[2024, 2025, 2026],
+    )
+    result = await stock.list_stock_archive_years()
+    assert result == [2024, 2025, 2026]
+
+
+async def test_list_stock_by_type_calls_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/stock/types/sales?page=1&itemsPerPage=50",
+        json={"page": 1, "totalsCount": 1, "isLastPage": True, "entries": [{"variationId": 5}]},
+    )
+    result = await stock.list_stock_by_type("sales")
+    assert result["entries"][0]["variationId"] == 5
+
+
+async def test_paginate_stock_by_type_yields_all_items(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/stock/types/sales?page=1&itemsPerPage=2",
+        json={
+            "page": 1,
+            "totalsCount": 2,
+            "isLastPage": False,
+            "entries": [{"variationId": 1}],
+        },
+    )
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/stock/types/sales?page=2&itemsPerPage=2",
+        json={"page": 2, "totalsCount": 2, "isLastPage": True, "entries": [{"variationId": 2}]},
+    )
+    results = [s async for s in stock.paginate_stock_by_type("sales", items_per_page=2)]
+    assert [r["variationId"] for r in results] == [1, 2]
+
+
+async def test_redistribute_stock_puts_to_redistribute_url(httpx_mock, stock):
+    payload = {"currentWarehouseId": 1, "newWarehouseId": 2, "quantity": 5}
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/stockmanagement/stock/redistribute",
+        json={"success": True},
+    )
+    result = await stock.redistribute_stock(data=payload)
+    assert result == {"success": True}
+

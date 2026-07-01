@@ -245,6 +245,76 @@ class VariationStockCorrectionPayload(TypedDict, total=False):
     reasonId: NotRequired[int]
 
 
+class VariationStockRedistributionPayload(TypedDict, total=False):
+    """One entry in :attr:`StockRedistributionPayload`'s ``redistributions``
+    list, for bulk stock redistribution across several variations in one
+    request.
+
+    Keys:
+        variationId: Variation ID whose stock should be redistributed.
+        currentWarehouseId: Warehouse ID the stock is currently in.
+        currentStorageLocationId: Storage location ID within the current
+            warehouse.
+        newWarehouseId: Warehouse ID the stock is moved to.
+        newStorageLocationId: Storage location ID within the new warehouse.
+        quantity: Quantity to redistribute.
+        reasonId: Redistribution reason ID. 401=stock transfer,
+            402=stock correction by stocktaking, 403=stock transfer because
+            of need for repair.
+        batch: Batch identifier for the redistributed quantity.
+        bestBeforeDate: Best-before date for the redistributed quantity,
+            ISO 8601.
+    """
+
+    variationId: NotRequired[int]
+    currentWarehouseId: NotRequired[int]
+    currentStorageLocationId: NotRequired[int]
+    newWarehouseId: NotRequired[int]
+    newStorageLocationId: NotRequired[int]
+    quantity: NotRequired[float]
+    reasonId: NotRequired[int]
+    batch: NotRequired[str]
+    bestBeforeDate: NotRequired[str]
+
+
+class StockRedistributionPayload(TypedDict, total=False):
+    """Payload for :meth:`StockModule.redistribute_stock`
+    (``PUT /rest/stockmanagement/stock/redistribute``).
+
+    Keys:
+        currentWarehouseId: Warehouse ID the stock is currently in.
+            **Required.**
+        newWarehouseId: Warehouse ID the stock is moved to. **Required.**
+        quantity: Quantity to redistribute. **Required.**
+        variationId: Variation ID whose stock should be redistributed. Omit
+            when using ``redistributions`` for a bulk request.
+        currentStorageLocationId: Storage location ID within the current
+            warehouse.
+        newStorageLocationId: Storage location ID within the new warehouse.
+        reasonId: Redistribution reason ID. 401=stock transfer,
+            402=stock correction by stocktaking, 403=stock transfer because
+            of need for repair.
+        batch: Batch identifier for the redistributed quantity.
+        bestBeforeDate: Best-before date for the redistributed quantity,
+            ISO 8601.
+        redistributions: List of :class:`VariationStockRedistributionPayload`
+            dicts for redistributing several variations in one request.
+            When present, the top-level ``variationId``/``quantity``/etc.
+            keys are ignored.
+    """
+
+    currentWarehouseId: Required[int]
+    newWarehouseId: Required[int]
+    quantity: Required[float]
+    variationId: NotRequired[int]
+    currentStorageLocationId: NotRequired[int]
+    newStorageLocationId: NotRequired[int]
+    reasonId: NotRequired[int]
+    batch: NotRequired[str]
+    bestBeforeDate: NotRequired[str]
+    redistributions: NotRequired[list["VariationStockRedistributionPayload"]]
+
+
 # ---------------------------------------------------------------------------
 # Contacts  (/rest/accounts/contacts)
 # ---------------------------------------------------------------------------

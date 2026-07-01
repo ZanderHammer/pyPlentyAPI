@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Stock
+
+- feat: `StockModule.list_stock` / `paginate_all_stock` — list/iterate stock levels across all warehouses via `GET /rest/stockmanagement/stock`
+- feat: `StockModule.list_stock_archive_years` — list archive years of stock movements via `GET /rest/stockmanagement/stock/archives`
+- feat: `StockModule.list_stock_by_type` / `paginate_stock_by_type` — list/iterate stock by warehouse type via `GET /rest/stockmanagement/stock/types/{type}`
+- feat: `StockModule.redistribute_stock` — move stock between warehouses via `PUT /rest/stockmanagement/stock/redistribute`
+- feat: `StockRedistributionPayload`, `VariationStockRedistributionPayload` — TypedDicts for `redistribute_stock`
+
+
 ## [0.2.1] - 2026-07-01
 
 ### Stock
