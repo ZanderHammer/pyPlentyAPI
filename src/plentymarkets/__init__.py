@@ -20,6 +20,10 @@ from ._types import (
     VariationMarketPayload,
     VariationPropertyPayload,
     VariationSalesPricePayload,
+    VariationSkuPayload,
+    VariationSupplierPayload,
+    VariationTagPayload,
+    VariationWarehousePayload,
 )
 
 __all__ = [
@@ -44,4 +48,8 @@ __all__ = [
     "VariationMarketPayload",
     "VariationPropertyPayload",
     "VariationSalesPricePayload",
+    "VariationSkuPayload",
+    "VariationSupplierPayload",
+    "VariationTagPayload",
+    "VariationWarehousePayload",
 ]

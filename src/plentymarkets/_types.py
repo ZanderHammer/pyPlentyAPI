@@ -601,3 +601,67 @@ class VariationSalesPricePayload(TypedDict, total=False):
     variationId: Required[int]
     salesPriceId: Required[int]
     price: Required[float]
+
+
+class VariationSkuPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_skus`
+    (``PUT /rest/pim/variations/skus``).
+
+    Keys:
+        variationId: Variation ID to set the marketplace SKU for.
+            **Required.**
+        marketId: Marketplace ID the SKU applies to. **Required.**
+        sku: The marketplace-specific SKU string. **Required.**
+    """
+
+    variationId: Required[int]
+    marketId: Required[int]
+    sku: Required[str]
+
+
+class VariationSupplierPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_supplier`
+    (``PUT /rest/pim/variations/supplier``).
+
+    Keys:
+        variationId: Variation ID to link the supplier to. **Required.**
+        supplierId: Supplier contact ID (from ``/rest/accounts/contacts``
+            where the contact is flagged as a supplier). **Required.**
+        supplierPartNumber: Supplier's own part number for this variation.
+        priority: Preference order when a variation has multiple suppliers
+            (lower = preferred).
+    """
+
+    variationId: Required[int]
+    supplierId: Required[int]
+    supplierPartNumber: NotRequired[str]
+    priority: NotRequired[int]
+
+
+class VariationTagPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_tags`
+    (``PUT /rest/pim/variations/tags``).
+
+    Keys:
+        variationId: Variation ID to tag. **Required.**
+        tagId: Tag ID to attach. **Required.**
+    """
+
+    variationId: Required[int]
+    tagId: Required[int]
+
+
+class VariationWarehousePayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_warehouses`
+    (``PUT /rest/pim/variations/warehouses``).
+
+    Keys:
+        variationId: Variation ID to link the warehouse to. **Required.**
+        warehouseId: Warehouse ID to stock the variation in. **Required.**
+        stockManagementActive: Whether stock levels for this variation are
+            actively managed in this warehouse.
+    """
+
+    variationId: Required[int]
+    warehouseId: Required[int]
+    stockManagementActive: NotRequired[bool]

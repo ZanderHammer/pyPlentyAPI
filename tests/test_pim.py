@@ -455,3 +455,89 @@ async def test_delete_variation_sales_prices_sends_ids(httpx_mock, pim):
     )
     result = await pim.delete_variation_sales_prices([1])
     assert result["deleted"] == 1
+
+
+async def test_update_variation_skus_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/variations/skus",
+        json={"updated": 1},
+    )
+    result = await pim.update_variation_skus(
+        [{"variationId": 7, "marketId": 2, "sku": "MKT-SKU-1"}]
+    )
+    assert result["updated"] == 1
+
+
+async def test_delete_variation_skus_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/variations/skus",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_variation_skus([6])
+    assert result["deleted"] == 1
+
+
+async def test_update_variation_supplier_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/variations/supplier",
+        json={"updated": 1},
+    )
+    result = await pim.update_variation_supplier(
+        [{"variationId": 7, "supplierId": 4, "supplierPartNumber": "SUP-9"}]
+    )
+    assert result["updated"] == 1
+
+
+async def test_delete_variation_supplier_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/variations/supplier",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_variation_supplier([4])
+    assert result["deleted"] == 1
+
+
+async def test_update_variation_tags_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/variations/tags",
+        json={"updated": 1},
+    )
+    result = await pim.update_variation_tags([{"variationId": 7, "tagId": 11}])
+    assert result["updated"] == 1
+
+
+async def test_delete_variation_tags_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/variations/tags",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_variation_tags([11])
+    assert result["deleted"] == 1
+
+
+async def test_update_variation_warehouses_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/variations/warehouses",
+        json={"updated": 1},
+    )
+    result = await pim.update_variation_warehouses(
+        [{"variationId": 7, "warehouseId": 1, "stockManagementActive": True}]
+    )
+    assert result["updated"] == 1
+
+
+async def test_delete_variation_warehouses_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/variations/warehouses",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_variation_warehouses([1])
+    assert result["deleted"] == 1

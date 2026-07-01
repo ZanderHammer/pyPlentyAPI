@@ -18,6 +18,10 @@ if TYPE_CHECKING:
         VariationMarketPayload,
         VariationPropertyPayload,
         VariationSalesPricePayload,
+        VariationSkuPayload,
+        VariationSupplierPayload,
+        VariationTagPayload,
+        VariationWarehousePayload,
     )
 
 from .._session import _Session
@@ -599,6 +603,138 @@ class PimModule:
             this key.
         """
         return await self._session.delete("/rest/pim/variations/sales_prices", json=ids)
+
+    async def update_variation_skus(
+        self,
+        data: list[VariationSkuPayload],
+    ) -> dict[str, Any]:
+        """Bulk create or update marketplace SKUs on variations.
+
+        Args:
+            data: List of SKU payloads. Use
+                :class:`~plentymarkets._types.VariationSkuPayload` for IDE
+                autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/variations/skus", json=data)
+
+    async def delete_variation_skus(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete variation marketplace SKUs by ID.
+
+        Args:
+            ids: List of variation-SKU record IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete("/rest/pim/variations/skus", json=ids)
+
+    async def update_variation_supplier(
+        self,
+        data: list[VariationSupplierPayload],
+    ) -> dict[str, Any]:
+        """Bulk create or update supplier links on variations.
+
+        Args:
+            data: List of supplier link payloads. Use
+                :class:`~plentymarkets._types.VariationSupplierPayload` for IDE
+                autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/variations/supplier", json=data)
+
+    async def delete_variation_supplier(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete variation supplier links by ID.
+
+        Args:
+            ids: List of variation-supplier link IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete("/rest/pim/variations/supplier", json=ids)
+
+    async def update_variation_tags(
+        self,
+        data: list[VariationTagPayload],
+    ) -> dict[str, Any]:
+        """Bulk create tags on variations.
+
+        Args:
+            data: List of tag payloads. Use
+                :class:`~plentymarkets._types.VariationTagPayload` for IDE
+                autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/variations/tags", json=data)
+
+    async def delete_variation_tags(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete variation tags by ID.
+
+        Args:
+            ids: List of variation-tag link IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete("/rest/pim/variations/tags", json=ids)
+
+    async def update_variation_warehouses(
+        self,
+        data: list[VariationWarehousePayload],
+    ) -> dict[str, Any]:
+        """Bulk create or update warehouse stock links on variations.
+
+        Args:
+            data: List of warehouse link payloads. Use
+                :class:`~plentymarkets._types.VariationWarehousePayload` for IDE
+                autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/variations/warehouses", json=data)
+
+    async def delete_variation_warehouses(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete variation warehouse stock links by ID.
+
+        Args:
+            ids: List of variation-warehouse link IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete("/rest/pim/variations/warehouses", json=ids)
 
     async def list_categories(
         self,

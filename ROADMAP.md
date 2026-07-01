@@ -86,10 +86,10 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 | `/rest/pim/variations/markets` | PUT, DELETE | Bulk create/delete market availability on variations | **implemented** |
 | `/rest/pim/variations/properties` | PUT, DELETE | Bulk create/update/delete variation properties | **implemented** |
 | `/rest/pim/variations/sales_prices` | PUT, DELETE | Bulk create/update/delete sales price links on variations | **implemented** |
-| `/rest/pim/variations/skus` | PUT, DELETE | Bulk create/update/delete SKUs on variations | planned |
-| `/rest/pim/variations/supplier` | PUT, DELETE | Bulk create/update/delete supplier links on variations | planned |
-| `/rest/pim/variations/tags` | PUT, DELETE | Bulk create/delete tags on variations | planned |
-| `/rest/pim/variations/warehouses` | PUT, DELETE | Bulk create/update/delete warehouse stock links on variations | planned |
+| `/rest/pim/variations/skus` | PUT, DELETE | Bulk create/update/delete SKUs on variations | **implemented** |
+| `/rest/pim/variations/supplier` | PUT, DELETE | Bulk create/update/delete supplier links on variations | **implemented** |
+| `/rest/pim/variations/tags` | PUT, DELETE | Bulk create/delete tags on variations | **implemented** |
+| `/rest/pim/variations/warehouses` | PUT, DELETE | Bulk create/update/delete warehouse stock links on variations | **implemented** |
 
 #### Attributes
 
