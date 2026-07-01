@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `StockModule.list_stock_by_storage_location` / `paginate_stock_by_storage_location` — list/iterate stock per storage location via `GET /rest/stockmanagement/warehouses/{warehouseId}/stock/storageLocations`
 - feat: `StockModule.list_stock_by_storage_location_pim` / `paginate_stock_by_storage_location_pim` — list/iterate stock per storage location with linked PIM entry via `GET /rest/stockmanagement/warehouses/{warehouseId}/stock/storageLocationsPim`
 - feat: `StockIntakePayload`, `VariationStockIntakePayload`, `StockDischargePayload`, `VariationStockDischargePayload`, `UnpackVariationPayload` — TypedDicts for the stock booking endpoints
+- `Stock` reaches full endpoint coverage (17/17) under the `StockManagement` API tag
 
 
 ## [0.2.1] - 2026-07-01
