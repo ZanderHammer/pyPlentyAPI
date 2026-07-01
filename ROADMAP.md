@@ -95,8 +95,8 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 
 | Endpoint | Methods | Description | Status |
 |---|---|---|---|
-| `/rest/pim/attributes` | GET, PUT, POST, DELETE | Search, create, update, and delete attributes (defines variation axes like colour, size) | planned |
-| `/rest/pim/attributes/{id}` | GET | Get one attribute by ID | planned |
+| `/rest/pim/attributes` | GET, PUT, POST, DELETE | Search, create, update, and delete attributes (defines variation axes like colour, size) | partial |
+| `/rest/pim/attributes/{id}` | GET | Get one attribute by ID | **implemented** |
 | `/rest/pim/attributes/names` | GET, PUT, POST, DELETE | Manage multilingual attribute display names | planned |
 | `/rest/pim/attributes/values` | GET, PUT, POST, DELETE | Manage attribute values (e.g. "Red", "Blue" for a colour attribute) | planned |
 | `/rest/pim/attributes/values/{id}` | GET | Get one attribute value by ID | planned |
@@ -106,8 +106,8 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 
 | Endpoint | Methods | Description | Status |
 |---|---|---|---|
-| `/rest/pim/categories` | GET | Search categories (filter by ID, type, level, name) | planned |
-| `/rest/pim/categories/{id}` | GET | Get one category by ID | planned |
+| `/rest/pim/categories` | GET | Search categories (filter by ID, type, level, name) | **implemented** |
+| `/rest/pim/categories/{id}` | GET | Get one category by ID | **implemented** |
 | `/rest/pim/categories/branches` | GET | Search category branches (full path from root to leaf) | planned |
 | `/rest/pim/categories/clients` | GET | Search which clients (stores) have each category active | planned |
 | `/rest/pim/categories/details` | GET | Search category detail records (multilingual names, descriptions, meta data) | planned |
@@ -117,8 +117,8 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 
 | Endpoint | Methods | Description | Status |
 |---|---|---|---|
-| `/rest/pim/sales_prices` | GET, PUT, POST, DELETE | Search, create, update, and delete sales price configurations | planned |
-| `/rest/pim/sales_prices/{id}` | GET | Get one sales price configuration by ID | planned |
+| `/rest/pim/sales_prices` | GET, PUT, POST, DELETE | Search, create, update, and delete sales price configurations | partial |
+| `/rest/pim/sales_prices/{id}` | GET | Get one sales price configuration by ID | **implemented** |
 
 #### Barcodes
 

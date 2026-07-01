@@ -11,6 +11,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `PimModule.list_variations` — search and filter variations via `GET /rest/pim/variations`
 - feat: `PimModule.paginate_variations` — cursor-based async iterator via `GET /rest/pim/variations/scroll`
 - feat: `PimModule.update_variation_bases` — bulk variation update via `PUT /rest/pim/variations/bases`
+- feat: `PimModule.list_categories` — search categories via `GET /rest/pim/categories`
+- feat: `PimModule.get_category` — get one category via `GET /rest/pim/categories/{id}`
+- feat: `PimModule.list_attributes` — search attributes via `GET /rest/pim/attributes`
+- feat: `PimModule.get_attribute` — get one attribute via `GET /rest/pim/attributes/{id}`
+- feat: `PimModule.list_sales_prices` — search sales prices via `GET /rest/pim/sales_prices`
+- feat: `PimModule.get_sales_price` — get one sales price via `GET /rest/pim/sales_prices/{id}`
 
 ## [0.1.2] - 2026-06-30
 

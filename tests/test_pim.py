@@ -82,3 +82,83 @@ async def test_update_variation_bases_puts_data(httpx_mock, pim):
     )
     result = await pim.update_variation_bases([{"id": 7, "isActive": True}])
     assert result["updated"] == 1
+
+
+async def test_list_categories_no_filters(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/categories",
+        json={"entries": [{"id": 1, "type": "item"}], "totalsCount": 1},
+    )
+    result = await pim.list_categories()
+    assert result["totalsCount"] == 1
+
+
+async def test_list_categories_with_filters(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/categories?type=item&level=1",
+        json={"entries": [], "totalsCount": 0},
+    )
+    result = await pim.list_categories(type_="item", level=1)
+    assert result["totalsCount"] == 0
+
+
+async def test_get_category(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/categories/99",
+        json={"id": 99, "type": "item"},
+    )
+    result = await pim.get_category(99)
+    assert result["id"] == 99
+
+
+async def test_list_attributes_no_filters(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/attributes",
+        json={"entries": [{"id": 3, "backendName": "Colour"}], "totalsCount": 1},
+    )
+    result = await pim.list_attributes()
+    assert result["entries"][0]["backendName"] == "Colour"
+
+
+async def test_list_attributes_with_backend_name(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/attributes?backendName=Size",
+        json={"entries": [{"id": 4}], "totalsCount": 1},
+    )
+    result = await pim.list_attributes(backend_name="Size")
+    assert result["entries"][0]["id"] == 4
+
+
+async def test_get_attribute(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/attributes/3",
+        json={"id": 3, "backendName": "Colour"},
+    )
+    result = await pim.get_attribute(3)
+    assert result["backendName"] == "Colour"
+
+
+async def test_list_sales_prices_no_filters(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/sales_prices",
+        json={"entries": [{"id": 1, "type": "default"}], "totalsCount": 1},
+    )
+    result = await pim.list_sales_prices()
+    assert result["totalsCount"] == 1
+
+
+async def test_get_sales_price(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/sales_prices/1",
+        json={"id": 1, "type": "default", "currency": "EUR"},
+    )
+    result = await pim.get_sales_price(1)
+    assert result["currency"] == "EUR"
