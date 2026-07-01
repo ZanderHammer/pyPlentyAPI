@@ -766,3 +766,31 @@ class AttributeNamePayload(TypedDict, total=False):
     attributeId: Required[int]
     lang: Required[str]
     name: Required[str]
+
+
+class AttributeValuePayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.create_attribute_values` and
+    :meth:`PimModule.update_attribute_values`
+    (``POST``/``PUT /rest/pim/attributes/values``).
+
+    PlentyMarkets does not publish a request schema for this endpoint; keys
+    are inferred from the ``GET`` search parameters and general attribute
+    conventions. Verify against a live system before relying on optional
+    keys.
+
+    Keys:
+        id: Attribute value ID, required when updating an existing value.
+        attributeId: Attribute ID this value belongs to. **Required.**
+        backendName: Internal back-end name for this value (e.g. ``"Red"``
+            for a colour attribute). **Required.**
+        position: Display sort position among the attribute's values.
+        image: Path or URL of an image representing this value, used when
+            the attribute's ``typeOfSelectionInOnlineStore`` is
+            ``"image"`` or ``"color"``.
+    """
+
+    id: NotRequired[int]
+    attributeId: Required[int]
+    backendName: Required[str]
+    position: NotRequired[int]
+    image: NotRequired[str]

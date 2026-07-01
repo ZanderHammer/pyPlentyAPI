@@ -625,3 +625,65 @@ async def test_delete_attribute_names_sends_ids(httpx_mock, pim):
     )
     result = await pim.delete_attribute_names([9])
     assert result["deleted"] == 1
+
+
+async def test_list_attribute_values_no_filters(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/attributes/values",
+        json={"entries": [{"id": 10, "attributeId": 3, "backendName": "Red"}], "totalsCount": 1},
+    )
+    result = await pim.list_attribute_values()
+    assert result["totalsCount"] == 1
+
+
+async def test_list_attribute_values_with_filters(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/attributes/values?attributeId=3",
+        json={"entries": [{"id": 10}], "totalsCount": 1},
+    )
+    result = await pim.list_attribute_values(attribute_id=3)
+    assert result["entries"][0]["id"] == 10
+
+
+async def test_create_attribute_values_posts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/pim/attributes/values",
+        json={"created": 1},
+    )
+    result = await pim.create_attribute_values(
+        [{"attributeId": 3, "backendName": "Red", "position": 1}]
+    )
+    assert result["created"] == 1
+
+
+async def test_update_attribute_values_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/attributes/values",
+        json={"updated": 1},
+    )
+    result = await pim.update_attribute_values([{"id": 10, "position": 2}])
+    assert result["updated"] == 1
+
+
+async def test_delete_attribute_values_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/attributes/values",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_attribute_values([10])
+    assert result["deleted"] == 1
+
+
+async def test_get_attribute_value(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/pim/attributes/values/10",
+        json={"id": 10, "attributeId": 3, "backendName": "Red"},
+    )
+    result = await pim.get_attribute_value(10)
+    assert result["backendName"] == "Red"
