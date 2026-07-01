@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-07-01
+
 ### Stock
 
 - fix: `StockModule.get_by_warehouse` — corrected stale endpoint `GET /rest/stock/warehouses/{warehouseId}/items` (no longer exists in the API) to `GET /rest/stockmanagement/warehouses/{warehouseId}/stock`; response entry fields updated to match the current `Stock` schema (e.g. `netStock`/`physicalStock` → `stockNet`/`stockPhysical`)
