@@ -9,7 +9,8 @@ from .._session import _Session
 
 
 class StockModule:
-    """Wraps the PlentyMarkets ``/rest/stock`` endpoints.
+    """Wraps the PlentyMarkets ``/rest/stockmanagement/warehouses/{warehouseId}/stock``
+    endpoints.
 
     Args:
         session: Shared authenticated session.
@@ -19,7 +20,7 @@ class StockModule:
         self._session = session
 
     def __repr__(self) -> str:
-        return "<StockModule /rest/stock>"
+        return "<StockModule /rest/stockmanagement>"
 
     async def get_by_warehouse(
         self,
@@ -43,18 +44,26 @@ class StockModule:
             - ``lastPageNumber`` (int): Number of the last page.
             - ``entries`` (list[dict]): Stock entry dicts, each with:
 
-                - ``warehouseId`` (int): Warehouse ID.
                 - ``itemId`` (int): Item ID.
                 - ``variationId`` (int): Variation ID.
-                - ``netStock`` (float): Stock available for sale.
-                - ``physicalStock`` (float): Total physical stock on hand.
+                - ``warehouseId`` (int): Warehouse ID.
+                - ``stockPhysical`` (float): Total physical stock on hand.
+                - ``stockNet`` (float): Stock available for sale.
                 - ``reservedStock`` (float): Stock reserved by open orders.
-                - ``reorderLevel`` (float): Reorder trigger threshold.
-                - ``maximumStock`` (float): Maximum stock threshold.
+                - ``reservedEbay`` (float): Stock reserved for eBay listings.
+                - ``reservedBundle`` (float): Stock reserved by bundle
+                  components.
+                - ``reorderDelta`` (float): Difference to the reorder
+                  threshold.
+                - ``reordered`` (int): Quantity currently on reorder.
+                - ``warehousePriority`` (int): Priority of this warehouse for
+                  stock allocation.
                 - ``averagePurchasePrice`` (float): Average net purchase price.
+                - ``averageSale`` (float): Average sale price.
+                - ``updatedAt`` (str): ISO 8601 last-update timestamp.
         """
         return await self._session.get(
-            f"/rest/stock/warehouses/{warehouse_id}/items",
+            f"/rest/stockmanagement/warehouses/{warehouse_id}/stock",
             params={"page": page, "itemsPerPage": items_per_page},
         )
 
@@ -65,20 +74,14 @@ class StockModule:
             warehouse_id: The PlentyMarkets warehouse ID.
             data: Correction payload. Use
                 :class:`~plentymarkets._types.StockCorrectionPayload` for IDE
-                autocomplete. Required keys:
-
-                - ``variationId`` (int): Variation ID to correct.
-                - ``quantity`` (float): New absolute stock quantity.
-                - ``reasonId`` (int): Correction reason ID (e.g. 301=stock
-                  correction, 304=incoming items).
-                - ``warehouseLocationId`` (int): Storage location ID (0 for
-                  the warehouse default).
+                autocomplete. Only ``quantity`` is required; see the
+                TypedDict for the full set of optional keys.
 
         Returns:
             The API response dict on success, or ``{}`` if the response has no body.
         """
         return await self._session.put(
-            f"/rest/stock/warehouses/{warehouse_id}/stock/correction",
+            f"/rest/stockmanagement/warehouses/{warehouse_id}/stock/correction",
             json=data,
         )
 

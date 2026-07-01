@@ -62,9 +62,9 @@ Endpoint totals are counted against the [PlentyMarkets OpenAPI spec](https://raw
 | **Order**       | 2 / 239    | Core operations                  |
 | **Item**        | 2 / 146    | Core operations                  |
 | **Account**     | 2 / 87     | Core operations                  |
-| **Stock**       | ⚠️         | [Known issue](ROADMAP.md#known-issues) — see below |
+| **Stock**       | 2 / 16     | Core operations                  |
 
-`Pim` reached full endpoint coverage in `v0.2.0` — see [ROADMAP.md](ROADMAP.md) for the endpoint-by-endpoint breakdown and the rest of the API surface still planned.
+`Pim` reached full endpoint coverage in `v0.2.0` — see [ROADMAP.md](ROADMAP.md) for the endpoint-by-endpoint breakdown and the rest of the API surface still planned. `Stock`'s two methods live under the API's `StockManagement` tag.
 
 ## Authentication
 1. Initialize `PlentyClient` with your PlentyMarkets username and password.

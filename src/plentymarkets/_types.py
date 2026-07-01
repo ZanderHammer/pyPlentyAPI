@@ -188,29 +188,61 @@ class ItemUpdatePayload(TypedDict, total=False):
 
 
 # ---------------------------------------------------------------------------
-# Stock  (/rest/stock/warehouses/{warehouseId}/stock/correction)
+# Stock  (/rest/stockmanagement/warehouses/{warehouseId}/stock/correction)
 # ---------------------------------------------------------------------------
 
 
-class StockCorrectionPayload(TypedDict):
+class StockCorrectionPayload(TypedDict, total=False):
     """Payload for :meth:`StockModule.correct`
-    (``PUT /rest/stock/warehouses/{warehouseId}/stock/correction``).
+    (``PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/correction``).
 
     Keys:
-        variationId: Variation ID whose stock should be corrected. **Required.**
         quantity: New absolute stock quantity after correction. **Required.**
-            Positive values add stock; the API replaces the current level.
-        reasonId: Correction reason ID. **Required.** Common values:
-            301=stock correction, 304=incoming items, 305=outgoing items,
-            309=returns.
-        warehouseLocationId: Storage location ID within the warehouse.
-            **Required.** Use ``0`` for the warehouse default location.
+        variationId: Variation ID whose stock should be corrected. Omit when
+            using ``corrections`` for a bulk request.
+        storageLocationId: Storage location ID within the warehouse.
+        reasonId: Correction reason ID. Common values: 301=stock correction,
+            302=stock correction by stocktaking, 304=manufacturer error,
+            305=unusable paper, 306=packing error, 307=damage,
+            309=internal offset.
+        batch: Batch identifier for the corrected quantity.
+        bestBeforeDate: Best-before date for the corrected quantity, ISO 8601.
+        corrections: List of :class:`VariationStockCorrectionPayload` dicts
+            for correcting several variations in one request. When present,
+            the top-level ``variationId``/``quantity``/etc. keys are ignored.
     """
 
-    variationId: int
-    quantity: float
-    reasonId: int
-    warehouseLocationId: int
+    quantity: Required[float]
+    variationId: NotRequired[int]
+    storageLocationId: NotRequired[int]
+    reasonId: NotRequired[int]
+    batch: NotRequired[str]
+    bestBeforeDate: NotRequired[str]
+    corrections: NotRequired[list["VariationStockCorrectionPayload"]]
+
+
+class VariationStockCorrectionPayload(TypedDict, total=False):
+    """One entry in :attr:`StockCorrectionPayload`'s ``corrections`` list, for
+    bulk stock correction across several variations in one request.
+
+    Keys:
+        variationId: Variation ID whose stock should be corrected.
+        warehouseId: Warehouse ID the correction applies to.
+        storageLocationId: Storage location ID within the warehouse.
+        quantity: New absolute stock quantity after correction.
+        bestBeforeDate: Best-before date for the corrected quantity, ISO 8601.
+        batch: Batch identifier for the corrected quantity.
+        reasonId: Correction reason ID (see
+            :class:`StockCorrectionPayload` for the full list of values).
+    """
+
+    variationId: NotRequired[int]
+    warehouseId: NotRequired[int]
+    storageLocationId: NotRequired[int]
+    quantity: NotRequired[float]
+    bestBeforeDate: NotRequired[str]
+    batch: NotRequired[str]
+    reasonId: NotRequired[int]
 
 
 # ---------------------------------------------------------------------------

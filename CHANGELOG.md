@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Stock
+
+- fix: `StockModule.get_by_warehouse` — corrected stale endpoint `GET /rest/stock/warehouses/{warehouseId}/items` (no longer exists in the API) to `GET /rest/stockmanagement/warehouses/{warehouseId}/stock`; response entry fields updated to match the current `Stock` schema (e.g. `netStock`/`physicalStock` → `stockNet`/`stockPhysical`)
+- fix: `StockModule.correct` — corrected stale endpoint `PUT /rest/stock/warehouses/{warehouseId}/stock/correction` (no longer exists in the API) to `PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/correction`
+- fix: `StockCorrectionPayload` — only `quantity` is actually required by the API; `warehouseLocationId` renamed to `storageLocationId`; added optional `reasonId`, `batch`, `bestBeforeDate`, and bulk `corrections` keys to match the live schema
+- feat: `VariationStockCorrectionPayload` — TypedDict for entries in `StockCorrectionPayload.corrections`, for bulk stock correction across several variations in one request
+
 ## [0.2.0] - 2026-07-01
 
 ### Pim

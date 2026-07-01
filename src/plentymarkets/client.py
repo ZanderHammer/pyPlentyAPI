@@ -85,7 +85,7 @@ class PlentyClient:
 
     @property
     def stock(self) -> StockModule:
-        """Access the Stock module (``/rest/stock``)."""
+        """Access the Stock module (``/rest/stockmanagement``)."""
         if self._stock is None:
             self._stock = StockModule(self._session)
         return self._stock

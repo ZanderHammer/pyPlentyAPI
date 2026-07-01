@@ -25,7 +25,7 @@ def stock(session):
 async def test_get_by_warehouse_calls_correct_url(httpx_mock, stock):
     httpx_mock.add_response(
         method="GET",
-        url=f"{BASE_URL}/rest/stock/warehouses/1/items?page=1&itemsPerPage=50",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock?page=1&itemsPerPage=50",
         json={"page": 1, "totalsCount": 1, "isLastPage": True, "entries": [{"variationId": 5}]},
     )
     result = await stock.get_by_warehouse(warehouse_id=1)
@@ -35,7 +35,7 @@ async def test_get_by_warehouse_calls_correct_url(httpx_mock, stock):
 async def test_get_by_warehouse_sends_pagination_params(httpx_mock, stock):
     httpx_mock.add_response(
         method="GET",
-        url=f"{BASE_URL}/rest/stock/warehouses/2/items?page=2&itemsPerPage=10",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/2/stock?page=2&itemsPerPage=10",
         json={"page": 2, "totalsCount": 20, "isLastPage": True, "entries": []},
     )
     result = await stock.get_by_warehouse(warehouse_id=2, page=2, items_per_page=10)
@@ -43,20 +43,31 @@ async def test_get_by_warehouse_sends_pagination_params(httpx_mock, stock):
 
 
 async def test_correct_puts_to_correction_url(httpx_mock, stock):
-    payload = {"variationId": 5, "quantity": 10, "reasonId": 301, "warehouseLocationId": 0}
+    payload = {"variationId": 5, "quantity": 10, "reasonId": 301, "storageLocationId": 0}
     httpx_mock.add_response(
         method="PUT",
-        url=f"{BASE_URL}/rest/stock/warehouses/1/stock/correction",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/correction",
         json={"success": True},
     )
     result = await stock.correct(warehouse_id=1, data=payload)
     assert result == {"success": True}
 
 
+async def test_correct_accepts_quantity_only_payload(httpx_mock, stock):
+    """`quantity` is the only field the API requires; everything else is optional."""
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/correction",
+        json={"success": True},
+    )
+    result = await stock.correct(warehouse_id=1, data={"quantity": 10})
+    assert result == {"success": True}
+
+
 async def test_paginate_stock_yields_all_items(httpx_mock, stock):
     httpx_mock.add_response(
         method="GET",
-        url=f"{BASE_URL}/rest/stock/warehouses/1/items?page=1&itemsPerPage=2",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock?page=1&itemsPerPage=2",
         json={
             "page": 1,
             "totalsCount": 3,
@@ -66,7 +77,7 @@ async def test_paginate_stock_yields_all_items(httpx_mock, stock):
     )
     httpx_mock.add_response(
         method="GET",
-        url=f"{BASE_URL}/rest/stock/warehouses/1/items?page=2&itemsPerPage=2",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock?page=2&itemsPerPage=2",
         json={
             "page": 2,
             "totalsCount": 3,
