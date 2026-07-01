@@ -665,3 +665,86 @@ class VariationWarehousePayload(TypedDict, total=False):
     variationId: Required[int]
     warehouseId: Required[int]
     stockManagementActive: NotRequired[bool]
+
+
+# ---------------------------------------------------------------------------
+# PIM Attributes  (/rest/pim/attributes)
+# ---------------------------------------------------------------------------
+
+
+class AttributeCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.create_attributes` (``POST /rest/pim/attributes``).
+
+    Keys:
+        backendName: Internal back-end name (unique, no commas, colons,
+            semicolons, or quotes). **Required.**
+        position: Display sort position in the attribute list.
+        isSurchargePercental: Whether value surcharges are treated as a
+            percentage rather than a fixed amount.
+        isLinkableToImage: Whether images can be linked to attribute values.
+        isGroupable: Whether attribute values can be grouped in the
+            online store's filter navigation.
+        amazonAttribute: Linked Amazon attribute name.
+        fruugoAttribute: Linked Fruugo attribute name.
+        pixmaniaAttribute: Linked Pixmania attribute ID.
+        ottoAttribute: Linked Otto attribute name.
+        googleShoppingAttribute: Linked Google Shopping attribute name.
+        neckermannAtEpAttribute: Linked neckermann.at attribute ID.
+        typeOfSelectionInOnlineStore: Selection widget type in the online
+            store, e.g. ``"box"``, ``"list"``, ``"color"``, ``"image"``.
+        laRedouteAttribute: Linked La Redoute attribute ID.
+    """
+
+    backendName: Required[str]
+    position: NotRequired[int]
+    isSurchargePercental: NotRequired[bool]
+    isLinkableToImage: NotRequired[bool]
+    isGroupable: NotRequired[bool]
+    amazonAttribute: NotRequired[str]
+    fruugoAttribute: NotRequired[str]
+    pixmaniaAttribute: NotRequired[int]
+    ottoAttribute: NotRequired[str]
+    googleShoppingAttribute: NotRequired[str]
+    neckermannAtEpAttribute: NotRequired[int]
+    typeOfSelectionInOnlineStore: NotRequired[str]
+    laRedouteAttribute: NotRequired[int]
+
+
+class AttributeUpdatePayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.update_attributes` (``PUT /rest/pim/attributes``).
+
+    Keys:
+        id: Attribute ID to update. **Required.**
+        backendName: Internal back-end name (unique, no commas, colons,
+            semicolons, or quotes).
+        position: Display sort position in the attribute list.
+        isSurchargePercental: Whether value surcharges are treated as a
+            percentage rather than a fixed amount.
+        isLinkableToImage: Whether images can be linked to attribute values.
+        isGroupable: Whether attribute values can be grouped in the
+            online store's filter navigation.
+        amazonAttribute: Linked Amazon attribute name.
+        fruugoAttribute: Linked Fruugo attribute name.
+        pixmaniaAttribute: Linked Pixmania attribute ID.
+        ottoAttribute: Linked Otto attribute name.
+        googleShoppingAttribute: Linked Google Shopping attribute name.
+        neckermannAtEpAttribute: Linked neckermann.at attribute ID.
+        typeOfSelectionInOnlineStore: Selection widget type in the online
+            store, e.g. ``"box"``, ``"list"``, ``"color"``, ``"image"``.
+        laRedouteAttribute: Linked La Redoute attribute ID.
+    """
+
+    id: Required[int]
+    backendName: NotRequired[str]
+    position: NotRequired[int]
+    isSurchargePercental: NotRequired[bool]
+    isLinkableToImage: NotRequired[bool]
+    isGroupable: NotRequired[bool]
+    amazonAttribute: NotRequired[str]
+    fruugoAttribute: NotRequired[str]
+    pixmaniaAttribute: NotRequired[int]
+    ottoAttribute: NotRequired[str]
+    googleShoppingAttribute: NotRequired[str]
+    neckermannAtEpAttribute: NotRequired[int]
+    typeOfSelectionInOnlineStore: NotRequired[str]
+    laRedouteAttribute: NotRequired[int]

@@ -1,5 +1,7 @@
 from .client import PlentyClient
 from ._types import (
+    AttributeCreatePayload,
+    AttributeUpdatePayload,
     ContactCreatePayload,
     ContactUpdatePayload,
     ItemCreatePayload,
@@ -28,6 +30,8 @@ from ._types import (
 
 __all__ = [
     "PlentyClient",
+    "AttributeCreatePayload",
+    "AttributeUpdatePayload",
     "OrderCreatePayload",
     "ItemCreatePayload",
     "ItemUpdatePayload",

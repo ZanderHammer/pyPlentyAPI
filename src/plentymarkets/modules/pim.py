@@ -4,6 +4,8 @@ from typing import TYPE_CHECKING, Any, AsyncIterator
 
 if TYPE_CHECKING:
     from .._types import (
+        AttributeCreatePayload,
+        AttributeUpdatePayload,
         VariationAdditionalSkuPayload,
         VariationBaseUpdatePayload,
         VariationBarcodePayload,
@@ -735,6 +737,60 @@ class PimModule:
             this key.
         """
         return await self._session.delete("/rest/pim/variations/warehouses", json=ids)
+
+    # -- Attributes -------------------------------------------------------------
+
+    async def create_attributes(
+        self,
+        data: list[AttributeCreatePayload],
+    ) -> dict[str, Any]:
+        """Bulk create attributes (variation axes such as colour or size).
+
+        Args:
+            data: List of attribute payloads. Use
+                :class:`~plentymarkets._types.AttributeCreatePayload` for IDE
+                autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``created`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.post("/rest/pim/attributes", json=data)
+
+    async def update_attributes(
+        self,
+        data: list[AttributeUpdatePayload],
+    ) -> dict[str, Any]:
+        """Bulk update attributes.
+
+        Args:
+            data: List of attribute update payloads. Use
+                :class:`~plentymarkets._types.AttributeUpdatePayload` for IDE
+                autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/attributes", json=data)
+
+    async def delete_attributes(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete attributes by ID.
+
+        Args:
+            ids: List of attribute IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete("/rest/pim/attributes", json=ids)
 
     async def list_categories(
         self,

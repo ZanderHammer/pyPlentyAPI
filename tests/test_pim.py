@@ -541,3 +541,33 @@ async def test_delete_variation_warehouses_sends_ids(httpx_mock, pim):
     )
     result = await pim.delete_variation_warehouses([1])
     assert result["deleted"] == 1
+
+
+async def test_create_attributes_posts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/pim/attributes",
+        json={"created": 1},
+    )
+    result = await pim.create_attributes([{"backendName": "Material"}])
+    assert result["created"] == 1
+
+
+async def test_update_attributes_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/attributes",
+        json={"updated": 1},
+    )
+    result = await pim.update_attributes([{"id": 3, "position": 2}])
+    assert result["updated"] == 1
+
+
+async def test_delete_attributes_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/attributes",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_attributes([3])
+    assert result["deleted"] == 1
