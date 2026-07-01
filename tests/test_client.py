@@ -8,6 +8,7 @@ from plentymarkets.modules.orders import OrdersModule
 from plentymarkets.modules.items import ItemsModule
 from plentymarkets.modules.stock import StockModule
 from plentymarkets.modules.contacts import ContactsModule
+from plentymarkets.modules.pim import PimModule
 
 BASE_URL = "https://shop.example.com"
 
@@ -50,6 +51,11 @@ async def test_stock_property_returns_stock_module(httpx_mock):
 async def test_contacts_property_returns_contacts_module(httpx_mock):
     client = PlentyClient(BASE_URL, "user", "pass")
     assert isinstance(client.contacts, ContactsModule)
+
+
+async def test_pim_property_returns_pim_module(httpx_mock):
+    client = PlentyClient(BASE_URL, "user", "pass")
+    assert isinstance(client.pim, PimModule)
 
 
 async def test_module_properties_are_lazily_cached(httpx_mock):

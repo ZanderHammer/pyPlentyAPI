@@ -39,7 +39,7 @@ initial implementation scope. All others are planned for future incremental addi
 | `Order` | Orders, order items, order properties, and status management | **[core]** |
 | `OrderSummary` | Aggregated order statistics and revenue summaries | planned |
 | `Payment` | Payments, payment methods, and booking payments to orders | planned |
-| `Pim` | Product Information Management — PIM-specific item operations | planned |
+| `Pim` | Product Information Management — PIM-specific item operations | **[core]** |
 | `PluginMultilingualism` | Plugin translation strings and multilingual content | planned |
 | `PluginSet` | Plugin set management and deployment to clients | planned |
 | `Plugins` | Plugin installation, configuration, and lifecycle | planned |
@@ -58,3 +58,92 @@ initial implementation scope. All others are planned for future incremental addi
 | `Webstore` | Webshop settings, themes, plugins, and client configuration | planned |
 | `Wizard` | Setup wizards for guided first-time configuration | planned |
 | `plentyMarketplace` | plentyMarkets plugin marketplace integration | planned |
+
+---
+
+## Planned Endpoint Details
+
+Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each module is researched.
+
+### `Pim` — `/rest/pim/`
+
+#### Variations
+
+| Endpoint | Methods | Description | Status |
+|---|---|---|---|
+| `/rest/pim/variations` | GET, PUT, DELETE (all **implemented**) | List/filter variations (70+ filter params, `with` for eager-loading includes); bulk update and delete | **implemented** |
+| `/rest/pim/variations/scroll` | GET | Cursor-based scroll through all variations; use for full-catalogue iteration | **implemented** |
+| `/rest/pim/variations/bases` | PUT | Bulk create/update variation base data | **implemented** |
+| `/rest/pim/variations/additional_skus` | PUT, DELETE | Bulk create/update/delete variation additional SKUs | **implemented** |
+| `/rest/pim/variations/barcodes` | PUT, DELETE | Bulk create/update/delete variation barcodes | **implemented** |
+| `/rest/pim/variations/bundle_components` | PUT, DELETE | Bulk create/update/delete bundle components on variations | **implemented** |
+| `/rest/pim/variations/categories` | PUT, DELETE | Bulk create/update/delete category links on variations | **implemented** |
+| `/rest/pim/variations/clients` | PUT, DELETE | Bulk create/delete client (store) visibility on variations | **implemented** |
+| `/rest/pim/variations/comments` | PUT, DELETE | Bulk create/update/delete variation comments | **implemented** |
+| `/rest/pim/variations/default_categories` | PUT, DELETE | Bulk create/update/delete default category per client on variations | **implemented** |
+| `/rest/pim/variations/images` | PUT, DELETE | Bulk create/delete image links on variations | **implemented** |
+| `/rest/pim/variations/market_ident_numbers` | PUT, DELETE | Bulk create/update/delete market identifier numbers (MINs) | **implemented** |
+| `/rest/pim/variations/markets` | PUT, DELETE | Bulk create/delete market availability on variations | **implemented** |
+| `/rest/pim/variations/properties` | PUT, DELETE | Bulk create/update/delete variation properties | **implemented** |
+| `/rest/pim/variations/sales_prices` | PUT, DELETE | Bulk create/update/delete sales price links on variations | **implemented** |
+| `/rest/pim/variations/skus` | PUT, DELETE | Bulk create/update/delete SKUs on variations | **implemented** |
+| `/rest/pim/variations/supplier` | PUT, DELETE | Bulk create/update/delete supplier links on variations | **implemented** |
+| `/rest/pim/variations/tags` | PUT, DELETE | Bulk create/delete tags on variations | **implemented** |
+| `/rest/pim/variations/warehouses` | PUT, DELETE | Bulk create/update/delete warehouse stock links on variations | **implemented** |
+
+#### Attributes
+
+| Endpoint | Methods | Description | Status |
+|---|---|---|---|
+| `/rest/pim/attributes` | GET, PUT, POST, DELETE (all **implemented**) | Search, create, update, and delete attributes (defines variation axes like colour, size) | **implemented** |
+| `/rest/pim/attributes/{id}` | GET | Get one attribute by ID | **implemented** |
+| `/rest/pim/attributes/names` | GET, PUT, POST, DELETE (all **implemented**) | Manage multilingual attribute display names | **implemented** |
+| `/rest/pim/attributes/values` | GET, PUT, POST, DELETE (all **implemented**) | Manage attribute values (e.g. "Red", "Blue" for a colour attribute) | **implemented** |
+| `/rest/pim/attributes/values/{id}` | GET | Get one attribute value by ID | **implemented** |
+| `/rest/pim/attributes/values/names` | GET, PUT, POST, DELETE (all **implemented**) | Manage multilingual display names for attribute values | **implemented** |
+
+#### Categories
+
+| Endpoint | Methods | Description | Status |
+|---|---|---|---|
+| `/rest/pim/categories` | GET | Search categories (filter by ID, type, level, name) | **implemented** |
+| `/rest/pim/categories/{id}` | GET | Get one category by ID | **implemented** |
+| `/rest/pim/categories/branches` | GET | Search category branches (full path from root to leaf) | **implemented** |
+| `/rest/pim/categories/clients` | GET | Search which clients (stores) have each category active | **implemented** |
+| `/rest/pim/categories/details` | GET | Search category detail records (multilingual names, descriptions, meta data) | **implemented** |
+| `/rest/pim/categories/properties` | GET | Search category property links | **implemented** |
+
+#### Sales Prices
+
+| Endpoint | Methods | Description | Status |
+|---|---|---|---|
+| `/rest/pim/sales_prices` | GET, PUT, POST, DELETE (all **implemented**) | Search, create, update, and delete sales price configurations | **implemented** |
+| `/rest/pim/sales_prices/{id}` | GET | Get one sales price configuration by ID | **implemented** |
+
+#### Barcodes
+
+| Endpoint | Methods | Description | Status |
+|---|---|---|---|
+| `/rest/pim/barcodes` | GET, PUT, POST, DELETE (all **implemented**) | Search, create, update, and delete barcode type configurations | **implemented** |
+| `/rest/pim/barcodes/duplicates` | GET | List all variations that share a duplicate barcode value | **implemented** |
+| `/rest/pim/barcodes/duplicates/count` | GET | Count of duplicate barcodes across the catalogue | **implemented** |
+| `/rest/pim/barcodes/duplicates/settings` | GET | Settings controlling barcode duplicate detection behaviour | **implemented** |
+
+#### Item Serial Numbers
+
+| Endpoint | Methods | Description | Status |
+|---|---|---|---|
+| `/rest/pim/item-serial-numbers` | GET, PUT, POST, DELETE (all **implemented**) | Search, create, update, and delete serial numbers assigned to item variations | **implemented** |
+
+#### Item Lookups
+
+| Endpoint | Methods | Description | Status |
+|---|---|---|---|
+| `/rest/pim/items/{id}/attributes` | GET | Get all attributes linked to a given item | **implemented** |
+| `/rest/pim/items/{id}/combinations` | GET | Get all valid variation combinations (attribute value sets) for a given item | **implemented** |
+
+#### Amazon Product Types
+
+| Endpoint | Methods | Description | Status |
+|---|---|---|---|
+| `/rest/pim/amazon-product-types` | GET | List Amazon product type definitions available for attribute mapping | **implemented** |
