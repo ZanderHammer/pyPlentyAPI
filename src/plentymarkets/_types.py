@@ -402,3 +402,69 @@ class VariationCreatePayload(TypedDict, total=False):
     comments: NotRequired[list[dict[str, Any]]]
     inheritance: NotRequired[list[dict[str, Any]]]
     unit: NotRequired[list[dict[str, Any]]]
+
+
+class VariationAdditionalSkuPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_additional_skus`
+    (``PUT /rest/pim/variations/additional_skus``).
+
+    Keys:
+        variationId: Variation ID to attach the SKU to. **Required.**
+        id: Additional-SKU record ID, when updating an existing entry.
+        referrerId: Referrer/marketplace ID the SKU applies to.
+        sku: The additional SKU string.
+    """
+
+    variationId: Required[int]
+    id: NotRequired[int]
+    referrerId: NotRequired[int]
+    sku: NotRequired[str]
+
+
+class VariationBarcodePayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_barcodes`
+    (``PUT /rest/pim/variations/barcodes``).
+
+    Keys:
+        variationId: Variation ID to link the barcode to. **Required.**
+        barcodeId: ID of an existing barcode type from
+            ``/rest/pim/barcodes``. **Required.**
+        code: Barcode value override for this variation, if the barcode
+            type allows per-variation codes.
+    """
+
+    variationId: Required[int]
+    barcodeId: Required[int]
+    code: NotRequired[str]
+
+
+class VariationBundleComponentPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_bundle_components`
+    (``PUT /rest/pim/variations/bundle_components``).
+
+    Keys:
+        variationId: Variation ID of the bundle itself. **Required.**
+        componentVariationId: Variation ID of the component contained in
+            the bundle. **Required.**
+        componentQuantity: Quantity of the component variation included
+            per bundle unit.
+    """
+
+    variationId: Required[int]
+    componentVariationId: Required[int]
+    componentQuantity: NotRequired[float]
+
+
+class VariationCategoryPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_categories`
+    (``PUT /rest/pim/variations/categories``).
+
+    Keys:
+        variationId: Variation ID to link to the category. **Required.**
+        categoryId: Category ID to link. **Required.**
+        plentyId: Client (store) ID the link applies to.
+    """
+
+    variationId: Required[int]
+    categoryId: Required[int]
+    plentyId: NotRequired[int]

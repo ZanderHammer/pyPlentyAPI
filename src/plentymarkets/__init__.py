@@ -6,7 +6,11 @@ from ._types import (
     ItemUpdatePayload,
     OrderCreatePayload,
     StockCorrectionPayload,
+    VariationAdditionalSkuPayload,
     VariationBaseUpdatePayload,
+    VariationBarcodePayload,
+    VariationBundleComponentPayload,
+    VariationCategoryPayload,
     VariationCreatePayload,
 )
 
@@ -18,6 +22,10 @@ __all__ = [
     "StockCorrectionPayload",
     "ContactCreatePayload",
     "ContactUpdatePayload",
+    "VariationAdditionalSkuPayload",
     "VariationBaseUpdatePayload",
+    "VariationBarcodePayload",
+    "VariationBundleComponentPayload",
+    "VariationCategoryPayload",
     "VariationCreatePayload",
 ]

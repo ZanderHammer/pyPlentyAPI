@@ -74,10 +74,10 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 | `/rest/pim/variations` | GET, PUT, DELETE (all **implemented**) | List/filter variations (70+ filter params, `with` for eager-loading includes); bulk update and delete | **implemented** |
 | `/rest/pim/variations/scroll` | GET | Cursor-based scroll through all variations; use for full-catalogue iteration | **implemented** |
 | `/rest/pim/variations/bases` | PUT | Bulk create/update variation base data | **implemented** |
-| `/rest/pim/variations/additional_skus` | PUT, DELETE | Bulk create/update/delete variation additional SKUs | planned |
-| `/rest/pim/variations/barcodes` | PUT, DELETE | Bulk create/update/delete variation barcodes | planned |
-| `/rest/pim/variations/bundle_components` | PUT, DELETE | Bulk create/update/delete bundle components on variations | planned |
-| `/rest/pim/variations/categories` | PUT, DELETE | Bulk create/update/delete category links on variations | planned |
+| `/rest/pim/variations/additional_skus` | PUT, DELETE | Bulk create/update/delete variation additional SKUs | **implemented** |
+| `/rest/pim/variations/barcodes` | PUT, DELETE | Bulk create/update/delete variation barcodes | **implemented** |
+| `/rest/pim/variations/bundle_components` | PUT, DELETE | Bulk create/update/delete bundle components on variations | **implemented** |
+| `/rest/pim/variations/categories` | PUT, DELETE | Bulk create/update/delete category links on variations | **implemented** |
 | `/rest/pim/variations/clients` | PUT, DELETE | Bulk create/delete client (store) visibility on variations | planned |
 | `/rest/pim/variations/comments` | PUT, DELETE | Bulk create/update/delete variation comments | planned |
 | `/rest/pim/variations/default_categories` | PUT, DELETE | Bulk create/update/delete default category per client on variations | planned |

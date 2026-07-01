@@ -13,6 +13,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `PimModule.update_variation_bases` — bulk variation update via `PUT /rest/pim/variations/bases`
 - feat: `PimModule.create_variations` — bulk create/update variations via `PUT /rest/pim/variations`
 - feat: `PimModule.delete_variations` — bulk delete variations via `DELETE /rest/pim/variations`
+- feat: `PimModule.update_variation_additional_skus` / `delete_variation_additional_skus` — `/rest/pim/variations/additional_skus`
+- feat: `PimModule.update_variation_barcodes` / `delete_variation_barcodes` — `/rest/pim/variations/barcodes`
+- feat: `PimModule.update_variation_bundle_components` / `delete_variation_bundle_components` — `/rest/pim/variations/bundle_components`
+- feat: `PimModule.update_variation_categories` / `delete_variation_categories` — `/rest/pim/variations/categories`
 - feat: `PimModule.list_categories` — search categories via `GET /rest/pim/categories`
 - feat: `PimModule.get_category` — get one category via `GET /rest/pim/categories/{id}`
 - feat: `PimModule.list_attributes` — search attributes via `GET /rest/pim/attributes`
