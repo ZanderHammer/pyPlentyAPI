@@ -6,6 +6,7 @@ if TYPE_CHECKING:
     from .._types import (
         StockCorrectionPayload,
         StockRedistributionPayload,
+        WarehouseCreatePayload,
     )
 
 from .._session import _Session
@@ -195,6 +196,113 @@ class StockModule:
         """
         return await self._session.put(
             "/rest/stockmanagement/stock/redistribute", json=data
+        )
+
+    # -- Warehouses ----------------------------------------------------------
+
+    async def list_warehouses(self, with_: list[str] | None = None) -> dict[str, Any]:
+        """List all warehouses.
+
+        Args:
+            with_: Optional list of related data to embed, e.g.
+                ``["stockMovementSettings"]``.
+
+        Returns:
+            A dict with the following keys:
+
+            - ``entries`` (list[dict]): Warehouse dicts, each with:
+
+                - ``id`` (int): Warehouse ID.
+                - ``name`` (str): Warehouse name.
+                - ``note`` (str): Free-text note.
+                - ``typeId`` (int): Warehouse type (0=sales, 1=repair,
+                  4=storage, 5=transit, 6=distribution, 7=other).
+                - ``priority`` (int): Allocation priority; higher wins.
+                - ``allocationReferrerIds`` (list): Referrer IDs used for
+                  automatic warehouse detection.
+                - ``onStockAvailability`` (int): Availability ID shown when
+                  stock is available.
+                - ``outOfStockAvailability`` (int): Availability ID shown
+                  when no stock is available.
+                - ``splitByShippingProfile`` (bool): Whether orders are
+                  split by shipping profile.
+                - ``storageLocationType`` (str): Storage location size class.
+                - ``storageLocationZone`` (int): Storage location zone ID.
+                - ``repairWarehouseId`` (int): Associated repair warehouse ID.
+                - ``isInventoryModeActive`` (bool): Whether stocktaking mode
+                  is active.
+                - ``logisticsType`` (str): Fulfilment provider (``"own"``,
+                  ``"amazon"``, ``"dhlFulfillment"``).
+                - ``createdAt`` (str): ISO 8601 creation timestamp.
+                - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+        """
+        params = self._build_params(with_=with_)
+        return await self._session.get(
+            "/rest/stockmanagement/warehouses", params=params or None
+        )
+
+    async def create_warehouse(self, data: WarehouseCreatePayload) -> dict[str, Any]:
+        """Create a new warehouse.
+
+        Args:
+            data: Warehouse payload. Use
+                :class:`~plentymarkets._types.WarehouseCreatePayload` for IDE
+                autocomplete. ``name``, ``typeId``, and ``logisticsType`` are
+                required.
+
+        Returns:
+            The created warehouse dict (see :meth:`list_warehouses` for the
+            field reference).
+        """
+        return await self._session.post("/rest/stockmanagement/warehouses", json=data)
+
+    async def get_warehouse(
+        self, warehouse_id: int, with_: list[str] | None = None
+    ) -> dict[str, Any]:
+        """Get a single warehouse by ID.
+
+        Args:
+            warehouse_id: The PlentyMarkets warehouse ID.
+            with_: Optional list of related data to embed.
+
+        Returns:
+            The warehouse dict (see :meth:`list_warehouses` for the field
+            reference).
+        """
+        params = self._build_params(with_=with_)
+        return await self._session.get(
+            f"/rest/stockmanagement/warehouses/{warehouse_id}", params=params or None
+        )
+
+    async def get_storage_location(
+        self,
+        warehouse_id: int,
+        storage_location_id: int,
+        with_: list[str] | None = None,
+    ) -> dict[str, Any]:
+        """Get a single storage location within a warehouse.
+
+        Args:
+            warehouse_id: The PlentyMarkets warehouse ID.
+            storage_location_id: The storage location ID.
+            with_: Optional list of related data to embed.
+
+        Returns:
+            A dict with the following keys:
+
+            - ``id`` (int): Storage location ID.
+            - ``warehouseId`` (int): Warehouse ID it belongs to.
+            - ``rackId`` (int): Rack ID it belongs to.
+            - ``shelfId`` (int): Shelf ID it belongs to.
+            - ``name`` (str): Storage location name.
+            - ``type`` (int): Size class (small, medium, large, europallet).
+            - ``position`` (int): Position within the shelf/rack.
+        """
+        params = self._build_params(with_=with_)
+        return await self._session.get(
+            f"/rest/stockmanagement/warehouses/{warehouse_id}"
+            f"/management/storageLocations/{storage_location_id}",
+            params=params or None,
         )
 
     # -- Per-warehouse stock --------------------------------------------------

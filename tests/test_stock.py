@@ -182,3 +182,47 @@ async def test_redistribute_stock_puts_to_redistribute_url(httpx_mock, stock):
     result = await stock.redistribute_stock(data=payload)
     assert result == {"success": True}
 
+
+# -- Warehouses -----------------------------------------------------------
+
+
+async def test_list_warehouses_calls_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses",
+        json={"entries": [{"id": 1, "name": "Main"}]},
+    )
+    result = await stock.list_warehouses()
+    assert result["entries"][0]["id"] == 1
+
+
+async def test_create_warehouse_posts_payload(httpx_mock, stock):
+    payload = {"name": "Main", "typeId": 0, "logisticsType": "own"}
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses",
+        json={"id": 1, "name": "Main"},
+    )
+    result = await stock.create_warehouse(data=payload)
+    assert result["id"] == 1
+
+
+async def test_get_warehouse_calls_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1",
+        json={"id": 1, "name": "Main"},
+    )
+    result = await stock.get_warehouse(warehouse_id=1)
+    assert result["id"] == 1
+
+
+async def test_get_storage_location_calls_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/management/storageLocations/7",
+        json={"id": 7, "warehouseId": 1},
+    )
+    result = await stock.get_storage_location(warehouse_id=1, storage_location_id=7)
+    assert result["id"] == 7
+

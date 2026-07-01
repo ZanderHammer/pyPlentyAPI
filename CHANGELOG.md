@@ -13,6 +13,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `StockModule.list_stock_by_type` / `paginate_stock_by_type` — list/iterate stock by warehouse type via `GET /rest/stockmanagement/stock/types/{type}`
 - feat: `StockModule.redistribute_stock` — move stock between warehouses via `PUT /rest/stockmanagement/stock/redistribute`
 - feat: `StockRedistributionPayload`, `VariationStockRedistributionPayload` — TypedDicts for `redistribute_stock`
+- feat: `StockModule.list_warehouses` — list warehouses via `GET /rest/stockmanagement/warehouses`
+- feat: `StockModule.create_warehouse` — create a warehouse via `POST /rest/stockmanagement/warehouses`
+- feat: `StockModule.get_warehouse` — get one warehouse via `GET /rest/stockmanagement/warehouses/{warehouseId}`
+- feat: `StockModule.get_storage_location` — get one storage location via `GET /rest/stockmanagement/warehouses/{warehouseId}/management/storageLocations/{storageLocationId}`
+- feat: `WarehouseCreatePayload` — TypedDict for `create_warehouse`
 
 
 ## [0.2.1] - 2026-07-01

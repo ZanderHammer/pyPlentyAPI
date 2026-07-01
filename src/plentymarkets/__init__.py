@@ -37,6 +37,7 @@ from ._types import (
     VariationStockRedistributionPayload,
     VariationTagPayload,
     VariationWarehousePayload,
+    WarehouseCreatePayload,
 )
 
 __all__ = [
@@ -78,4 +79,5 @@ __all__ = [
     "VariationStockRedistributionPayload",
     "VariationTagPayload",
     "VariationWarehousePayload",
+    "WarehouseCreatePayload",
 ]

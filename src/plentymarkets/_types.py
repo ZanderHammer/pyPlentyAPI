@@ -245,6 +245,45 @@ class VariationStockCorrectionPayload(TypedDict, total=False):
     reasonId: NotRequired[int]
 
 
+class WarehouseCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`StockModule.create_warehouse`
+    (``POST /rest/stockmanagement/warehouses``).
+
+    Keys:
+        name: Name of the warehouse. **Required.**
+        typeId: Warehouse type ID. **Required.** 0=sales warehouse,
+            1=repair warehouse, 4=storage warehouse, 5=transit warehouse,
+            6=distribution warehouse, 7=other.
+        logisticsType: Fulfilment provider for the warehouse. **Required.**
+            ``"own"``, ``"amazon"``, or ``"dhlFulfillment"``.
+        note: Free-text note for this warehouse.
+        onStockAvailability: Availability ID displayed for a variation when
+            stock is available.
+        outOfStockAvailability: Availability ID displayed for a variation
+            when no stock is available.
+        splitByShippingProfile: Whether orders from this warehouse are
+            split by shipping profile.
+        storageLocationType: Storage location size class. ``"none"``,
+            ``"smallmedium"``, ``"large"``, or ``"europallet"``.
+        storageLocationZone: Zone ID the storage location belongs to.
+        repairWarehouseId: ID of the associated repair warehouse.
+        isInventoryModeActive: Whether stocktaking mode is active for this
+            warehouse.
+    """
+
+    name: Required[str]
+    typeId: Required[int]
+    logisticsType: Required[str]
+    note: NotRequired[str]
+    onStockAvailability: NotRequired[int]
+    outOfStockAvailability: NotRequired[int]
+    splitByShippingProfile: NotRequired[bool]
+    storageLocationType: NotRequired[str]
+    storageLocationZone: NotRequired[int]
+    repairWarehouseId: NotRequired[int]
+    isInventoryModeActive: NotRequired[bool]
+
+
 class VariationStockRedistributionPayload(TypedDict, total=False):
     """One entry in :attr:`StockRedistributionPayload`'s ``redistributions``
     list, for bulk stock redistribution across several variations in one
