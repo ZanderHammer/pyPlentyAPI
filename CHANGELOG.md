@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Pim
+
+- feat: `PimModule.list_variations` — search and filter variations via `GET /rest/pim/variations`
+- feat: `PimModule.paginate_variations` — cursor-based async iterator via `GET /rest/pim/variations/scroll`
+- feat: `PimModule.update_variation_bases` — bulk variation update via `PUT /rest/pim/variations/bases`
+
 ## [0.1.2] - 2026-06-30
 
 ### Changed
