@@ -39,7 +39,7 @@ initial implementation scope. All others are planned for future incremental addi
 | `Order` | Orders, order items, order properties, and status management | **[core]** |
 | `OrderSummary` | Aggregated order statistics and revenue summaries | planned |
 | `Payment` | Payments, payment methods, and booking payments to orders | planned |
-| `Pim` | Product Information Management — PIM-specific item operations | planned — [endpoints documented](#pim--restpim) |
+| `Pim` | Product Information Management — PIM-specific item operations | **[core]** |
 | `PluginMultilingualism` | Plugin translation strings and multilingual content | planned |
 | `PluginSet` | Plugin set management and deployment to clients | planned |
 | `Plugins` | Plugin installation, configuration, and lifecycle | planned |
