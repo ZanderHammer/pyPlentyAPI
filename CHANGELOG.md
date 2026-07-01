@@ -18,6 +18,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `StockModule.get_warehouse` — get one warehouse via `GET /rest/stockmanagement/warehouses/{warehouseId}`
 - feat: `StockModule.get_storage_location` — get one storage location via `GET /rest/stockmanagement/warehouses/{warehouseId}/management/storageLocations/{storageLocationId}`
 - feat: `WarehouseCreatePayload` — TypedDict for `create_warehouse`
+- feat: `StockModule.book_incoming_items` — book incoming stock via `PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/bookIncomingItems`
+- feat: `StockModule.book_outgoing_items` — book outgoing stock via `PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/bookOutgoingItems`
+- feat: `StockModule.unpack_variation` — unpack a bundle/set variation via `PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/unpackVariation`
+- feat: `StockModule.book_stocktaking` — book a stocktaking correction via `PUT /rest/stockmanagement/warehouses/{warehouseId}/{warehouseLocationId}/stock/bookStocktaking`
+- feat: `StockModule.list_stock_movements` / `paginate_stock_movements` — list/iterate stock movement history via `GET /rest/stockmanagement/warehouses/{warehouseId}/stock/movements`
+- feat: `StockModule.list_stock_by_storage_location` / `paginate_stock_by_storage_location` — list/iterate stock per storage location via `GET /rest/stockmanagement/warehouses/{warehouseId}/stock/storageLocations`
+- feat: `StockModule.list_stock_by_storage_location_pim` / `paginate_stock_by_storage_location_pim` — list/iterate stock per storage location with linked PIM entry via `GET /rest/stockmanagement/warehouses/{warehouseId}/stock/storageLocationsPim`
+- feat: `StockIntakePayload`, `VariationStockIntakePayload`, `StockDischargePayload`, `VariationStockDischargePayload`, `UnpackVariationPayload` — TypedDicts for the stock booking endpoints
 
 
 ## [0.2.1] - 2026-07-01

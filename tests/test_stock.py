@@ -226,3 +226,149 @@ async def test_get_storage_location_calls_correct_url(httpx_mock, stock):
     result = await stock.get_storage_location(warehouse_id=1, storage_location_id=7)
     assert result["id"] == 7
 
+
+# -- Stock bookings -----------------------------------------------------------
+
+
+async def test_book_incoming_items_puts_to_correct_url(httpx_mock, stock):
+    payload = {"deliveredAt": "2026-01-01T00:00:00+00:00", "quantity": 10, "reasonId": 101}
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/bookIncomingItems",
+        json={"success": True},
+    )
+    result = await stock.book_incoming_items(warehouse_id=1, data=payload)
+    assert result == {"success": True}
+
+
+async def test_book_outgoing_items_puts_to_correct_url(httpx_mock, stock):
+    payload = {"deliveredAt": "2026-01-01T00:00:00+00:00", "quantity": 5, "reasonId": 201}
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/bookOutgoingItems",
+        json={"success": True},
+    )
+    result = await stock.book_outgoing_items(warehouse_id=1, data=payload)
+    assert result == {"success": True}
+
+
+async def test_unpack_variation_puts_to_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/unpackVariation",
+        json={"id": 1, "name": "Main"},
+    )
+    result = await stock.unpack_variation(warehouse_id=1, data={})
+    assert result["id"] == 1
+
+
+async def test_book_stocktaking_puts_to_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/7/stock/bookStocktaking",
+        json={"success": True},
+    )
+    result = await stock.book_stocktaking(
+        warehouse_id=1, warehouse_location_id=7, data={"quantity": 10}
+    )
+    assert result == {"success": True}
+
+
+async def test_list_stock_movements_calls_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/movements?page=1&itemsPerPage=50",
+        json={"page": 1, "totalsCount": 1, "isLastPage": True, "entries": [{"id": 9}]},
+    )
+    result = await stock.list_stock_movements(warehouse_id=1)
+    assert result["entries"][0]["id"] == 9
+
+
+async def test_paginate_stock_movements_yields_all_items(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/movements?page=1&itemsPerPage=2",
+        json={"page": 1, "totalsCount": 2, "isLastPage": False, "entries": [{"id": 1}]},
+    )
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/movements?page=2&itemsPerPage=2",
+        json={"page": 2, "totalsCount": 2, "isLastPage": True, "entries": [{"id": 2}]},
+    )
+    results = [s async for s in stock.paginate_stock_movements(warehouse_id=1, items_per_page=2)]
+    assert [r["id"] for r in results] == [1, 2]
+
+
+async def test_list_stock_by_storage_location_calls_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=(
+            f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/storageLocations"
+            "?page=1&itemsPerPage=50"
+        ),
+        json={"page": 1, "totalsCount": 1, "isLastPage": True, "entries": [{"storageLocationId": 7}]},
+    )
+    result = await stock.list_stock_by_storage_location(warehouse_id=1)
+    assert result["entries"][0]["storageLocationId"] == 7
+
+
+async def test_paginate_stock_by_storage_location_yields_all_items(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=(
+            f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/storageLocations"
+            "?page=1&itemsPerPage=2"
+        ),
+        json={"page": 1, "totalsCount": 2, "isLastPage": False, "entries": [{"storageLocationId": 1}]},
+    )
+    httpx_mock.add_response(
+        method="GET",
+        url=(
+            f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/storageLocations"
+            "?page=2&itemsPerPage=2"
+        ),
+        json={"page": 2, "totalsCount": 2, "isLastPage": True, "entries": [{"storageLocationId": 2}]},
+    )
+    results = [
+        s async for s in stock.paginate_stock_by_storage_location(warehouse_id=1, items_per_page=2)
+    ]
+    assert [r["storageLocationId"] for r in results] == [1, 2]
+
+
+async def test_list_stock_by_storage_location_pim_calls_correct_url(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=(
+            f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/storageLocationsPim"
+            "?page=1&itemsPerPage=50"
+        ),
+        json={"page": 1, "totalsCount": 1, "isLastPage": True, "entries": [{"storageLocationId": 7}]},
+    )
+    result = await stock.list_stock_by_storage_location_pim(warehouse_id=1)
+    assert result["entries"][0]["storageLocationId"] == 7
+
+
+async def test_paginate_stock_by_storage_location_pim_yields_all_items(httpx_mock, stock):
+    httpx_mock.add_response(
+        method="GET",
+        url=(
+            f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/storageLocationsPim"
+            "?page=1&itemsPerPage=2"
+        ),
+        json={"page": 1, "totalsCount": 2, "isLastPage": False, "entries": [{"storageLocationId": 1}]},
+    )
+    httpx_mock.add_response(
+        method="GET",
+        url=(
+            f"{BASE_URL}/rest/stockmanagement/warehouses/1/stock/storageLocationsPim"
+            "?page=2&itemsPerPage=2"
+        ),
+        json={"page": 2, "totalsCount": 2, "isLastPage": True, "entries": [{"storageLocationId": 2}]},
+    )
+    results = [
+        s
+        async for s in stock.paginate_stock_by_storage_location_pim(
+            warehouse_id=1, items_per_page=2
+        )
+    ]
+    assert [r["storageLocationId"] for r in results] == [1, 2]
