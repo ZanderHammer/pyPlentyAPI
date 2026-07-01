@@ -369,3 +369,89 @@ async def test_delete_variation_images_sends_ids(httpx_mock, pim):
     )
     result = await pim.delete_variation_images([9])
     assert result["deleted"] == 1
+
+
+async def test_update_variation_market_ident_numbers_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/variations/market_ident_numbers",
+        json={"updated": 1},
+    )
+    result = await pim.update_variation_market_ident_numbers(
+        [{"variationId": 7, "marketIdentNumberType": "ean", "marketIdentNumber": "4006381333931"}]
+    )
+    assert result["updated"] == 1
+
+
+async def test_delete_variation_market_ident_numbers_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/variations/market_ident_numbers",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_variation_market_ident_numbers([4])
+    assert result["deleted"] == 1
+
+
+async def test_update_variation_markets_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/variations/markets",
+        json={"updated": 1},
+    )
+    result = await pim.update_variation_markets([{"variationId": 7, "marketId": 2}])
+    assert result["updated"] == 1
+
+
+async def test_delete_variation_markets_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/variations/markets",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_variation_markets([2])
+    assert result["deleted"] == 1
+
+
+async def test_update_variation_properties_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/variations/properties",
+        json={"updated": 1},
+    )
+    result = await pim.update_variation_properties(
+        [{"variationId": 7, "propertyId": 3, "propertyValue": "Cotton"}]
+    )
+    assert result["updated"] == 1
+
+
+async def test_delete_variation_properties_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/variations/properties",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_variation_properties([3])
+    assert result["deleted"] == 1
+
+
+async def test_update_variation_sales_prices_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/variations/sales_prices",
+        json={"updated": 1},
+    )
+    result = await pim.update_variation_sales_prices(
+        [{"variationId": 7, "salesPriceId": 1, "price": 19.99}]
+    )
+    assert result["updated"] == 1
+
+
+async def test_delete_variation_sales_prices_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/variations/sales_prices",
+        json={"deleted": 1},
+    )
+    result = await pim.delete_variation_sales_prices([1])
+    assert result["deleted"] == 1

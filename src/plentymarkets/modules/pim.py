@@ -14,6 +14,10 @@ if TYPE_CHECKING:
         VariationCreatePayload,
         VariationDefaultCategoryPayload,
         VariationImagePayload,
+        VariationMarketIdentNumberPayload,
+        VariationMarketPayload,
+        VariationPropertyPayload,
+        VariationSalesPricePayload,
     )
 
 from .._session import _Session
@@ -459,6 +463,142 @@ class PimModule:
             this key.
         """
         return await self._session.delete("/rest/pim/variations/images", json=ids)
+
+    async def update_variation_market_ident_numbers(
+        self,
+        data: list[VariationMarketIdentNumberPayload],
+    ) -> dict[str, Any]:
+        """Bulk create or update market identifier numbers (MINs) on variations.
+
+        Args:
+            data: List of MIN payloads. Use
+                :class:`~plentymarkets._types.VariationMarketIdentNumberPayload`
+                for IDE autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put(
+            "/rest/pim/variations/market_ident_numbers", json=data
+        )
+
+    async def delete_variation_market_ident_numbers(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete variation market identifier numbers by ID.
+
+        Args:
+            ids: List of MIN record IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete(
+            "/rest/pim/variations/market_ident_numbers", json=ids
+        )
+
+    async def update_variation_markets(
+        self,
+        data: list[VariationMarketPayload],
+    ) -> dict[str, Any]:
+        """Bulk create market availability links on variations.
+
+        Args:
+            data: List of market availability payloads. Use
+                :class:`~plentymarkets._types.VariationMarketPayload` for IDE
+                autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/variations/markets", json=data)
+
+    async def delete_variation_markets(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete variation market availability links by ID.
+
+        Args:
+            ids: List of variation-market link IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete("/rest/pim/variations/markets", json=ids)
+
+    async def update_variation_properties(
+        self,
+        data: list[VariationPropertyPayload],
+    ) -> dict[str, Any]:
+        """Bulk create or update item properties on variations.
+
+        Args:
+            data: List of property payloads. Use
+                :class:`~plentymarkets._types.VariationPropertyPayload` for IDE
+                autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/variations/properties", json=data)
+
+    async def delete_variation_properties(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete variation properties by ID.
+
+        Args:
+            ids: List of variation-property record IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete("/rest/pim/variations/properties", json=ids)
+
+    async def update_variation_sales_prices(
+        self,
+        data: list[VariationSalesPricePayload],
+    ) -> dict[str, Any]:
+        """Bulk create or update sales price values on variations.
+
+        Args:
+            data: List of variation sales price payloads. Use
+                :class:`~plentymarkets._types.VariationSalesPricePayload` for
+                IDE autocomplete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``updated`` (int) and ``invalid`` (list[dict]). Verify against a
+            live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/variations/sales_prices", json=data)
+
+    async def delete_variation_sales_prices(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete variation sales price links by ID.
+
+        Args:
+            ids: List of variation-sales-price link IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int). Verify against a live system before relying on
+            this key.
+        """
+        return await self._session.delete("/rest/pim/variations/sales_prices", json=ids)
 
     async def list_categories(
         self,

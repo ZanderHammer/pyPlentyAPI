@@ -21,6 +21,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `PimModule.update_variation_comments` / `delete_variation_comments` — `/rest/pim/variations/comments`
 - feat: `PimModule.update_variation_default_categories` / `delete_variation_default_categories` — `/rest/pim/variations/default_categories`
 - feat: `PimModule.update_variation_images` / `delete_variation_images` — `/rest/pim/variations/images`
+- feat: `PimModule.update_variation_market_ident_numbers` / `delete_variation_market_ident_numbers` — `/rest/pim/variations/market_ident_numbers`
+- feat: `PimModule.update_variation_markets` / `delete_variation_markets` — `/rest/pim/variations/markets`
+- feat: `PimModule.update_variation_properties` / `delete_variation_properties` — `/rest/pim/variations/properties`
+- feat: `PimModule.update_variation_sales_prices` / `delete_variation_sales_prices` — `/rest/pim/variations/sales_prices`
 - feat: `PimModule.list_categories` — search categories via `GET /rest/pim/categories`
 - feat: `PimModule.get_category` — get one category via `GET /rest/pim/categories/{id}`
 - feat: `PimModule.list_attributes` — search attributes via `GET /rest/pim/attributes`

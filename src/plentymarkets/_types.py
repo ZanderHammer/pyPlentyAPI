@@ -532,3 +532,72 @@ class VariationImagePayload(TypedDict, total=False):
     variationId: Required[int]
     imageId: Required[int]
     position: NotRequired[int]
+
+
+class VariationMarketIdentNumberPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_market_ident_numbers`
+    (``PUT /rest/pim/variations/market_ident_numbers``).
+
+    Keys:
+        variationId: Variation ID to attach the identifier to. **Required.**
+        marketIdentNumberType: Identifier type, e.g. ``"ean"``, ``"isbn"``,
+            ``"upc"``, ``"gtin"``. **Required.**
+        marketIdentNumber: The identifier value itself. **Required.**
+    """
+
+    variationId: Required[int]
+    marketIdentNumberType: Required[str]
+    marketIdentNumber: Required[str]
+
+
+class VariationMarketPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_markets`
+    (``PUT /rest/pim/variations/markets``).
+
+    Keys:
+        variationId: Variation ID to enable for the market. **Required.**
+        marketId: Marketplace ID (e.g. an Amazon or eBay account ID
+            configured under Market settings). **Required.**
+    """
+
+    variationId: Required[int]
+    marketId: Required[int]
+
+
+class VariationPropertyPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_properties`
+    (``PUT /rest/pim/variations/properties``).
+
+    Keys:
+        variationId: Variation ID to set the property on. **Required.**
+        propertyId: Item property ID (from ``/rest/items/properties``).
+            **Required.**
+        propertyValue: Value to assign for this variation. Required for
+            text/number/date property types; omitted for selection types
+            configured via property-value IDs instead.
+    """
+
+    variationId: Required[int]
+    propertyId: Required[int]
+    propertyValue: NotRequired[str]
+
+
+class VariationSalesPricePayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_sales_prices`
+    (``PUT /rest/pim/variations/sales_prices``).
+
+    Links a variation to a sales price *configuration* and sets its price
+    *value*. See :class:`~plentymarkets._types.SalesPriceCreatePayload` for
+    the configuration itself.
+
+    Keys:
+        variationId: Variation ID to set the price on. **Required.**
+        salesPriceId: Sales price configuration ID (from
+            ``/rest/pim/sales_prices``). **Required.**
+        price: Net or gross price value, depending on the sales price
+            configuration's settings. **Required.**
+    """
+
+    variationId: Required[int]
+    salesPriceId: Required[int]
+    price: Required[float]
