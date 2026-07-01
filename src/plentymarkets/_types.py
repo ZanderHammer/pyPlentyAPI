@@ -950,3 +950,28 @@ class BarcodeUpdatePayload(TypedDict, total=False):
     name: NotRequired[str]
     type: NotRequired[str]
     referrers: NotRequired[list[dict[str, Any]]]
+
+
+# ---------------------------------------------------------------------------
+# PIM Item Serial Numbers  (/rest/pim/item-serial-numbers)
+# ---------------------------------------------------------------------------
+
+
+class ItemSerialNumberPayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.create_item_serial_numbers` and
+    :meth:`PimModule.update_item_serial_numbers`
+    (``POST``/``PUT /rest/pim/item-serial-numbers``).
+
+    Keys:
+        itemId: Item ID the serial number is assigned to. **Required.**
+        serialNumber: The serial number string. **Required.**
+        orderId: Order ID the serial number was consumed by, if assigned
+            during order fulfilment.
+        orderItemId: Order item ID the serial number was consumed by, if
+            assigned during order fulfilment.
+    """
+
+    itemId: Required[int]
+    serialNumber: Required[str]
+    orderId: NotRequired[int]
+    orderItemId: NotRequired[int]

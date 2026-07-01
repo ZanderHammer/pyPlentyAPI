@@ -133,7 +133,7 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 
 | Endpoint | Methods | Description | Status |
 |---|---|---|---|
-| `/rest/pim/item-serial-numbers` | GET, PUT, POST, DELETE | Search, create, update, and delete serial numbers assigned to item variations | planned |
+| `/rest/pim/item-serial-numbers` | GET, PUT, POST, DELETE (all **implemented**) | Search, create, update, and delete serial numbers assigned to item variations | **implemented** |
 
 #### Item Lookups
 
