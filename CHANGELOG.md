@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `PimModule.list_variations` — search and filter variations via `GET /rest/pim/variations`
 - feat: `PimModule.paginate_variations` — cursor-based async iterator via `GET /rest/pim/variations/scroll`
 - feat: `PimModule.update_variation_bases` — bulk variation update via `PUT /rest/pim/variations/bases`
+- feat: `PimModule.create_variations` — bulk create/update variations via `PUT /rest/pim/variations`
+- feat: `PimModule.delete_variations` — bulk delete variations via `DELETE /rest/pim/variations`
 - feat: `PimModule.list_categories` — search categories via `GET /rest/pim/categories`
 - feat: `PimModule.get_category` — get one category via `GET /rest/pim/categories/{id}`
 - feat: `PimModule.list_attributes` — search attributes via `GET /rest/pim/attributes`

@@ -181,3 +181,23 @@ async def test_get_sales_price(httpx_mock, pim):
     )
     result = await pim.get_sales_price(1)
     assert result["currency"] == "EUR"
+
+
+async def test_create_variations_puts_data(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/pim/variations",
+        json={"created": 1},
+    )
+    result = await pim.create_variations([{"id": 1, "base": {"itemId": 42}}])
+    assert result["created"] == 1
+
+
+async def test_delete_variations_sends_ids(httpx_mock, pim):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/pim/variations",
+        json={"deleted": 2},
+    )
+    result = await pim.delete_variations([1, 2])
+    assert result["deleted"] == 2

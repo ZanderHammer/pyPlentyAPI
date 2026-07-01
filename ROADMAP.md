@@ -71,7 +71,7 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 
 | Endpoint | Methods | Description | Status |
 |---|---|---|---|
-| `/rest/pim/variations` | GET (**implemented**), PUT, DELETE | List/filter variations (70+ filter params, `with` for eager-loading includes); bulk update and delete | partial |
+| `/rest/pim/variations` | GET, PUT, DELETE (all **implemented**) | List/filter variations (70+ filter params, `with` for eager-loading includes); bulk update and delete | **implemented** |
 | `/rest/pim/variations/scroll` | GET | Cursor-based scroll through all variations; use for full-catalogue iteration | **implemented** |
 | `/rest/pim/variations/bases` | PUT | Bulk create/update variation base data | **implemented** |
 | `/rest/pim/variations/additional_skus` | PUT, DELETE | Bulk create/update/delete variation additional SKUs | planned |

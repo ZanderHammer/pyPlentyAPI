@@ -11,7 +11,7 @@ Example::
     order = await client.orders.create(payload)
 """
 
-from typing import NotRequired, Required, TypedDict
+from typing import Any, NotRequired, Required, TypedDict
 
 
 # ---------------------------------------------------------------------------
@@ -326,3 +326,79 @@ class VariationBaseUpdatePayload(TypedDict, total=False):
     unitId: NotRequired[int]
     unitsContained: NotRequired[int]
     mainVariationId: NotRequired[int]
+
+
+class VariationCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`PimModule.create_variations` (``PUT /rest/pim/variations``).
+
+    Creates or fully replaces variations along with their nested related data
+    in a single call. Prefer :meth:`PimModule.update_variation_bases` for
+    simple base-field updates; use this payload when creating new variations
+    or writing several related-data collections at once.
+
+    Keys:
+        id: Variation ID. Required when updating an existing variation;
+            omit to create a new one.
+        base: Base variation fields (see
+            :class:`~plentymarkets._types.VariationBaseUpdatePayload`).
+        additionalSkus: List of additional-SKU dicts (see
+            :class:`~plentymarkets._types.VariationAdditionalSkuPayload`).
+        attributeValues: List of attribute-value link dicts, each with
+            ``attributeId`` and ``valueId``.
+        barcodes: List of barcode link dicts (see
+            :class:`~plentymarkets._types.VariationBarcodePayload`).
+        bundleComponents: List of bundle component dicts (see
+            :class:`~plentymarkets._types.VariationBundleComponentPayload`).
+        categories: List of category link dicts (see
+            :class:`~plentymarkets._types.VariationCategoryPayload`).
+        clients: List of client visibility dicts (see
+            :class:`~plentymarkets._types.VariationClientPayload`).
+        defaultCategories: List of default-category dicts (see
+            :class:`~plentymarkets._types.VariationDefaultCategoryPayload`).
+        images: List of image link dicts (see
+            :class:`~plentymarkets._types.VariationImagePayload`).
+        markets: List of market availability dicts (see
+            :class:`~plentymarkets._types.VariationMarketPayload`).
+        marketIdentNumbers: List of MIN dicts (see
+            :class:`~plentymarkets._types.VariationMarketIdentNumberPayload`).
+        salesPrices: List of sales price link dicts (see
+            :class:`~plentymarkets._types.VariationSalesPricePayload`).
+        skus: List of marketplace SKU dicts (see
+            :class:`~plentymarkets._types.VariationSkuPayload`).
+        supplier: List of supplier link dicts (see
+            :class:`~plentymarkets._types.VariationSupplierPayload`).
+        warehouses: List of warehouse stock dicts (see
+            :class:`~plentymarkets._types.VariationWarehousePayload`).
+        properties: List of property dicts (see
+            :class:`~plentymarkets._types.VariationPropertyPayload`).
+        tags: List of tag link dicts (see
+            :class:`~plentymarkets._types.VariationTagPayload`).
+        comments: List of comment dicts (see
+            :class:`~plentymarkets._types.VariationCommentPayload`).
+        inheritance: List of inheritance-configuration dicts controlling
+            which fields a child variation inherits from its parent.
+        unit: List with a single unit-configuration dict, e.g.
+            ``{"unitId": 1, "content": 1}``.
+    """
+
+    id: NotRequired[int]
+    base: NotRequired[dict[str, Any]]
+    additionalSkus: NotRequired[list[dict[str, Any]]]
+    attributeValues: NotRequired[list[dict[str, Any]]]
+    barcodes: NotRequired[list[dict[str, Any]]]
+    bundleComponents: NotRequired[list[dict[str, Any]]]
+    categories: NotRequired[list[dict[str, Any]]]
+    clients: NotRequired[list[dict[str, Any]]]
+    defaultCategories: NotRequired[list[dict[str, Any]]]
+    images: NotRequired[list[dict[str, Any]]]
+    markets: NotRequired[list[dict[str, Any]]]
+    marketIdentNumbers: NotRequired[list[dict[str, Any]]]
+    salesPrices: NotRequired[list[dict[str, Any]]]
+    skus: NotRequired[list[dict[str, Any]]]
+    supplier: NotRequired[list[dict[str, Any]]]
+    warehouses: NotRequired[list[dict[str, Any]]]
+    properties: NotRequired[list[dict[str, Any]]]
+    tags: NotRequired[list[dict[str, Any]]]
+    comments: NotRequired[list[dict[str, Any]]]
+    inheritance: NotRequired[list[dict[str, Any]]]
+    unit: NotRequired[list[dict[str, Any]]]

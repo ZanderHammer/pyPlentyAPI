@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, AsyncIterator
 
 if TYPE_CHECKING:
-    from .._types import VariationBaseUpdatePayload
+    from .._types import VariationBaseUpdatePayload, VariationCreatePayload
 
 from .._session import _Session
 
@@ -130,6 +130,46 @@ class PimModule:
               with ``id`` and ``reason``.
         """
         return await self._session.put("/rest/pim/variations/bases", json=data)
+
+    async def create_variations(
+        self,
+        data: list[VariationCreatePayload],
+    ) -> dict[str, Any]:
+        """Bulk create or fully update variations and their related data.
+
+        Args:
+            data: List of variation payloads. Use
+                :class:`~plentymarkets._types.VariationCreatePayload` for IDE
+                autocomplete. Omit ``id`` to create a new variation; include it
+                to update an existing one.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; based on the
+            bulk-endpoint pattern used elsewhere in the API, expect:
+
+            - ``created`` (int): Number of variations successfully created or
+              updated.
+            - ``invalid`` (list[dict]): Entries that failed validation, each
+              with ``id`` and ``reason``.
+
+            Verify against a live system before relying on these keys.
+        """
+        return await self._session.put("/rest/pim/variations", json=data)
+
+    async def delete_variations(self, ids: list[int]) -> dict[str, Any]:
+        """Bulk delete variations by ID.
+
+        Args:
+            ids: List of variation IDs to delete.
+
+        Returns:
+            A dict with the response body returned by the API. PlentyMarkets
+            does not publish a fixed schema for this endpoint; expect
+            ``deleted`` (int): number of variations removed. Verify against a
+            live system before relying on this key.
+        """
+        return await self._session.delete("/rest/pim/variations", json=ids)
 
     async def list_categories(
         self,
