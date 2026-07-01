@@ -468,3 +468,67 @@ class VariationCategoryPayload(TypedDict, total=False):
     variationId: Required[int]
     categoryId: Required[int]
     plentyId: NotRequired[int]
+
+
+class VariationClientPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_clients`
+    (``PUT /rest/pim/variations/clients``).
+
+    Keys:
+        variationId: Variation ID to make visible in the client. **Required.**
+        plentyId: Client (store) ID the variation should be visible in.
+            **Required.**
+    """
+
+    variationId: Required[int]
+    plentyId: Required[int]
+
+
+class VariationCommentPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_comments`
+    (``PUT /rest/pim/variations/comments``).
+
+    Keys:
+        variationId: Variation ID to attach the comment to. **Required.**
+        text: Comment text. **Required.**
+        userId: ID of the back-end user who authored the comment.
+        isPermanent: Whether the comment persists across imports/syncs
+            instead of being overwritten.
+    """
+
+    variationId: Required[int]
+    text: Required[str]
+    userId: NotRequired[int]
+    isPermanent: NotRequired[bool]
+
+
+class VariationDefaultCategoryPayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_default_categories`
+    (``PUT /rest/pim/variations/default_categories``).
+
+    Keys:
+        variationId: Variation ID to set the default category for.
+            **Required.**
+        categoryId: Category ID to use as the default (canonical) category
+            for this client. **Required.**
+        plentyId: Client (store) ID the default applies to. **Required.**
+    """
+
+    variationId: Required[int]
+    categoryId: Required[int]
+    plentyId: Required[int]
+
+
+class VariationImagePayload(TypedDict, total=False):
+    """One entry for :meth:`PimModule.update_variation_images`
+    (``PUT /rest/pim/variations/images``).
+
+    Keys:
+        variationId: Variation ID to link the image to. **Required.**
+        imageId: ID of an existing item image to link. **Required.**
+        position: Display sort position among the variation's images.
+    """
+
+    variationId: Required[int]
+    imageId: Required[int]
+    position: NotRequired[int]

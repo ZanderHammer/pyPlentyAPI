@@ -11,7 +11,11 @@ from ._types import (
     VariationBarcodePayload,
     VariationBundleComponentPayload,
     VariationCategoryPayload,
+    VariationClientPayload,
+    VariationCommentPayload,
     VariationCreatePayload,
+    VariationDefaultCategoryPayload,
+    VariationImagePayload,
 )
 
 __all__ = [
@@ -27,5 +31,9 @@ __all__ = [
     "VariationBarcodePayload",
     "VariationBundleComponentPayload",
     "VariationCategoryPayload",
+    "VariationClientPayload",
+    "VariationCommentPayload",
     "VariationCreatePayload",
+    "VariationDefaultCategoryPayload",
+    "VariationImagePayload",
 ]

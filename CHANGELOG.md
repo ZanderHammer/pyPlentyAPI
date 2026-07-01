@@ -17,6 +17,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `PimModule.update_variation_barcodes` / `delete_variation_barcodes` — `/rest/pim/variations/barcodes`
 - feat: `PimModule.update_variation_bundle_components` / `delete_variation_bundle_components` — `/rest/pim/variations/bundle_components`
 - feat: `PimModule.update_variation_categories` / `delete_variation_categories` — `/rest/pim/variations/categories`
+- feat: `PimModule.update_variation_clients` / `delete_variation_clients` — `/rest/pim/variations/clients`
+- feat: `PimModule.update_variation_comments` / `delete_variation_comments` — `/rest/pim/variations/comments`
+- feat: `PimModule.update_variation_default_categories` / `delete_variation_default_categories` — `/rest/pim/variations/default_categories`
+- feat: `PimModule.update_variation_images` / `delete_variation_images` — `/rest/pim/variations/images`
 - feat: `PimModule.list_categories` — search categories via `GET /rest/pim/categories`
 - feat: `PimModule.get_category` — get one category via `GET /rest/pim/categories/{id}`
 - feat: `PimModule.list_attributes` — search attributes via `GET /rest/pim/attributes`

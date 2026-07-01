@@ -78,10 +78,10 @@ Endpoints discovered from the OpenAPI spec, grouped by module. Updated as each m
 | `/rest/pim/variations/barcodes` | PUT, DELETE | Bulk create/update/delete variation barcodes | **implemented** |
 | `/rest/pim/variations/bundle_components` | PUT, DELETE | Bulk create/update/delete bundle components on variations | **implemented** |
 | `/rest/pim/variations/categories` | PUT, DELETE | Bulk create/update/delete category links on variations | **implemented** |
-| `/rest/pim/variations/clients` | PUT, DELETE | Bulk create/delete client (store) visibility on variations | planned |
-| `/rest/pim/variations/comments` | PUT, DELETE | Bulk create/update/delete variation comments | planned |
-| `/rest/pim/variations/default_categories` | PUT, DELETE | Bulk create/update/delete default category per client on variations | planned |
-| `/rest/pim/variations/images` | PUT, DELETE | Bulk create/delete image links on variations | planned |
+| `/rest/pim/variations/clients` | PUT, DELETE | Bulk create/delete client (store) visibility on variations | **implemented** |
+| `/rest/pim/variations/comments` | PUT, DELETE | Bulk create/update/delete variation comments | **implemented** |
+| `/rest/pim/variations/default_categories` | PUT, DELETE | Bulk create/update/delete default category per client on variations | **implemented** |
+| `/rest/pim/variations/images` | PUT, DELETE | Bulk create/delete image links on variations | **implemented** |
 | `/rest/pim/variations/market_ident_numbers` | PUT, DELETE | Bulk create/update/delete market identifier numbers (MINs) | planned |
 | `/rest/pim/variations/markets` | PUT, DELETE | Bulk create/delete market availability on variations | planned |
 | `/rest/pim/variations/properties` | PUT, DELETE | Bulk create/update/delete variation properties | planned |
