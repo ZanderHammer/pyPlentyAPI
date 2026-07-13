@@ -797,3 +797,60 @@ async def test_list_order_package_numbers_calls_correct_url(httpx_mock, orders):
     )
     result = await orders.list_order_package_numbers(42)
     assert result == ["PKG-1", "PKG-2"]
+
+
+async def test_attach_order_item_warehouse_locations_posts_data(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/42/items/warehouse_locations/attach",
+        json={},
+    )
+    payload = {"orderItemId": 77, "warehouseLocationId": 5}
+    result = await orders.attach_order_item_warehouse_locations(42, payload)
+    assert result == {}
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == payload
+
+
+async def test_detach_order_item_warehouse_locations_posts_data(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/42/items/warehouse_locations/detach",
+        json={},
+    )
+    payload = {"orderItemId": 77, "warehouseLocationId": 5}
+    result = await orders.detach_order_item_warehouse_locations(42, payload)
+    assert result == {}
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == payload
+
+
+async def test_generate_order_item_reorders_posts_data(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/42/items/reorders/generate",
+        json=[{"id": 1}],
+    )
+    payload = {"orderItemIds": [77]}
+    result = await orders.generate_order_item_reorders(42, payload)
+    assert result == [{"id": 1}]
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == payload
+
+
+async def test_generate_order_item_reorders_posts_without_data(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/42/items/reorders/generate",
+        json=[],
+    )
+    result = await orders.generate_order_item_reorders(42)
+    assert result == []
+    request = httpx_mock.get_request()
+    assert request.content == b""

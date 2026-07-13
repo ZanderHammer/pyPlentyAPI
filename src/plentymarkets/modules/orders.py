@@ -1316,3 +1316,86 @@ class OrdersModule:
         return await self._session.get(  # type: ignore[return-value]
             f"/rest/orders/{order_id}/packagenumbers"
         )
+
+    # -- Warehouse locations & item-level reorders ------------------------------
+
+    async def attach_order_item_warehouse_locations(
+        self, order_id: int, data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Attach warehouse locations to an order's items.
+
+        Note:
+            **Schema gap.** PlentyMarkets' published OpenAPI spec declares no
+            request body schema at all for this endpoint, and its response
+            (``SimpleRestResponse``) is also a bare placeholder with no
+            declared fields. ``data`` is passed through as-is; the likely
+            shape is a list of order-item-to-warehouse-location mappings,
+            but this is unverified. Tracked in ROADMAP.md's "Known Schema
+            Gaps" section — verify against a live system and tighten to a
+            proper TypedDict once confirmed.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            data: Warehouse location payload; shape unverified (see Note
+                above).
+
+        Returns:
+            The API's response dict; shape unverified (see Note above).
+        """
+        return await self._session.post(
+            f"/rest/orders/{order_id}/items/warehouse_locations/attach",
+            json=data,
+        )
+
+    async def detach_order_item_warehouse_locations(
+        self, order_id: int, data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Detach warehouse locations from an order's items.
+
+        Note:
+            **Schema gap** — same caveats as
+            :meth:`attach_order_item_warehouse_locations`: no request body
+            schema and no response schema declared in the spec. Tracked in
+            ROADMAP.md's "Known Schema Gaps" section.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            data: Warehouse location payload; shape unverified (see
+                :meth:`attach_order_item_warehouse_locations`).
+
+        Returns:
+            The API's response dict; shape unverified.
+        """
+        return await self._session.post(
+            f"/rest/orders/{order_id}/items/warehouse_locations/detach",
+            json=data,
+        )
+
+    async def generate_order_item_reorders(
+        self, order_id: int, data: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]]:
+        """Generate reorder(s) for an order's items.
+
+        Note:
+            **Schema gap.** PlentyMarkets' published OpenAPI spec declares no
+            request body schema at all for this endpoint, and its response
+            items use a generic untyped placeholder schema. ``data`` is
+            passed through as-is (omitted entirely when ``None``, since the
+            spec doesn't even declare an optional empty body); the likely
+            request shape is a list of order item IDs and/or quantities to
+            reorder, but this is unverified. Tracked in ROADMAP.md's "Known
+            Schema Gaps" section — verify against a live system and tighten
+            to a proper TypedDict once confirmed. This is the item-scoped
+            sibling of :meth:`generate_order_reorders`.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            data: Reorder-generation payload; shape unverified (see Note
+                above).
+
+        Returns:
+            A list of untyped dicts; shape unverified (see Note above).
+        """
+        return await self._session.post(  # type: ignore[return-value]
+            f"/rest/orders/{order_id}/items/reorders/generate", json=data
+        )
