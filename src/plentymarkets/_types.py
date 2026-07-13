@@ -75,6 +75,40 @@ class OrderStatusNamePayload(TypedDict, total=False):
     name: Required[str]
 
 
+class OrderItemTransactionCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`OrdersModule.create_item_transaction`
+    (``POST /rest/orders/items/{orderItemId}/transactions``).
+
+    PlentyMarkets' published OpenAPI spec redeclares ``orderItemId`` as a
+    required body field even though it is already supplied as a path
+    parameter; :meth:`OrdersModule.create_item_transaction` merges the
+    ``order_item_id`` argument into the request body automatically, so it is
+    intentionally omitted from this TypedDict.
+
+    Keys:
+        quantity: Quantity for the transaction. **Required.**
+        direction: Transaction direction. **Required.** ``"in"`` or ``"out"``.
+        status: Transaction status. **Required.** ``"regular"`` or
+            ``"cancelled"``.
+        userId: ID of the user the transaction is attributed to.
+        identification: Arbitrary external identification string.
+        receiptId: Receipt ID the transaction is linked to.
+        warehouseLocationId: Warehouse location ID the transaction applies to.
+        batch: Batch identifier of the transacted stock.
+        bestBeforeDate: Best-before date of the transacted stock, ISO 8601.
+    """
+
+    quantity: Required[float]
+    direction: Required[str]
+    status: Required[str]
+    userId: NotRequired[int]
+    identification: NotRequired[str]
+    receiptId: NotRequired[int]
+    warehouseLocationId: NotRequired[int]
+    batch: NotRequired[str]
+    bestBeforeDate: NotRequired[str]
+
+
 # ---------------------------------------------------------------------------
 # Items  (/rest/items)
 # ---------------------------------------------------------------------------
