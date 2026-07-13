@@ -57,6 +57,10 @@ async def test_create_property_type_posts_data(httpx_mock, orders):
     )
     result = await orders.create_property_type(payload)
     assert result["id"] == 1001
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == payload
 
 
 async def test_delete_property_type_sends_delete_request(httpx_mock, orders):
@@ -88,3 +92,7 @@ async def test_update_property_type_puts_data(httpx_mock, orders):
     )
     result = await orders.update_property_type(1001, payload)
     assert result["id"] == 1001
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == payload
