@@ -109,6 +109,21 @@ class OrderItemTransactionCreatePayload(TypedDict, total=False):
     bestBeforeDate: NotRequired[str]
 
 
+class OrderTransactionsCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`OrdersModule.create_order_transactions`
+    (``POST /rest/orders/{orderId}/transactions``).
+
+    Keys:
+        direction: Applied to every order item that lacks a transaction.
+            **Required.** ``"in"`` or ``"out"``.
+        status: Transaction status to apply. **Required.** ``"regular"`` or
+            ``"cancelled"``.
+    """
+
+    direction: Required[str]
+    status: Required[str]
+
+
 # ---------------------------------------------------------------------------
 # Items  (/rest/items)
 # ---------------------------------------------------------------------------
