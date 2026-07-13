@@ -3,7 +3,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, AsyncIterator
 
 if TYPE_CHECKING:
-    from .._types import OrderCreatePayload, OrderStatusNamePayload
+    from .._types import (
+        OrderCreatePayload,
+        OrderItemTransactionCreatePayload,
+        OrderStatusNamePayload,
+        OrderTransactionsCreatePayload,
+    )
 
 from .._session import _Session
 
@@ -791,3 +796,713 @@ class OrdersModule:
             if result.get("isLastPage", True):
                 break
             page += 1
+
+    # -- Order item transactions ----------------------------------------------
+    #
+    # These methods manage transactions (stock movements) recorded against
+    # order items, via the flat `/rest/orders/items/transactions/*` family
+    # (addressed by transaction ID) and the `/rest/orders/items/{orderItemId}
+    # /transactions` family (scoped to one order item). Both are current
+    # (not deprecated), unlike the sibling order-item dates/properties
+    # families, which PlentyMarkets has deprecated in favor of
+    # `PUT /rest/orders/{orderId}` and are intentionally not implemented here.
+
+    async def search_item_transactions(
+        self,
+        order_item_id: int | None = None,
+        order_id: int | None = None,
+        direction: str | None = None,
+        status: str | None = None,
+        is_booked: bool | None = None,
+        columns: list[str] | None = None,
+        with_: list[str] | None = None,
+        sort_by: str | None = None,
+        sort_order: str | None = None,
+        page: int = 1,
+        items_per_page: int = 50,
+    ) -> dict[str, Any]:
+        """Search order item transactions with filters.
+
+        Note:
+            PlentyMarkets documents the ``status`` filter here as ``"in"``
+            (incoming) or ``"out"`` (outgoing) — i.e. it actually filters on
+            *direction*. This is a different value domain than the
+            ``status`` field on the returned transaction objects, which is
+            ``"regular"`` or ``"cancelled"``. Likely a spec documentation
+            inconsistency; verify against a live system before relying on
+            this filter.
+
+        Args:
+            order_item_id: Filter by order item ID.
+            order_id: Filter by order ID.
+            direction: Filter by transaction direction, ``"in"`` or ``"out"``.
+            status: Filter by transaction "status" as documented by the API
+                (``"in"``/``"out"`` — see Note above).
+            is_booked: When set, only return booked (or unbooked)
+                transactions.
+            columns: Restrict the response to these transaction properties.
+            with_: Related data to embed. Available: ``"orderItem"``,
+                ``"warehouseLocation"``.
+            sort_by: Sort field. One of ``"createdAt"``, ``"updatedAt"``,
+                ``"orderItemId"``, ``"receiptId"``, ``"quantity"``. Defaults
+                to ``"orderItemId"``.
+            sort_order: Sort direction, ``"asc"`` or ``"desc"``. Defaults to
+                ``"asc"``.
+            page: Page number (1-indexed).
+            items_per_page: Results per page.
+
+        Returns:
+            A dict with the following keys:
+
+            - ``page`` (int): Current page number.
+            - ``totalsCount`` (int): Total number of matching transactions.
+            - ``isLastPage`` (bool): ``True`` when no further pages exist.
+            - ``lastPageNumber`` (int): Number of the last page.
+            - ``entries`` (list[dict]): Order item transaction dicts, each
+              with:
+
+                - ``id`` (int): The transaction ID.
+                - ``orderItemId`` (int): The order item this transaction
+                  belongs to.
+                - ``quantity`` (float): The transacted quantity.
+                - ``userId`` (int): ID of the user attributed to the
+                  transaction.
+                - ``identification`` (str): Arbitrary external
+                  identification string.
+                - ``direction`` (str): ``"in"`` or ``"out"``.
+                - ``status`` (str): ``"regular"`` or ``"cancelled"``.
+                - ``receiptId`` (int): Receipt ID the transaction is linked
+                  to.
+                - ``warehouseLocationId`` (int): Warehouse location ID.
+                - ``batch`` (str): Batch identifier of the transacted stock.
+                - ``bestBeforeDate`` (str): Best-before date, ISO 8601.
+                - ``batchBestBeforeDateId`` (int): Deprecated by
+                  PlentyMarkets; replaced by ``batch`` and
+                  ``bestBeforeDate``.
+                - ``createdAt`` (str): ISO 8601 creation timestamp.
+                - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+        """
+        params = self._build_params(
+            None,
+            with_=with_,
+            columns=",".join(columns) if columns else None,
+            orderItemId=order_item_id,
+            orderId=order_id,
+            direction=direction,
+            status=status,
+            isBooked=is_booked,
+            sortBy=sort_by,
+            sortOrder=sort_order,
+            page=page,
+            itemsPerPage=items_per_page,
+        )
+        return await self._session.get(
+            "/rest/orders/items/transactions", params=params
+        )
+
+    async def paginate_item_transactions(
+        self,
+        order_item_id: int | None = None,
+        order_id: int | None = None,
+        direction: str | None = None,
+        status: str | None = None,
+        is_booked: bool | None = None,
+        columns: list[str] | None = None,
+        with_: list[str] | None = None,
+        sort_by: str | None = None,
+        sort_order: str | None = None,
+        items_per_page: int = 50,
+    ) -> AsyncIterator[dict[str, Any]]:
+        """Async generator that yields every order item transaction across all pages.
+
+        Args:
+            order_item_id: Filter by order item ID.
+            order_id: Filter by order ID.
+            direction: Filter by transaction direction, ``"in"`` or ``"out"``.
+            status: Filter by transaction "status" as documented by the API
+                (see the Note on :meth:`search_item_transactions`).
+            is_booked: When set, only return booked (or unbooked)
+                transactions.
+            columns: Restrict the response to these transaction properties.
+            with_: Related data to embed (see
+                :meth:`search_item_transactions`).
+            sort_by: Sort field (see :meth:`search_item_transactions`).
+            sort_order: Sort direction, ``"asc"`` or ``"desc"``.
+            items_per_page: Results per page request (max 250).
+
+        Yields:
+            Individual order item transaction dicts (see
+            :meth:`search_item_transactions` for the field reference).
+        """
+        page = 1
+        while True:
+            result = await self.search_item_transactions(
+                order_item_id=order_item_id,
+                order_id=order_id,
+                direction=direction,
+                status=status,
+                is_booked=is_booked,
+                columns=columns,
+                with_=with_,
+                sort_by=sort_by,
+                sort_order=sort_order,
+                page=page,
+                items_per_page=items_per_page,
+            )
+            entries = result.get("entries", [])
+            if not entries:
+                break
+            for entry in entries:
+                yield entry
+            if result.get("isLastPage", True):
+                break
+            page += 1
+
+    async def update_item_transaction(
+        self,
+        transaction_id: int,
+        warehouse_location_id: int | None = None,
+        batch: str | None = None,
+        best_before_date: str | None = None,
+    ) -> dict[str, Any]:
+        """Update an order item transaction.
+
+        Args:
+            transaction_id: The transaction ID.
+            warehouse_location_id: New warehouse location ID.
+            batch: New batch identifier.
+            best_before_date: New best-before date, ISO 8601.
+
+        Returns:
+            The updated transaction dict (see
+            :meth:`search_item_transactions` for the field reference).
+        """
+        data: dict[str, Any] = {}
+        if warehouse_location_id is not None:
+            data["warehouseLocationId"] = warehouse_location_id
+        if batch is not None:
+            data["batch"] = batch
+        if best_before_date is not None:
+            data["bestBeforeDate"] = best_before_date
+        return await self._session.put(
+            f"/rest/orders/items/transactions/{transaction_id}", json=data
+        )
+
+    async def delete_item_transaction(self, transaction_id: int) -> dict[str, Any]:
+        """Delete an order item transaction.
+
+        Note:
+            PlentyMarkets' published OpenAPI spec declares no fields at all
+            for the response of this endpoint (a bare placeholder schema).
+            Response shape is unverified. Verify against a live system
+            before relying on it.
+
+        Args:
+            transaction_id: The transaction ID.
+
+        Returns:
+            The API's response dict; likely empty on success.
+        """
+        return await self._session.delete(
+            f"/rest/orders/items/transactions/{transaction_id}"
+        )
+
+    async def book_item_transactions(
+        self,
+        transaction_ids: list[int],
+        delivery_note_number: str | None = None,
+    ) -> dict[str, Any]:
+        """Bulk-book order item transactions by ID.
+
+        Note:
+            PlentyMarkets' published OpenAPI spec declares no fields at all
+            for the response of this endpoint (a bare placeholder schema).
+            Response shape is unverified. Verify against a live system
+            before relying on it.
+
+        Args:
+            transaction_ids: IDs of the transactions to book.
+            delivery_note_number: For incoming items, an external delivery
+                note number. For outgoing items, an external or internal
+                delivery note number.
+
+        Returns:
+            The API's response dict.
+        """
+        params = self._build_params(
+            None,
+            transactionIds=",".join(str(t) for t in transaction_ids),
+            deliveryNoteNumber=delivery_note_number,
+        )
+        return await self._session.post(
+            "/rest/orders/items/transactions/booking", params=params
+        )
+
+    async def list_item_transactions(
+        self,
+        order_item_id: int,
+        columns: list[str] | None = None,
+        with_: list[str] | None = None,
+    ) -> list[dict[str, Any]]:
+        """List all transactions of a single order item.
+
+        Args:
+            order_item_id: The order item ID.
+            columns: Restrict the response to these transaction properties.
+            with_: Related data to embed (see
+                :meth:`search_item_transactions`).
+
+        Returns:
+            A list of transaction dicts (see :meth:`search_item_transactions`
+            for the field reference).
+        """
+        params = self._build_params(
+            None,
+            with_=with_,
+            columns=",".join(columns) if columns else None,
+        )
+        return await self._session.get(  # type: ignore[return-value]
+            f"/rest/orders/items/{order_item_id}/transactions", params=params
+        )
+
+    async def create_item_transaction(
+        self, order_item_id: int, data: OrderItemTransactionCreatePayload
+    ) -> dict[str, Any]:
+        """Create a transaction for an order item.
+
+        Args:
+            order_item_id: The order item ID.
+            data: Transaction payload. Use
+                :class:`~plentymarkets._types.OrderItemTransactionCreatePayload`
+                for IDE autocomplete. Required keys: ``quantity``,
+                ``direction``, ``status``. ``orderItemId`` is merged in
+                automatically from ``order_item_id`` and must not be
+                included.
+
+        Returns:
+            The created transaction dict (see
+            :meth:`search_item_transactions` for the field reference).
+        """
+        return await self._session.post(
+            f"/rest/orders/items/{order_item_id}/transactions",
+            json={**data, "orderItemId": order_item_id},
+        )
+
+    async def book_item_in(
+        self, order_item_id: int, delivery_note_number: str | None = None
+    ) -> dict[str, Any]:
+        """Book an order item's full quantity in.
+
+        Note:
+            Distinct from :meth:`book_item_transactions`, which bulk-books
+            specific transaction IDs rather than a whole order item.
+            PlentyMarkets' published OpenAPI spec declares no fields at all
+            for the response of this endpoint (a bare placeholder schema).
+            Response shape is unverified. Verify against a live system
+            before relying on it.
+
+        Args:
+            order_item_id: The order item ID.
+            delivery_note_number: Delivery note number provided by the
+                supplier.
+
+        Returns:
+            The API's response dict.
+        """
+        params = self._build_params(None, deliveryNoteNumber=delivery_note_number)
+        return await self._session.post(
+            f"/rest/orders/items/{order_item_id}/booking", params=params
+        )
+
+    # -- Order items, serial numbers & package numbers -------------------------
+
+    async def list_order_items(
+        self,
+        order_id: int,
+        with_: list[str] | None = None,
+        sort_by: str | None = None,
+        sort_order: str | None = None,
+        page: int = 1,
+        items_per_page: int = 50,
+    ) -> dict[str, Any]:
+        """List an order's items with pagination.
+
+        Note:
+            PlentyMarkets documents ``sortBy``'s allowed values as
+            ``"itemVariationId"``, ``"orderItemName"``, ``"createdAt"``,
+            ``"updatedAt"``, or ``"id"``, but documents its default as
+            ``"orderItemId"`` — a value that isn't in that same enum. Likely
+            a spec documentation inconsistency; verify against a live system.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            with_: Related data to embed. Available: ``"variation"``,
+                ``"giftCardCodes"``, ``"transactions"``, ``"serialNumbers"``,
+                ``"variationBarcodes"``.
+            sort_by: Sort field (see Note above).
+            sort_order: Sort direction, ``"asc"`` or ``"desc"``.
+            page: Page number (1-indexed).
+            items_per_page: Results per page (max 250).
+
+        Returns:
+            A dict with the following keys:
+
+            - ``page`` (int): Current page number.
+            - ``totalsCount`` (int): Total number of matching order items.
+            - ``isLastPage`` (bool): ``True`` when no further pages exist.
+            - ``lastPageNumber`` (int): Number of the last page.
+            - ``entries`` (list[dict]): Order item dicts, each with:
+
+                - ``id`` (int): The order item ID.
+                - ``orderId`` (int): The order this item belongs to.
+                - ``typeId`` (int): The order item type.
+                - ``referrerId`` (float): Sales referrer ID.
+                - ``itemVariationId`` (int): The variation ID.
+                - ``quantity`` (float): The ordered quantity.
+                - ``orderItemName`` (str): The item's display name.
+                - ``attributeValues`` (str): Selected attribute values.
+                - ``shippingProfileId`` (int): Shipping profile ID.
+                - ``countryVatId`` (int): Country VAT ID.
+                - ``vatField`` (int): VAT field reference.
+                - ``vatRate`` (float): The applied VAT rate.
+                - ``position`` (int): Position of the item within the order.
+                - ``warehouseId`` (int): Warehouse ID.
+                - ``createdAt`` (str): ISO 8601 creation timestamp.
+                - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+        """
+        params = self._build_params(
+            None,
+            with_=with_,
+            sortBy=sort_by,
+            sortOrder=sort_order,
+            page=page,
+            itemsPerPage=items_per_page,
+        )
+        return await self._session.get(f"/rest/orders/{order_id}/items", params=params)
+
+    async def paginate_order_items(
+        self,
+        order_id: int,
+        with_: list[str] | None = None,
+        sort_by: str | None = None,
+        sort_order: str | None = None,
+        items_per_page: int = 50,
+    ) -> AsyncIterator[dict[str, Any]]:
+        """Async generator that yields every item of an order across all pages.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            with_: Related data to embed (see :meth:`list_order_items`).
+            sort_by: Sort field (see :meth:`list_order_items`).
+            sort_order: Sort direction, ``"asc"`` or ``"desc"``.
+            items_per_page: Results per page request (max 250).
+
+        Yields:
+            Individual order item dicts (see :meth:`list_order_items` for
+            the field reference).
+        """
+        page = 1
+        while True:
+            result = await self.list_order_items(
+                order_id,
+                with_=with_,
+                sort_by=sort_by,
+                sort_order=sort_order,
+                page=page,
+                items_per_page=items_per_page,
+            )
+            entries = result.get("entries", [])
+            if not entries:
+                break
+            for entry in entries:
+                yield entry
+            if result.get("isLastPage", True):
+                break
+            page += 1
+
+    async def delete_order_item(
+        self, order_id: int, order_item_id: int
+    ) -> dict[str, Any]:
+        """Delete an order item.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            order_item_id: The order item ID.
+
+        Returns:
+            Empty dict on success (the API returns no body).
+        """
+        return await self._session.delete(
+            f"/rest/orders/{order_id}/items/{order_item_id}"
+        )
+
+    async def list_order_serial_numbers(self, order_id: int) -> list[dict[str, Any]]:
+        """List serial numbers bound to any item of an order.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+
+        Returns:
+            A list of serial number dicts, each with:
+
+            - ``serialNumberId`` (int): The serial number record ID.
+            - ``orderId`` (int): The order this serial number belongs to.
+            - ``orderItemId`` (int): The order item it's bound to.
+            - ``serialNumber`` (str): The serial number value.
+        """
+        return await self._session.get(  # type: ignore[return-value]
+            f"/rest/orders/{order_id}/items/serialNumbers"
+        )
+
+    async def list_order_item_serial_numbers(
+        self, order_id: int, order_item_id: int
+    ) -> list[dict[str, Any]]:
+        """List serial numbers bound to a single order item.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            order_item_id: The order item ID.
+
+        Returns:
+            A list of serial number dicts (see
+            :meth:`list_order_serial_numbers` for the field reference).
+        """
+        return await self._session.get(  # type: ignore[return-value]
+            f"/rest/orders/{order_id}/items/{order_item_id}/serialNumbers"
+        )
+
+    async def create_order_item_serial_number(
+        self, order_id: int, order_item_id: int, data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Create a serial number and bind it to an order item.
+
+        Note:
+            **Schema gap.** PlentyMarkets' published OpenAPI spec declares no
+            request body schema at all for this endpoint. ``data`` is passed
+            through as-is; the likely shape is ``{"serialNumber": "..."}``,
+            possibly with additional fields, but this is unverified. Tracked
+            in ROADMAP.md's "Known Schema Gaps" section — verify against a
+            live system and tighten to a proper TypedDict once confirmed.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            order_item_id: The order item ID.
+            data: Serial number payload; shape unverified (see Note above).
+
+        Returns:
+            The created serial number dict (see
+            :meth:`list_order_serial_numbers` for the field reference).
+        """
+        return await self._session.post(
+            f"/rest/orders/{order_id}/items/{order_item_id}/serialNumbers",
+            json=data,
+        )
+
+    async def list_order_package_numbers(self, order_id: int) -> list[str]:
+        """List an order's package numbers.
+
+        Note:
+            PlentyMarkets' published OpenAPI spec resolves this endpoint's
+            array item schema to a generic untyped placeholder rather than
+            ``type: string``; ``list[str]`` is inferred from the endpoint's
+            description ("List package numbers of an order"). Verify against
+            a live system before relying on it.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+
+        Returns:
+            A list of package number strings.
+        """
+        return await self._session.get(  # type: ignore[return-value]
+            f"/rest/orders/{order_id}/packagenumbers"
+        )
+
+    # -- Warehouse locations & item-level reorders ------------------------------
+
+    async def attach_order_item_warehouse_locations(
+        self, order_id: int, data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Attach warehouse locations to an order's items.
+
+        Note:
+            **Schema gap.** PlentyMarkets' published OpenAPI spec declares no
+            request body schema at all for this endpoint, and its response
+            (``SimpleRestResponse``) is also a bare placeholder with no
+            declared fields. ``data`` is passed through as-is; the likely
+            shape is a list of order-item-to-warehouse-location mappings,
+            but this is unverified. Tracked in ROADMAP.md's "Known Schema
+            Gaps" section — verify against a live system and tighten to a
+            proper TypedDict once confirmed.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            data: Warehouse location payload; shape unverified (see Note
+                above).
+
+        Returns:
+            The API's response dict; shape unverified (see Note above).
+        """
+        return await self._session.post(
+            f"/rest/orders/{order_id}/items/warehouse_locations/attach",
+            json=data,
+        )
+
+    async def detach_order_item_warehouse_locations(
+        self, order_id: int, data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Detach warehouse locations from an order's items.
+
+        Note:
+            **Schema gap** — same caveats as
+            :meth:`attach_order_item_warehouse_locations`: no request body
+            schema and no response schema declared in the spec. Tracked in
+            ROADMAP.md's "Known Schema Gaps" section.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            data: Warehouse location payload; shape unverified (see
+                :meth:`attach_order_item_warehouse_locations`).
+
+        Returns:
+            The API's response dict; shape unverified.
+        """
+        return await self._session.post(
+            f"/rest/orders/{order_id}/items/warehouse_locations/detach",
+            json=data,
+        )
+
+    async def generate_order_item_reorders(
+        self, order_id: int, data: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]]:
+        """Generate reorder(s) for an order's items.
+
+        Note:
+            **Schema gap.** PlentyMarkets' published OpenAPI spec declares no
+            request body schema at all for this endpoint, and its response
+            items use a generic untyped placeholder schema. ``data`` is
+            passed through as-is (omitted entirely when ``None``, since the
+            spec doesn't even declare an optional empty body); the likely
+            request shape is a list of order item IDs and/or quantities to
+            reorder, but this is unverified. Tracked in ROADMAP.md's "Known
+            Schema Gaps" section — verify against a live system and tighten
+            to a proper TypedDict once confirmed. This is the item-scoped
+            sibling of :meth:`generate_order_reorders`.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            data: Reorder-generation payload; shape unverified (see Note
+                above).
+
+        Returns:
+            A list of untyped dicts; shape unverified (see Note above).
+        """
+        return await self._session.post(  # type: ignore[return-value]
+            f"/rest/orders/{order_id}/items/reorders/generate", json=data
+        )
+
+    # -- Order-level reorders & bulk transactions -------------------------------
+
+    async def create_order_reorder(
+        self, order_id: int, data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Create a reorder from a parent order.
+
+        Note:
+            **Schema gap.** PlentyMarkets documents this endpoint as
+            requiring "the parent order ID and the quantities to use" but
+            declares no request body schema at all. ``data`` is passed
+            through as-is; exact key names are unverified. Tracked in
+            ROADMAP.md's "Known Schema Gaps" section — verify against a live
+            system and tighten to a proper TypedDict once confirmed. The
+            response reuses the general order object shape (~20 fields);
+            only the most useful ones are documented below.
+
+        Args:
+            order_id: The PlentyMarkets ID of the parent order.
+            data: Reorder payload; shape unverified (see Note above).
+
+        Returns:
+            The created reorder dict. Reuses the general order shape (see
+            :meth:`get`); the most useful fields are:
+
+            - ``id`` (int): The new reorder's ID.
+            - ``typeId`` (int): Order type (``12`` = reorder).
+            - ``statusId`` (float): Current order status ID.
+            - ``ownerId`` (int): ID of the user who owns the reorder.
+            - ``plentyId`` (int): Client (store) ID.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+        """
+        return await self._session.post(
+            f"/rest/orders/{order_id}/reorders", json=data
+        )
+
+    async def generate_order_reorders(
+        self, order_id: int, data: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]]:
+        """Generate reorder(s) for an order.
+
+        Note:
+            **Schema gap** — same caveats as
+            :meth:`generate_order_item_reorders`: no request body schema and
+            an untyped response item schema declared in the spec. ``data``
+            is omitted entirely when ``None``. Tracked in ROADMAP.md's
+            "Known Schema Gaps" section. This is the order-scoped sibling of
+            :meth:`generate_order_item_reorders` (item-scoped).
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            data: Reorder-generation payload; shape unverified (see Note
+                above).
+
+        Returns:
+            A list of untyped dicts; shape unverified (see Note above).
+        """
+        return await self._session.post(  # type: ignore[return-value]
+            f"/rest/orders/{order_id}/reorders/generate", json=data
+        )
+
+    async def validate_order_reorders(
+        self, order_id: int, data: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]]:
+        """Validate an order's items before creating a reorder from them.
+
+        Note:
+            **Schema gap** — same caveats as :meth:`create_order_reorder`
+            and :meth:`generate_order_reorders`: no request body schema and
+            an untyped response item schema declared in the spec. ``data``
+            is omitted entirely when ``None``. Tracked in ROADMAP.md's
+            "Known Schema Gaps" section.
+
+        Args:
+            order_id: The PlentyMarkets ID of the parent order.
+            data: Validation payload; shape unverified (see Note above).
+
+        Returns:
+            A list of untyped dicts; shape unverified (see Note above).
+        """
+        return await self._session.post(  # type: ignore[return-value]
+            f"/rest/orders/{order_id}/reorders/generate/validate", json=data
+        )
+
+    async def create_order_transactions(
+        self, order_id: int, data: OrderTransactionsCreatePayload
+    ) -> list[dict[str, Any]]:
+        """Bulk-create item transactions for every item of an order that lacks one.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            data: Transaction payload. Use
+                :class:`~plentymarkets._types.OrderTransactionsCreatePayload`
+                for IDE autocomplete. Required keys: ``direction``,
+                ``status``.
+
+        Returns:
+            A list of transaction dicts, one per order item that received a
+            new transaction (see :meth:`search_item_transactions` for the
+            field reference).
+        """
+        return await self._session.post(  # type: ignore[return-value]
+            f"/rest/orders/{order_id}/transactions", json=data
+        )
