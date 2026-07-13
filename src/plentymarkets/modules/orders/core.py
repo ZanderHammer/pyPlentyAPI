@@ -588,3 +588,64 @@ class CoreMixin(OrdersBase):
             if result.get("isLastPage", True):
                 break
             page += 1
+
+    async def book_order_in(
+        self, order_id: int, delivery_note_number: str | None = None
+    ) -> dict[str, Any]:
+        """Book an order in, e.g. an order of type reorder.
+
+        Note:
+            PlentyMarkets' published OpenAPI spec declares this endpoint's
+            response as ``OrderBooking`` — a bare placeholder schema with no
+            fields. Response shape is unverified. Verify against a live
+            system before relying on it.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            delivery_note_number: External delivery note number.
+
+        Returns:
+            The API's response dict; likely empty on success.
+        """
+        params = self._build_params(None, deliveryNoteNumber=delivery_note_number)
+        return await self._session.post(
+            f"/rest/orders/{order_id}/booking", params=params
+        )
+
+    async def get_contact_wish(self, order_id: int) -> dict[str, Any]:
+        """Get the contact wish recorded on an order.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+
+        Returns:
+            A dict with a single key:
+
+            - ``text`` (str): The contact's wish text.
+        """
+        return await self._session.get(f"/rest/orders/{order_id}/contactWish")
+
+    async def update_order_currency(
+        self, order_id: int, data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Update the currency of an order.
+
+        Note:
+            PlentyMarkets' published OpenAPI spec declares no request body
+            schema for this endpoint at all. Based on the endpoint's
+            description ("The currency and the exchange rate must be
+            specified"), ``data`` likely needs ``currency`` (ISO 4217 code)
+            and ``exchangeRate`` (float) keys. Verify against a live system
+            before relying on this shape.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            data: Currency update payload — see the Note above.
+
+        Returns:
+            The updated order dict (see :meth:`get` for the field
+            reference).
+        """
+        return await self._session.put(
+            f"/rest/orders/{order_id}/currency", json=data
+        )

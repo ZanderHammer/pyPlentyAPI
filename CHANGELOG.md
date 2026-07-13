@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.list_contact_orders` / `paginate_contact_orders` — list/iterate a contact's orders via `GET /rest/orders/contacts/{contactId}`
 - feat: `OrdersModule.create_multi_order` — create a multi-order for a contact via `POST /rest/orders/contacts/{contactId}/multi_order`
 - feat: `OrdersModule.list_accounting_summaries` / `paginate_accounting_summaries` — list/iterate document accounting summaries via `GET /rest/orders/documents/accounting_summary`
+- feat: `OrdersModule.book_order_in` — book an order in via `POST /rest/orders/{orderId}/booking`
+- feat: `OrdersModule.get_contact_wish` — get an order's contact wish via `GET /rest/orders/{orderId}/contactWish`
+- feat: `OrdersModule.update_order_currency` — update an order's currency via `PUT /rest/orders/{orderId}/currency`
 
 ## [0.3.2] - 2026-07-13
 

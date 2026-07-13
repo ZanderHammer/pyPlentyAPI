@@ -364,3 +364,44 @@ async def test_paginate_accounting_summaries_yields_all_items_across_pages(
         s async for s in orders.paginate_accounting_summaries(items_per_page=2)
     ]
     assert [r["key"] for r in results] == ["a", "b", "c"]
+
+
+async def test_book_order_in_posts_to_booking_url(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/42/booking",
+        json={},
+    )
+    result = await orders.book_order_in(42)
+    assert result == {}
+
+
+async def test_book_order_in_sends_delivery_note_number(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/42/booking?deliveryNoteNumber=DN-1",
+        json={},
+    )
+    await orders.book_order_in(42, delivery_note_number="DN-1")
+
+
+async def test_get_contact_wish_calls_correct_url(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/42/contactWish",
+        json={"text": "Please gift-wrap"},
+    )
+    result = await orders.get_contact_wish(42)
+    assert result["text"] == "Please gift-wrap"
+
+
+async def test_update_order_currency_puts_data(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/orders/42/currency",
+        json={"id": 42, "statusId": 5.0},
+    )
+    result = await orders.update_order_currency(
+        42, {"currency": "EUR", "exchangeRate": 1.0}
+    )
+    assert result["id"] == 42
