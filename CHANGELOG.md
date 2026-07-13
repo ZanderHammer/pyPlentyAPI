@@ -22,7 +22,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.delete_item_date` — delete a date of an order item via `DELETE /rest/orders/items/dates/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.get_item_date` — get a date of an order item via `GET /rest/orders/items/dates/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.update_item_date` — update a date of an order item via `PUT /rest/orders/items/dates/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- `Order` reaches 55/307 endpoint coverage under the `Order` API tag (core metadata batch A-D: batch fetch, contact/multi orders, accounting summaries, booking, contact wish, currency, outgoing stocks)
+- feat: `OrdersModule.list_item_dates` — list all dates of an order item via `GET /rest/orders/items/{orderItemId}/dates` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.delete_item_date_by_type` — delete a date of an order item by type via `DELETE /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.get_item_date_by_type` — get a date of an order item by type via `GET /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.create_item_date_by_type` — create a date for an order item by type via `POST /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.update_item_date_by_type` — update a date of an order item by type via `PUT /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- `Order` reaches 64/307 endpoint coverage under the `Order` API tag (order-item dates milestone)
 
 ## [0.3.2] - 2026-07-13
 
