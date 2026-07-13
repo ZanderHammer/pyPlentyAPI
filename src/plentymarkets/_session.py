@@ -19,7 +19,7 @@ from ._exceptions import (
 _REFRESH_BUFFER_SECONDS = 60
 
 
-class _Session:
+class Session:
     """Manages the httpx client, login state, and token lifecycle.
 
     Args:

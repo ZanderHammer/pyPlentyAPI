@@ -6,6 +6,85 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-07-13
+
+### Pim
+
+- refactor: split `PimModule` into a `modules/pim/` package (mixins per sub-resource group: variations, variation identifiers/taxonomy/commerce, attributes, attribute names, attribute values, categories, sales prices, barcodes, item serial numbers, lookups) — no public API change
+
+## [0.3.0] - 2026-07-13
+
+### Stock
+
+- feat: `StockModule.list_stock` / `paginate_all_stock` — list/iterate stock levels across all warehouses via `GET /rest/stockmanagement/stock`
+- feat: `StockModule.list_stock_archive_years` — list archive years of stock movements via `GET /rest/stockmanagement/stock/archives`
+- feat: `StockModule.list_stock_by_type` / `paginate_stock_by_type` — list/iterate stock by warehouse type via `GET /rest/stockmanagement/stock/types/{type}`
+- feat: `StockModule.redistribute_stock` — move stock between warehouses via `PUT /rest/stockmanagement/stock/redistribute`
+- feat: `StockRedistributionPayload`, `VariationStockRedistributionPayload` — TypedDicts for `redistribute_stock`
+- feat: `StockModule.list_warehouses` — list warehouses via `GET /rest/stockmanagement/warehouses`
+- feat: `StockModule.create_warehouse` — create a warehouse via `POST /rest/stockmanagement/warehouses`
+- feat: `StockModule.get_warehouse` — get one warehouse via `GET /rest/stockmanagement/warehouses/{warehouseId}`
+- feat: `StockModule.get_storage_location` — get one storage location via `GET /rest/stockmanagement/warehouses/{warehouseId}/management/storageLocations/{storageLocationId}`
+- feat: `WarehouseCreatePayload` — TypedDict for `create_warehouse`
+- feat: `StockModule.book_incoming_items` — book incoming stock via `PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/bookIncomingItems`
+- feat: `StockModule.book_outgoing_items` — book outgoing stock via `PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/bookOutgoingItems`
+- feat: `StockModule.unpack_variation` — unpack a bundle/set variation via `PUT /rest/stockmanagement/warehouses/{warehouseId}/stock/unpackVariation`
+- feat: `StockModule.book_stocktaking` — book a stocktaking correction via `PUT /rest/stockmanagement/warehouses/{warehouseId}/{warehouseLocationId}/stock/bookStocktaking`
+- feat: `StockModule.list_stock_movements` / `paginate_stock_movements` — list/iterate stock movement history via `GET /rest/stockmanagement/warehouses/{warehouseId}/stock/movements`
+- feat: `StockModule.list_stock_by_storage_location` / `paginate_stock_by_storage_location` — list/iterate stock per storage location via `GET /rest/stockmanagement/warehouses/{warehouseId}/stock/storageLocations`
+- feat: `StockModule.list_stock_by_storage_location_pim` / `paginate_stock_by_storage_location_pim` — list/iterate stock per storage location with linked PIM entry via `GET /rest/stockmanagement/warehouses/{warehouseId}/stock/storageLocationsPim`
+- feat: `StockIntakePayload`, `VariationStockIntakePayload`, `StockDischargePayload`, `VariationStockDischargePayload`, `UnpackVariationPayload` — TypedDicts for the stock booking endpoints
+- `Stock` reaches full endpoint coverage (17/17) under the `StockManagement` API tag
+
+### Order
+
+- feat: `OrdersModule.delete` — delete an order via `DELETE /rest/orders/{orderId}`
+- feat: `OrdersModule.cancel` — cancel an order via `PUT /rest/orders/{orderId}/cancel`
+- feat: `OrdersModule.get_family` — get an order's family info via `GET /rest/orders/{orderId}/family`
+- feat: `OrdersModule.get_my_account_url` — get an order's "My Account" URL via `GET /rest/orders/{orderId}/my_account_url`
+- feat: `OrdersModule.search` / `paginate_search` — filterable order search (unlike `list`, which only paginates) via `GET`/`POST /rest/orders/search`
+- feat: `OrdersModule.list_status_definitions` / `paginate_status_definitions` — search order status definitions via `GET /rest/orders/statuses`
+- feat: `OrdersModule.list_all_status_definitions` — list every order status definition via `GET /rest/orders/statuses/all`
+- feat: `OrdersModule.create_status_definition` — create an order status definition via `POST /rest/orders/statuses`
+- feat: `OrdersModule.get_status_definition` — get one order status definition via `GET /rest/orders/statuses/{statusId}`
+- feat: `OrdersModule.rename_status_definition` — update an order status definition's translated names via `PUT /rest/orders/statuses/{statusId}`
+- feat: `OrdersModule.delete_status_definition` — delete an order status definition via `DELETE /rest/orders/statuses/{statusId}`
+- feat: `OrdersModule.update_status_definition_properties` — bulk-update color/visibility properties across several order status definitions via `POST /rest/orders/statuses/group_functions`
+- feat: `OrderStatusNamePayload` — TypedDict for `create_status_definition`/`rename_status_definition`
+- feat: `OrdersModule.list_status_history` / `paginate_status_history` — search order status history via `GET /rest/orders/status-history`
+- feat: `OrdersModule.get_order_status_history` — get a single order's status history via `GET /rest/orders/{orderId}/status-history`
+- feat: `OrdersModule.list_date_types` — list order date types via `GET /rest/orders/dates/types`
+- feat: `OrdersModule.get_date_type` — get one order date type via `GET /rest/orders/dates/types/{typeId}`
+- feat: `OrdersModule.list_date_type_names` — list translated names of an order date type via `GET /rest/orders/dates/types/{typeId}/names`
+- feat: `OrdersModule.get_date_type_name` — get one translated name of an order date type via `GET /rest/orders/dates/types/{typeId}/names/{lang}`
+- feat: `OrdersModule.list_order_dates` — list all dates recorded on an order via `GET /rest/orders/{orderId}/dates`
+- feat: `OrdersModule.get_order_date` — get a single date recorded on an order via `GET /rest/orders/{orderId}/dates/{typeId}`
+- feat: `OrdersModule.search_item_transactions` / `paginate_item_transactions` — search order item transactions via `GET /rest/orders/items/transactions`
+- feat: `OrdersModule.update_item_transaction` — update an order item transaction via `PUT /rest/orders/items/transactions/{transactionId}`
+- feat: `OrdersModule.delete_item_transaction` — delete an order item transaction via `DELETE /rest/orders/items/transactions/{transactionId}`
+- feat: `OrdersModule.book_item_transactions` — bulk-book order item transactions by ID via `POST /rest/orders/items/transactions/booking`
+- feat: `OrdersModule.list_item_transactions` — list transactions of a single order item via `GET /rest/orders/items/{orderItemId}/transactions`
+- feat: `OrdersModule.create_item_transaction` — create a transaction for an order item via `POST /rest/orders/items/{orderItemId}/transactions`
+- feat: `OrderItemTransactionCreatePayload` — TypedDict for `create_item_transaction`
+- feat: `OrdersModule.book_item_in` — book a single order item's full quantity in via `POST /rest/orders/items/{orderItemId}/booking`
+- feat: `OrdersModule.list_order_items` / `paginate_order_items` — list an order's items via `GET /rest/orders/{orderId}/items`
+- feat: `OrdersModule.delete_order_item` — delete an order item via `DELETE /rest/orders/{orderId}/items/{orderItemId}`
+- feat: `OrdersModule.list_order_serial_numbers` — list all serial numbers on an order via `GET /rest/orders/{orderId}/items/serialNumbers`
+- feat: `OrdersModule.list_order_item_serial_numbers` — list serial numbers of a single order item via `GET /rest/orders/{orderId}/items/{orderItemId}/serialNumbers`
+- feat: `OrdersModule.create_order_item_serial_number` — create and bind a serial number to an order item via `POST /rest/orders/{orderId}/items/{orderItemId}/serialNumbers`
+- feat: `OrdersModule.list_order_package_numbers` — list an order's package numbers via `GET /rest/orders/{orderId}/packagenumbers`
+- feat: `OrdersModule.attach_order_item_warehouse_locations` — attach warehouse locations to order items via `POST /rest/orders/{orderId}/items/warehouse_locations/attach`
+- feat: `OrdersModule.detach_order_item_warehouse_locations` — detach warehouse locations from order items via `POST /rest/orders/{orderId}/items/warehouse_locations/detach`
+- feat: `OrdersModule.generate_order_item_reorders` — generate reorder(s) for an order's items via `POST /rest/orders/{orderId}/items/reorders/generate`
+- feat: `OrdersModule.create_order_reorder` — create a reorder from a parent order via `POST /rest/orders/{orderId}/reorders`
+- feat: `OrdersModule.generate_order_reorders` — generate reorder(s) for an order via `POST /rest/orders/{orderId}/reorders/generate`
+- feat: `OrdersModule.validate_order_reorders` — validate an order's items before creating a reorder via `POST /rest/orders/{orderId}/reorders/generate/validate`
+- feat: `OrdersModule.create_order_transactions` — bulk-create item transactions for an order's items via `POST /rest/orders/{orderId}/transactions`
+- feat: `OrderTransactionsCreatePayload` — TypedDict for `create_order_transactions`
+- `Order` reaches 45/307 endpoint coverage under the `Order` API tag (order item transactions, items, serial numbers, warehouse locations & reorders milestone)
+- refactor: split `OrdersModule` into a `modules/orders/` package (mixins per sub-resource group: core, statuses, status history, dates, transactions, order items, reorders) — no public API change
+
+
 ## [0.2.1] - 2026-07-01
 
 ### Stock

@@ -3,23 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, AsyncIterator
 
 if TYPE_CHECKING:
-    from .._types import OrderCreatePayload
+    from ..._types import OrderCreatePayload
 
-from .._session import _Session
+from ._base import OrdersBase
 
 
-class OrdersModule:
-    """Wraps the PlentyMarkets ``/rest/orders`` endpoints.
-
-    Args:
-        session: Shared authenticated session.
-    """
-
-    def __init__(self, session: _Session) -> None:
-        self._session = session
-
-    def __repr__(self) -> str:
-        return "<OrdersModule /rest/orders>"
+class CoreMixin(OrdersBase):
+    """Order CRUD, search, and family/account-URL lookups."""
 
     async def get(self, order_id: int) -> dict[str, Any]:
         """Get a single order by ID.
@@ -193,6 +183,179 @@ class OrdersModule:
         page = 1
         while True:
             result = await self.list(page=page, items_per_page=items_per_page)
+            entries = result.get("entries", [])
+            if not entries:
+                break
+            for entry in entries:
+                yield entry
+            if result.get("isLastPage", True):
+                break
+            page += 1
+
+    async def delete(self, order_id: int) -> dict[str, Any]:
+        """Delete an order.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+
+        Returns:
+            Empty dict on success (the API returns no body).
+        """
+        return await self._session.delete(f"/rest/orders/{order_id}")
+
+    async def cancel(
+        self,
+        order_id: int,
+        status_id: float | None = None,
+        message: str | None = None,
+    ) -> dict[str, Any]:
+        """Cancel an order.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+            status_id: Order status ID to set on cancellation.
+            message: Message displayed in the order's status history.
+
+        Returns:
+            The updated order dict (see :meth:`get` for the field reference).
+        """
+        data: dict[str, Any] = {}
+        if status_id is not None:
+            data["statusId"] = status_id
+        if message is not None:
+            data["message"] = message
+        return await self._session.put(f"/rest/orders/{order_id}/cancel", json=data)
+
+    async def get_family(self, order_id: int) -> dict[str, Any]:
+        """Get information about an order's family (related advance/sales orders).
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+
+        Returns:
+            A dict with the following keys:
+
+            - ``originOrderId`` (int): ID of the order this order originated
+              from (e.g. the advance order a sales order was converted from).
+            - ``mainSalesOrderId`` (int): ID of the main sales order in the
+              family.
+        """
+        return await self._session.get(f"/rest/orders/{order_id}/family")
+
+    async def get_my_account_url(self, order_id: int) -> list[Any]:
+        """Get the "My Account" URL(s) for an order.
+
+        Note:
+            PlentyMarkets' published OpenAPI spec declares this endpoint's
+            response as an untyped (``mixed``) array rather than a JSON
+            schema. Based on the endpoint's purpose, it typically contains a
+            single URL string. Verify against a live system before relying
+            on its shape.
+
+        Args:
+            order_id: The PlentyMarkets order ID.
+
+        Returns:
+            A list of URL strings pointing to the order in the shop's "My
+            Account" area.
+        """
+        return await self._session.get(f"/rest/orders/{order_id}/my_account_url")  # type: ignore[return-value]
+
+    async def search(
+        self,
+        filters: dict[str, Any] | None = None,
+        with_: list[str] | None = None,
+        sort_by: str | None = None,
+        sort_order: str | None = None,
+        lazy_loaded: bool | None = None,
+        page: int = 1,
+        items_per_page: int = 50,
+        use_post: bool = False,
+    ) -> dict[str, Any]:
+        """Search orders with filters, unlike :meth:`list` which only paginates.
+
+        Args:
+            filters: Optional dict of filter query parameters, e.g.
+                ``{"orderId": 42, "plentyId": 12345, "statusId": 5.0,
+                "referrerId": 1.0, "ownerId": 1, "itemId": 100,
+                "contactData": "smith", "hasValidInvoice": True}``. The API
+                supports ~45 filter keys, including dynamic ones like
+                ``orderProperty_{typeId}`` and ``orderDate_{typeId}`` — pass
+                any of them as extra keys in this dict.
+            with_: Optional list of related data to embed.
+            sort_by: Field name to sort results by.
+            sort_order: Sort direction, ``"asc"`` or ``"desc"``.
+            lazy_loaded: Whether to skip loading nested relations for speed.
+            page: Page number (1-indexed).
+            items_per_page: Results per page (max 250).
+            use_post: When ``True``, send the request as ``POST`` instead of
+                ``GET`` (still via query parameters, no JSON body) — useful
+                to avoid URL length limits with many filters. Both variants
+                hit functionally identical endpoints.
+
+        Returns:
+            A dict with the following keys:
+
+            - ``page`` (int): Current page number.
+            - ``totalsCount`` (int): Total number of matching orders.
+            - ``isLastPage`` (bool): ``True`` when no further pages exist.
+            - ``lastPageNumber`` (int): Number of the last page.
+            - ``firstOnPage`` (int): Index of the first entry on this page.
+            - ``lastOnPage`` (int): Index of the last entry on this page.
+            - ``itemsPerPage`` (int): Results per page, as requested.
+            - ``entries`` (list[dict]): Order dicts (see :meth:`get` for the
+              field reference).
+        """
+        params = self._build_params(
+            filters,
+            with_=with_,
+            page=page,
+            itemsPerPage=items_per_page,
+            sortBy=sort_by,
+            sortOrder=sort_order,
+            lazyLoaded=lazy_loaded,
+        )
+        method = self._session.post if use_post else self._session.get
+        return await method("/rest/orders/search", params=params)
+
+    async def paginate_search(
+        self,
+        filters: dict[str, Any] | None = None,
+        with_: list[str] | None = None,
+        sort_by: str | None = None,
+        sort_order: str | None = None,
+        lazy_loaded: bool | None = None,
+        items_per_page: int = 50,
+        use_post: bool = False,
+    ) -> AsyncIterator[dict[str, Any]]:
+        """Async generator that yields every order matching a search across all pages.
+
+        Args:
+            filters: Optional dict of filter query parameters (see
+                :meth:`search`).
+            with_: Optional list of related data to embed.
+            sort_by: Field name to sort results by.
+            sort_order: Sort direction, ``"asc"`` or ``"desc"``.
+            lazy_loaded: Whether to skip loading nested relations for speed.
+            items_per_page: Results per page request (max 250).
+            use_post: When ``True``, send each page request as ``POST``
+                instead of ``GET`` (see :meth:`search`).
+
+        Yields:
+            Individual order dicts (see :meth:`get` for the field reference).
+        """
+        page = 1
+        while True:
+            result = await self.search(
+                filters,
+                with_=with_,
+                sort_by=sort_by,
+                sort_order=sort_order,
+                lazy_loaded=lazy_loaded,
+                page=page,
+                items_per_page=items_per_page,
+                use_post=use_post,
+            )
             entries = result.get("entries", [])
             if not entries:
                 break

@@ -46,9 +46,9 @@ asyncio.run(main())
 ## Modules
 | Module    | Description                          | Key Methods                                                                                     |
 |-----------|--------------------------------------|-------------------------------------------------------------------------------------------------|
-| **Orders**    | Manage orders and order statuses.    | `get()`, `list()`, `create()`, `update_status()`, `paginate_orders()`                           |
+| **Orders**    | Manage orders, order items, item transactions, serial numbers, and reorders. | `get()`, `list()`, `create()`, `update_status()`, `search()`, `delete()`, `cancel()`, `list_order_items()`, `search_item_transactions()`, `create_order_transactions()`, `paginate_orders()` |
 | **Items**     | Manage items and item variants.      | `get()`, `list()`, `create()`, `update()`, `paginate_items()`                                   |
-| **Stock**     | Manage stock across warehouses.      | `get_by_warehouse()`, `correct()`, `paginate_stock()`                                           |
+| **Stock**     | Manage stock, warehouses, storage locations, and stock movements. | `get_by_warehouse()`, `correct()`, `list_warehouses()`, `book_incoming_items()`, `book_outgoing_items()`, `redistribute_stock()`, `paginate_stock()` |
 | **Contacts**  | Manage customer and supplier data.   | `get()`, `list()`, `create()`, `update()`, `paginate_contacts()`                                |
 | **Pim**       | Product Information Management — variations, attributes, categories, sales prices, barcodes, and more. | `client.pim.*` (70+ methods) |
 
@@ -59,12 +59,12 @@ Endpoint totals are counted against the [PlentyMarkets OpenAPI spec](https://raw
 | Module      | Endpoints  | Status                          |
 |-------------|------------|----------------------------------|
 | **Pim**         | 41 / 41    | ✅ Complete                      |
-| **Order**       | 2 / 239    | Core operations                  |
+| **Stock**       | 17 / 17    | ✅ Complete                      |
+| **Order**       | 45 / 307   | Lifecycle, items & transactions  |
 | **Item**        | 2 / 146    | Core operations                  |
 | **Account**     | 2 / 87     | Core operations                  |
-| **Stock**       | 2 / 16     | Core operations                  |
 
-`Pim` reached full endpoint coverage in `v0.2.0` — see [ROADMAP.md](ROADMAP.md) for the endpoint-by-endpoint breakdown and the rest of the API surface still planned. `Stock`'s two methods live under the API's `StockManagement` tag.
+`Pim` reached full endpoint coverage in `v0.2.0`, `Stock` shortly after — see [ROADMAP.md](ROADMAP.md) for the endpoint-by-endpoint breakdown and the rest of the API surface still planned. `Stock`'s 17 endpoints live under the API's `StockManagement` tag.
 
 ## Authentication
 1. Initialize `PlentyClient` with your PlentyMarkets username and password.

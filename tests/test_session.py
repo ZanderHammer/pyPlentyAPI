@@ -2,7 +2,7 @@ import pytest
 import httpx
 from datetime import datetime, timedelta, timezone
 
-from plentymarkets._session import _Session
+from plentymarkets._session import Session
 from plentymarkets._exceptions import (
     AuthError,
     ConnectionError,
@@ -15,10 +15,10 @@ from plentymarkets._exceptions import (
 BASE_URL = "https://shop.example.com"
 
 
-def make_session(httpx_mock) -> _Session:
-    """Helper: create a _Session backed by a mocked httpx client."""
+def make_session(httpx_mock) -> Session:
+    """Helper: create a Session backed by a mocked httpx client."""
     client = httpx.AsyncClient()
-    return _Session(BASE_URL, "user@test.com", "password", client)
+    return Session(BASE_URL, "user@test.com", "password", client)
 
 
 # --- login ---
@@ -83,13 +83,13 @@ async def test_login_raises_auth_error_on_401(httpx_mock):
 
 def test_is_token_expiring_when_no_token():
     client = httpx.AsyncClient()
-    session = _Session(BASE_URL, "u", "p", client)
+    session = Session(BASE_URL, "u", "p", client)
     assert session._is_token_expiring() is True
 
 
 def test_is_token_expiring_when_well_within_expiry():
     client = httpx.AsyncClient()
-    session = _Session(BASE_URL, "u", "p", client)
+    session = Session(BASE_URL, "u", "p", client)
     session._access_token = "tok"
     session._token_expiry = datetime.now(tz=timezone.utc) + timedelta(hours=1)
     assert session._is_token_expiring() is False
@@ -97,7 +97,7 @@ def test_is_token_expiring_when_well_within_expiry():
 
 def test_is_token_expiring_when_within_buffer():
     client = httpx.AsyncClient()
-    session = _Session(BASE_URL, "u", "p", client)
+    session = Session(BASE_URL, "u", "p", client)
     session._access_token = "tok"
     session._token_expiry = datetime.now(tz=timezone.utc) + timedelta(seconds=30)
     assert session._is_token_expiring() is True

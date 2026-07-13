@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "plentymarkets-api-client"
-version = "0.2.1"
+version = "0.3.1"
 description = "Async Python client for the PlentyMarkets REST API"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -54,7 +54,7 @@ asyncio_mode = "auto"
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.2.1"
+version = "0.3.1"
 tag_format = "v$version"
 version_files = ["pyproject.toml:version"]
 pre_bump_hooks = ["python3 scripts/bump_changelog.py"]
