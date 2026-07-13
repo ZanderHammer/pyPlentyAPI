@@ -51,7 +51,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.get_date_type_name` — get one translated name of an order date type via `GET /rest/orders/dates/types/{typeId}/names/{lang}`
 - feat: `OrdersModule.list_order_dates` — list all dates recorded on an order via `GET /rest/orders/{orderId}/dates`
 - feat: `OrdersModule.get_order_date` — get a single date recorded on an order via `GET /rest/orders/{orderId}/dates/{typeId}`
-- `Order` reaches 25/307 endpoint coverage under the `Order` API tag (order lifecycle & status management milestone)
+- feat: `OrdersModule.search_item_transactions` / `paginate_item_transactions` — search order item transactions via `GET /rest/orders/items/transactions`
+- feat: `OrdersModule.update_item_transaction` — update an order item transaction via `PUT /rest/orders/items/transactions/{transactionId}`
+- feat: `OrdersModule.delete_item_transaction` — delete an order item transaction via `DELETE /rest/orders/items/transactions/{transactionId}`
+- feat: `OrdersModule.book_item_transactions` — bulk-book order item transactions by ID via `POST /rest/orders/items/transactions/booking`
+- feat: `OrdersModule.list_item_transactions` — list transactions of a single order item via `GET /rest/orders/items/{orderItemId}/transactions`
+- feat: `OrdersModule.create_item_transaction` — create a transaction for an order item via `POST /rest/orders/items/{orderItemId}/transactions`
+- feat: `OrderItemTransactionCreatePayload` — TypedDict for `create_item_transaction`
+- feat: `OrdersModule.book_item_in` — book a single order item's full quantity in via `POST /rest/orders/items/{orderItemId}/booking`
+- feat: `OrdersModule.list_order_items` / `paginate_order_items` — list an order's items via `GET /rest/orders/{orderId}/items`
+- feat: `OrdersModule.delete_order_item` — delete an order item via `DELETE /rest/orders/{orderId}/items/{orderItemId}`
+- feat: `OrdersModule.list_order_serial_numbers` — list all serial numbers on an order via `GET /rest/orders/{orderId}/items/serialNumbers`
+- feat: `OrdersModule.list_order_item_serial_numbers` — list serial numbers of a single order item via `GET /rest/orders/{orderId}/items/{orderItemId}/serialNumbers`
+- feat: `OrdersModule.create_order_item_serial_number` — create and bind a serial number to an order item via `POST /rest/orders/{orderId}/items/{orderItemId}/serialNumbers`
+- feat: `OrdersModule.list_order_package_numbers` — list an order's package numbers via `GET /rest/orders/{orderId}/packagenumbers`
+- feat: `OrdersModule.attach_order_item_warehouse_locations` — attach warehouse locations to order items via `POST /rest/orders/{orderId}/items/warehouse_locations/attach`
+- feat: `OrdersModule.detach_order_item_warehouse_locations` — detach warehouse locations from order items via `POST /rest/orders/{orderId}/items/warehouse_locations/detach`
+- feat: `OrdersModule.generate_order_item_reorders` — generate reorder(s) for an order's items via `POST /rest/orders/{orderId}/items/reorders/generate`
+- feat: `OrdersModule.create_order_reorder` — create a reorder from a parent order via `POST /rest/orders/{orderId}/reorders`
+- feat: `OrdersModule.generate_order_reorders` — generate reorder(s) for an order via `POST /rest/orders/{orderId}/reorders/generate`
+- feat: `OrdersModule.validate_order_reorders` — validate an order's items before creating a reorder via `POST /rest/orders/{orderId}/reorders/generate/validate`
+- feat: `OrdersModule.create_order_transactions` — bulk-create item transactions for an order's items via `POST /rest/orders/{orderId}/transactions`
+- feat: `OrderTransactionsCreatePayload` — TypedDict for `create_order_transactions`
+- `Order` reaches 45/307 endpoint coverage under the `Order` API tag (order item transactions, items, serial numbers, warehouse locations & reorders milestone)
 
 
 ## [0.2.1] - 2026-07-01

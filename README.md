@@ -46,7 +46,7 @@ asyncio.run(main())
 ## Modules
 | Module    | Description                          | Key Methods                                                                                     |
 |-----------|--------------------------------------|-------------------------------------------------------------------------------------------------|
-| **Orders**    | Manage orders, order status definitions, status history, and date reference data. | `get()`, `list()`, `create()`, `update_status()`, `search()`, `delete()`, `cancel()`, `list_status_definitions()`, `list_status_history()`, `paginate_orders()` |
+| **Orders**    | Manage orders, order items, item transactions, serial numbers, and reorders. | `get()`, `list()`, `create()`, `update_status()`, `search()`, `delete()`, `cancel()`, `list_order_items()`, `search_item_transactions()`, `create_order_transactions()`, `paginate_orders()` |
 | **Items**     | Manage items and item variants.      | `get()`, `list()`, `create()`, `update()`, `paginate_items()`                                   |
 | **Stock**     | Manage stock, warehouses, storage locations, and stock movements. | `get_by_warehouse()`, `correct()`, `list_warehouses()`, `book_incoming_items()`, `book_outgoing_items()`, `redistribute_stock()`, `paginate_stock()` |
 | **Contacts**  | Manage customer and supplier data.   | `get()`, `list()`, `create()`, `update()`, `paginate_contacts()`                                |
@@ -60,7 +60,7 @@ Endpoint totals are counted against the [PlentyMarkets OpenAPI spec](https://raw
 |-------------|------------|----------------------------------|
 | **Pim**         | 41 / 41    | ✅ Complete                      |
 | **Stock**       | 17 / 17    | ✅ Complete                      |
-| **Order**       | 25 / 307   | Lifecycle & status management    |
+| **Order**       | 45 / 307   | Lifecycle, items & transactions  |
 | **Item**        | 2 / 146    | Core operations                  |
 | **Account**     | 2 / 87     | Core operations                  |
 

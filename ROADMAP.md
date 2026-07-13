@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**130 / 1837** endpoints implemented across **53** API tags.
+**150 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **25/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **45/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-25/307 implemented.
+45/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1380,32 +1380,32 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | GET | `/rest/orders/dates/types/{typeId}/names` | List names of an order date type | **implemented** | `orders.list_date_type_names` |
 | GET | `/rest/orders/dates/types/{typeId}/names/{lang}` | Get a name of an order date type | **implemented** | `orders.get_date_type_name` |
 | GET | `/rest/orders/documents/accounting_summary` | List document accounting summaries | planned | — |
-| POST | `/rest/orders/items/dates` | Create a date for an order item | planned | — |
-| DELETE | `/rest/orders/items/dates/{id}` | Delete a date of an order item | planned | — |
-| GET | `/rest/orders/items/dates/{id}` | Get date of an order item | planned | — |
-| PUT | `/rest/orders/items/dates/{id}` | Update a date of an order item | planned | — |
-| DELETE | `/rest/orders/items/outgoing_stocks` | Revert outgoing stock for order items | planned | — |
-| POST | `/rest/orders/items/properties` | Create order item property | planned | — |
-| DELETE | `/rest/orders/items/properties/{id}` | Delete order item property | planned | — |
-| GET | `/rest/orders/items/properties/{id}` | Get order item property | planned | — |
-| PUT | `/rest/orders/items/properties/{id}` | Update order item property | planned | — |
-| GET | `/rest/orders/items/transactions` | Search order item transactions | planned | — |
-| POST | `/rest/orders/items/transactions/booking` | Book order item transactions | planned | — |
-| DELETE | `/rest/orders/items/transactions/{transactionId}` | Delete order item transaction | planned | — |
-| PUT | `/rest/orders/items/transactions/{transactionId}` | Update order item transaction | planned | — |
-| POST | `/rest/orders/items/{orderItemId}/booking` | Book an order item in | planned | — |
-| GET | `/rest/orders/items/{orderItemId}/dates` | List all dates of an order item | planned | — |
-| DELETE | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Delete a date of an order item by order item and date type | planned | — |
-| GET | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Get a date of an order item by order item and date type | planned | — |
-| POST | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Create a date for an order item by order item and date type | planned | — |
-| PUT | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Update a date of an order item by order item and date type | planned | — |
-| GET | `/rest/orders/items/{orderItemId}/properties` | Get all order item properties | planned | — |
-| DELETE | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Delete order item property | planned | — |
-| GET | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Get order item property | planned | — |
-| POST | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Create order item property | planned | — |
-| PUT | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Update order item property | planned | — |
-| GET | `/rest/orders/items/{orderItemId}/transactions` | List order item transactions | planned | — |
-| POST | `/rest/orders/items/{orderItemId}/transactions` | Create order item transaction | planned | — |
+| POST | `/rest/orders/items/dates` | Create a date for an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/items/dates/{id}` | Delete a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/dates/{id}` | Get date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/items/dates/{id}` | Update a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/items/outgoing_stocks` | Revert outgoing stock for order items | deprecated (use `POST /rest/{orderType}/{orderId}/cancel_booking`) | — |
+| POST | `/rest/orders/items/properties` | Create order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/items/properties/{id}` | Delete order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/properties/{id}` | Get order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/items/properties/{id}` | Update order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/transactions` | Search order item transactions | **implemented** | `orders.search_item_transactions` |
+| POST | `/rest/orders/items/transactions/booking` | Book order item transactions | **implemented** | `orders.book_item_transactions` |
+| DELETE | `/rest/orders/items/transactions/{transactionId}` | Delete order item transaction | **implemented** | `orders.delete_item_transaction` |
+| PUT | `/rest/orders/items/transactions/{transactionId}` | Update order item transaction | **implemented** | `orders.update_item_transaction` |
+| POST | `/rest/orders/items/{orderItemId}/booking` | Book an order item in | **implemented** | `orders.book_item_in` |
+| GET | `/rest/orders/items/{orderItemId}/dates` | List all dates of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Delete a date of an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Get a date of an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| POST | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Create a date for an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Update a date of an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/properties` | Get all order item properties | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Delete order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Get order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| POST | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Create order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Update order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/transactions` | List order item transactions | **implemented** | `orders.list_item_transactions` |
+| POST | `/rest/orders/items/{orderItemId}/transactions` | Create order item transaction | **implemented** | `orders.create_item_transaction` |
 | GET | `/rest/orders/properties/types` | List order property types | planned | — |
 | POST | `/rest/orders/properties/types` | Create order property type | planned | — |
 | DELETE | `/rest/orders/properties/types/{typeId}` | Delete property type | planned | — |
@@ -1483,27 +1483,27 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | POST | `/rest/orders/{orderId}/delivery_orders/automatic` | Create delivery orders automatically for all order items | planned | — |
 | POST | `/rest/orders/{orderId}/delivery_orders/validate` | Validate order items for create a delivery order from a parent order | planned | — |
 | GET | `/rest/orders/{orderId}/family` | Get information about the order family | **implemented** | `orders.get_family` |
-| GET | `/rest/orders/{orderId}/items` | Search order items | planned | — |
-| POST | `/rest/orders/{orderId}/items/reorders/generate` | Create / update reorder(s) for order items | planned | — |
-| GET | `/rest/orders/{orderId}/items/serialNumbers` | List serial numbers of an order | planned | — |
-| POST | `/rest/orders/{orderId}/items/warehouse_locations/attach` | Attach warehouse locations. | planned | — |
-| POST | `/rest/orders/{orderId}/items/warehouse_locations/detach` | Detach warehouse locations. | planned | — |
-| DELETE | `/rest/orders/{orderId}/items/{orderItemId}` | Delete an order item | planned | — |
-| GET | `/rest/orders/{orderId}/items/{orderItemId}/serialNumbers` | List serial numbers of an order item | planned | — |
-| POST | `/rest/orders/{orderId}/items/{orderItemId}/serialNumbers` | Create item serial number and bind it to order item | planned | — |
+| GET | `/rest/orders/{orderId}/items` | Search order items | **implemented** | `orders.list_order_items` |
+| POST | `/rest/orders/{orderId}/items/reorders/generate` | Create / update reorder(s) for order items | **implemented** | `orders.generate_order_item_reorders` |
+| GET | `/rest/orders/{orderId}/items/serialNumbers` | List serial numbers of an order | **implemented** | `orders.list_order_serial_numbers` |
+| POST | `/rest/orders/{orderId}/items/warehouse_locations/attach` | Attach warehouse locations. | **implemented** | `orders.attach_order_item_warehouse_locations` |
+| POST | `/rest/orders/{orderId}/items/warehouse_locations/detach` | Detach warehouse locations. | **implemented** | `orders.detach_order_item_warehouse_locations` |
+| DELETE | `/rest/orders/{orderId}/items/{orderItemId}` | Delete an order item | **implemented** | `orders.delete_order_item` |
+| GET | `/rest/orders/{orderId}/items/{orderItemId}/serialNumbers` | List serial numbers of an order item | **implemented** | `orders.list_order_item_serial_numbers` |
+| POST | `/rest/orders/{orderId}/items/{orderItemId}/serialNumbers` | Create item serial number and bind it to order item | **implemented** | `orders.create_order_item_serial_number` |
 | GET | `/rest/orders/{orderId}/my_account_url` | Get My Account url of the order | **implemented** | `orders.get_my_account_url` |
 | POST | `/rest/orders/{orderId}/offers` | Create an offer from a parent order | planned | — |
-| DELETE | `/rest/orders/{orderId}/outgoing_stocks` | Revert outgoing stock | planned | — |
-| POST | `/rest/orders/{orderId}/outgoing_stocks` | Book out order items | planned | — |
-| GET | `/rest/orders/{orderId}/packagenumbers` | List package numbers of an order | planned | — |
+| DELETE | `/rest/orders/{orderId}/outgoing_stocks` | Revert outgoing stock | deprecated (use `POST /rest/{orderType}/{orderId}/cancel_booking`) | — |
+| POST | `/rest/orders/{orderId}/outgoing_stocks` | Book out order items | deprecated (use `POST /rest/{orderType}/{orderId}/book`) | — |
+| GET | `/rest/orders/{orderId}/packagenumbers` | List package numbers of an order | **implemented** | `orders.list_order_package_numbers` |
 | POST | `/rest/orders/{orderId}/properties` | Create property for an order | planned | — |
 | GET | `/rest/orders/{orderId}/properties/{typeId?}` | List properties of an order | planned | — |
 | DELETE | `/rest/orders/{orderId}/properties/{typeId}` | Delete property of an order by order ID and property type ID | planned | — |
 | PUT | `/rest/orders/{orderId}/properties/{typeId}` | Update property of an order by order ID and property ID | planned | — |
 | POST | `/rest/orders/{orderId}/redistributions` | Create a redistribution from a parent order | planned | — |
-| POST | `/rest/orders/{orderId}/reorders` | Create a reorder from a parent order | planned | — |
-| POST | `/rest/orders/{orderId}/reorders/generate` | Create reorder(s) for an order | planned | — |
-| POST | `/rest/orders/{orderId}/reorders/generate/validate` | Validate order items for create a reorder from a sales order, delivery order, repair and warranty | planned | — |
+| POST | `/rest/orders/{orderId}/reorders` | Create a reorder from a parent order | **implemented** | `orders.create_order_reorder` |
+| POST | `/rest/orders/{orderId}/reorders/generate` | Create reorder(s) for an order | **implemented** | `orders.generate_order_reorders` |
+| POST | `/rest/orders/{orderId}/reorders/generate/validate` | Validate order items for create a reorder from a sales order, delivery order, repair and warranty | **implemented** | `orders.validate_order_reorders` |
 | POST | `/rest/orders/{orderId}/repairs` | Create a repair order from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/repairs/validate` | Validate order items for create a repair from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/returns` | Create a return from a parent order | planned | — |
@@ -1537,7 +1537,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | GET | `/rest/orders/{orderId}/status-history` | Get the status history of an order | **implemented** | `orders.get_order_status_history` |
 | POST | `/rest/orders/{orderId}/subscriptions` | Create a subscription from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/subscriptions/validate` | Validate order items for subscription creation from a parent order | planned | — |
-| POST | `/rest/orders/{orderId}/transactions` | Create order item transactions for an order | planned | — |
+| POST | `/rest/orders/{orderId}/transactions` | Create order item transactions for an order | **implemented** | `orders.create_order_transactions` |
 | POST | `/rest/orders/{orderId}/warranties` | Create a warranty from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/warranties/validate` | Validate order items for create a warranty from a parent order | planned | — |
 | POST | `/rest/redistributions` | Create a redistribution | planned | — |
@@ -1626,6 +1626,25 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | POST | `/rest/warranties/{orderId}/cancel_booking` | Revert outgoing stock | planned | — |
 | POST | `/rest/warranties/{orderId}/cancel_booking/validate` | Validate cancellation of the booking of an order | planned | — |
 | PUT | `/rest/warranties/{orderId}/preview` | Get a warranty update preview | planned | — |
+
+#### Known Schema Gaps
+
+The following `OrdersModule` methods accept `data: dict[str, Any]` because
+PlentyMarkets' published OpenAPI spec declares no request body schema at all
+for these endpoints — not even an empty placeholder object. The payload
+shape below is inferred from field names, sibling schemas, and endpoint
+descriptions only; each method's docstring carries the same caveat. Verify
+against a live system and tighten to a proper `TypedDict` once confirmed.
+
+| Method | Endpoint | Note |
+|---|---|---|
+| `orders.create_order_item_serial_number` | `POST /rest/orders/{orderId}/items/{orderItemId}/serialNumbers` | Likely just `serialNumber` (string), possibly with an `identification`-style field. |
+| `orders.attach_order_item_warehouse_locations` | `POST /rest/orders/{orderId}/items/warehouse_locations/attach` | Likely a list of order-item-to-warehouse-location mappings. |
+| `orders.detach_order_item_warehouse_locations` | `POST /rest/orders/{orderId}/items/warehouse_locations/detach` | Likely the same shape as `attach`. |
+| `orders.generate_order_item_reorders` | `POST /rest/orders/{orderId}/items/reorders/generate` | Likely order item IDs and/or quantities to reorder. |
+| `orders.create_order_reorder` | `POST /rest/orders/{orderId}/reorders` | Spec description: "parent order ID and quantities to use must be specified" — exact key names unknown. |
+| `orders.generate_order_reorders` | `POST /rest/orders/{orderId}/reorders/generate` | Order-scoped sibling of `generate_order_item_reorders`; likely the same shape. |
+| `orders.validate_order_reorders` | `POST /rest/orders/{orderId}/reorders/generate/validate` | Likely the same shape as `create_order_reorder`/`generate_order_reorders`, used for pre-flight validation. |
 
 ### `OrderSummary`
 
