@@ -34,7 +34,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.update_property_type` — update an order property type via `PUT /rest/orders/properties/types/{typeId}`
 - feat: `OrderPropertyTypeNamePayload`, `OrderPropertyTypeCreatePayload`, `OrderPropertyTypeUpdatePayload` — TypedDicts for `create_property_type`/`update_property_type`
 - refactor: `modules/orders/` gains a `properties.py` mixin (`PropertiesMixin`) — no public API change
-- `Order` reaches 64/307 endpoint coverage under the `Order` API tag (order-item dates milestone)
+- feat: `OrdersModule.delete_order_property` — delete a property of an order by property ID via `DELETE /rest/orders/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.update_order_property` — update a property of an order by property ID via `PUT /rest/orders/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.create_order_property` — create and link a property to an order via `POST /rest/orders/{orderId}/properties` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.list_order_properties` — list properties of an order via `GET /rest/orders/{orderId}/properties/{typeId}` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
+- feat: `OrdersModule.delete_order_property_by_type` — delete a property of an order by order and type via `DELETE /rest/orders/{orderId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.update_order_property_by_type` — update a property of an order by order and type via `PUT /rest/orders/{orderId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- `Order` reaches 75/307 endpoint coverage under the `Order` API tag (order property types and order-level property values milestone)
 
 ## [0.3.2] - 2026-07-13
 

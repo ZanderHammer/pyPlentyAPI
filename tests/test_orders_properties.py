@@ -96,3 +96,86 @@ async def test_update_property_type_puts_data(httpx_mock, orders):
     import json as _json
 
     assert _json.loads(request.content) == payload
+
+
+# --- order-level property values ---
+
+
+async def test_delete_order_property_sends_delete_request(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/orders/properties/501",
+        json={},
+    )
+    result = await orders.delete_order_property(501)
+    assert result == {}
+
+
+async def test_update_order_property_puts_data(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/orders/properties/501",
+        json={"id": 501, "orderId": 42, "typeId": 1, "value": "A1"},
+    )
+    result = await orders.update_order_property(501, type_id=1, value="A1")
+    assert result["value"] == "A1"
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == {"id": 501, "typeId": 1, "value": "A1"}
+
+
+async def test_create_order_property_posts_data(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/42/properties",
+        json={"id": 501, "orderId": 42, "typeId": 1, "value": "A1"},
+    )
+    result = await orders.create_order_property(42, type_id=1, value="A1")
+    assert result["id"] == 501
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == {
+        "orderId": 42,
+        "typeId": 1,
+        "value": "A1",
+    }
+
+
+async def test_list_order_properties_calls_correct_url(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/42/properties/1",
+        json=[{"id": 501, "orderId": 42, "typeId": 1, "value": "A1"}],
+    )
+    result = await orders.list_order_properties(42, type_id=1)
+    assert result[0]["value"] == "A1"
+
+
+async def test_delete_order_property_by_type_sends_delete_request(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/orders/42/properties/1",
+        json={},
+    )
+    result = await orders.delete_order_property_by_type(42, type_id=1)
+    assert result == {}
+
+
+async def test_update_order_property_by_type_puts_data(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/orders/42/properties/1",
+        json={"id": 501, "orderId": 42, "typeId": 1, "value": "A2"},
+    )
+    result = await orders.update_order_property_by_type(42, type_id=1, value="A2")
+    assert result["value"] == "A2"
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == {
+        "orderId": 42,
+        "typeId": 1,
+        "value": "A2",
+    }

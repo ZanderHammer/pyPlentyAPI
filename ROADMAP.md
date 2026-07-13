@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**174 / 1837** endpoints implemented across **53** API tags.
+**180 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **69/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **75/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1411,8 +1411,8 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | DELETE | `/rest/orders/properties/types/{typeId}` | Delete property type | **implemented** | `orders.delete_property_type` |
 | GET | `/rest/orders/properties/types/{typeId}` | Get property type | **implemented** | `orders.get_property_type` |
 | PUT | `/rest/orders/properties/types/{typeId}` | Update property type | **implemented** | `orders.update_property_type` |
-| DELETE | `/rest/orders/properties/{id}` | Delete property of an order by property ID | planned | — |
-| PUT | `/rest/orders/properties/{id}` | Update property of an order by property ID | planned | — |
+| DELETE | `/rest/orders/properties/{id}` | Delete property of an order by property ID | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.delete_order_property` |
+| PUT | `/rest/orders/properties/{id}` | Update property of an order by property ID | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.update_order_property` |
 | GET | `/rest/orders/referrers` | List referrers | planned | — |
 | GET | `/rest/orders/referrers/next_free_main` | Get next free main referrer ID | planned | — |
 | GET | `/rest/orders/referrers/search` | Search for referrers | planned | — |
@@ -1496,10 +1496,10 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | DELETE | `/rest/orders/{orderId}/outgoing_stocks` | Revert outgoing stock | **implemented** | `orders.revert_order_outgoing_stock` |
 | POST | `/rest/orders/{orderId}/outgoing_stocks` | Book out order items | **implemented** | `orders.book_out_order_items` |
 | GET | `/rest/orders/{orderId}/packagenumbers` | List package numbers of an order | **implemented** | `orders.list_order_package_numbers` |
-| POST | `/rest/orders/{orderId}/properties` | Create property for an order | planned | — |
-| GET | `/rest/orders/{orderId}/properties/{typeId?}` | List properties of an order | planned | — |
-| DELETE | `/rest/orders/{orderId}/properties/{typeId}` | Delete property of an order by order ID and property type ID | planned | — |
-| PUT | `/rest/orders/{orderId}/properties/{typeId}` | Update property of an order by order ID and property ID | planned | — |
+| POST | `/rest/orders/{orderId}/properties` | Create property for an order | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.create_order_property` |
+| GET | `/rest/orders/{orderId}/properties/{typeId?}` | List properties of an order | **implemented** (deprecated by PlentyMarkets, use `GET /rest/orders/{orderId}`) | `orders.list_order_properties` |
+| DELETE | `/rest/orders/{orderId}/properties/{typeId}` | Delete property of an order by order ID and property type ID | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.delete_order_property_by_type` |
+| PUT | `/rest/orders/{orderId}/properties/{typeId}` | Update property of an order by order ID and property ID | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.update_order_property_by_type` |
 | POST | `/rest/orders/{orderId}/redistributions` | Create a redistribution from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/reorders` | Create a reorder from a parent order | **implemented** | `orders.create_order_reorder` |
 | POST | `/rest/orders/{orderId}/reorders/generate` | Create reorder(s) for an order | **implemented** | `orders.generate_order_reorders` |
