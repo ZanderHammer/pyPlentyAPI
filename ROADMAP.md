@@ -1356,8 +1356,8 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | PUT | `/rest/offers/{orderId}/preview` | Get an offer update preview | planned | — |
 | GET | `/rest/orders` | Search order | **implemented** | `orders.list` |
 | POST | `/rest/orders` | Create an order | **implemented** | `orders.create` |
-| GET | `/rest/orders/batch` | Get orders | planned | — |
-| GET | `/rest/orders/contacts/{contactId}` | List orders of a contact | planned | — |
+| GET | `/rest/orders/batch` | Get orders | **implemented** | `orders.get_orders_batch` |
+| GET | `/rest/orders/contacts/{contactId}` | List orders of a contact | **implemented** | `orders.list_contact_orders` |
 | POST | `/rest/orders/contacts/{contactId}/multi_order` | Create a multi-order | planned | — |
 | GET | `/rest/orders/coupons/campaigns` | Get list of campaigns | planned | — |
 | DELETE | `/rest/orders/coupons/campaigns/codes/{code}` | Delete a coupon | planned | — |

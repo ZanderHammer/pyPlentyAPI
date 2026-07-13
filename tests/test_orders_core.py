@@ -239,3 +239,60 @@ async def test_paginate_search_stops_on_empty_entries(httpx_mock, orders):
     )
     results = [o async for o in orders.paginate_search()]
     assert results == []
+
+
+async def test_get_orders_batch_calls_correct_url(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/batch?orderIds=1%2C2&addOrderItems=true",
+        json=[{"id": 1}, {"id": 2}],
+    )
+    result = await orders.get_orders_batch([1, 2], add_order_items=True)
+    assert result == [{"id": 1}, {"id": 2}]
+
+
+async def test_list_contact_orders_sends_pagination_params(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/contacts/7?page=1&itemsPerPage=50",
+        json={"page": 1, "totalsCount": 0, "isLastPage": True, "entries": []},
+    )
+    result = await orders.list_contact_orders(7)
+    assert result["page"] == 1
+
+
+async def test_paginate_contact_orders_yields_all_items_across_pages(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/contacts/7?page=1&itemsPerPage=2",
+        json={
+            "page": 1,
+            "totalsCount": 3,
+            "isLastPage": False,
+            "entries": [{"id": 1}, {"id": 2}],
+        },
+    )
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/contacts/7?page=2&itemsPerPage=2",
+        json={
+            "page": 2,
+            "totalsCount": 3,
+            "isLastPage": True,
+            "entries": [{"id": 3}],
+        },
+    )
+    results = [
+        o async for o in orders.paginate_contact_orders(7, items_per_page=2)
+    ]
+    assert [r["id"] for r in results] == [1, 2, 3]
+
+
+async def test_paginate_contact_orders_stops_on_empty_entries(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/contacts/7?page=1&itemsPerPage=50",
+        json={"page": 1, "totalsCount": 0, "isLastPage": True, "entries": []},
+    )
+    results = [o async for o in orders.paginate_contact_orders(7)]
+    assert results == []

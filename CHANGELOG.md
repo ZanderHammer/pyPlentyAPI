@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Order
+
+- feat: `OrdersModule.get_orders_batch` — get several orders at once by ID via `GET /rest/orders/batch`
+- feat: `OrdersModule.list_contact_orders` / `paginate_contact_orders` — list/iterate a contact's orders via `GET /rest/orders/contacts/{contactId}`
+
 ## [0.3.2] - 2026-07-13
 
 ## [0.3.1] - 2026-07-13

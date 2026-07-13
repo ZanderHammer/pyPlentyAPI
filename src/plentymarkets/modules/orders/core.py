@@ -364,3 +364,102 @@ class CoreMixin(OrdersBase):
             if result.get("isLastPage", True):
                 break
             page += 1
+
+    async def get_orders_batch(
+        self,
+        order_ids: list[int],
+        with_: list[str] | None = None,
+        add_order_items: bool | None = None,
+    ) -> Any:
+        """Get several orders at once by ID.
+
+        Note:
+            PlentyMarkets' published OpenAPI spec declares this endpoint's
+            response as ``Collection`` — a bare placeholder schema
+            (``{"type": "object"}``) with no further structure, despite the
+            plural "Get orders" name and the array-shaped ``orderIds``
+            filter. Unlike similar gaps elsewhere in this module, the
+            response isn't even confidently a list here. Verify against a
+            live system before depending on this endpoint's shape.
+
+        Args:
+            order_ids: Order IDs to fetch.
+            with_: Related data to embed on each order.
+            add_order_items: Whether to include each order's items in the
+                response.
+
+        Returns:
+            Unverified shape — see the Note above. Likely a list of order
+            dicts (see :meth:`get` for the per-order field reference).
+        """
+        params = self._build_params(
+            None,
+            with_=with_,
+            orderIds=",".join(str(i) for i in order_ids),
+            addOrderItems=add_order_items,
+        )
+        return await self._session.get("/rest/orders/batch", params=params)
+
+    async def list_contact_orders(
+        self,
+        contact_id: int,
+        page: int = 1,
+        items_per_page: int = 50,
+        with_: list[str] | None = None,
+    ) -> dict[str, Any]:
+        """List all orders belonging to a contact, with pagination.
+
+        Args:
+            contact_id: The contact ID.
+            page: Page number (1-indexed).
+            items_per_page: Results per page.
+            with_: Related data to embed on each order.
+
+        Returns:
+            A dict with the following keys:
+
+            - ``page`` (int): Current page number.
+            - ``totalsCount`` (int): Total number of matching orders.
+            - ``isLastPage`` (bool): ``True`` when no further pages exist.
+            - ``lastPageNumber`` (int): Number of the last page.
+            - ``entries`` (list[dict]): Order dicts (see :meth:`get` for the
+              field reference).
+        """
+        params = self._build_params(
+            None, with_=with_, page=page, itemsPerPage=items_per_page
+        )
+        return await self._session.get(
+            f"/rest/orders/contacts/{contact_id}", params=params
+        )
+
+    async def paginate_contact_orders(
+        self,
+        contact_id: int,
+        with_: list[str] | None = None,
+        items_per_page: int = 50,
+    ) -> AsyncIterator[dict[str, Any]]:
+        """Async generator that yields every order belonging to a contact
+        across all pages.
+
+        Args:
+            contact_id: The contact ID.
+            with_: Related data to embed on each order.
+            items_per_page: Results per page request (max 250).
+
+        Yields:
+            Individual order dicts (see :meth:`get` for the field
+            reference).
+        """
+        page = 1
+        while True:
+            result = await self.list_contact_orders(
+                contact_id, page=page, items_per_page=items_per_page, with_=with_
+            )
+            entries = result.get("entries", [])
+            if not entries:
+                break
+            for entry in entries:
+                yield entry
+            if result.get("isLastPage", True):
+                break
+            page += 1
