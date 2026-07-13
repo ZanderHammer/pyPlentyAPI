@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**109 / 1837** endpoints implemented across **53** API tags.
+**130 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **4/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **25/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-4/307 implemented.
+25/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1375,10 +1375,10 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | GET | `/rest/orders/currencies/{currencyIso}` | Get a currency | planned | — |
 | GET | `/rest/orders/currencies/{currencyIso}/countries` | List countries for a currency | planned | — |
 | GET | `/rest/orders/currencies/{currencyIso}/exchangeRate` | Get the exchange rate for a currency | planned | — |
-| GET | `/rest/orders/dates/types` | List order date types | planned | — |
-| GET | `/rest/orders/dates/types/{typeId}` | Find an order date type | planned | — |
-| GET | `/rest/orders/dates/types/{typeId}/names` | List names of an order date type | planned | — |
-| GET | `/rest/orders/dates/types/{typeId}/names/{lang}` | Get a name of an order date type | planned | — |
+| GET | `/rest/orders/dates/types` | List order date types | **implemented** | `orders.list_date_types` |
+| GET | `/rest/orders/dates/types/{typeId}` | Find an order date type | **implemented** | `orders.get_date_type` |
+| GET | `/rest/orders/dates/types/{typeId}/names` | List names of an order date type | **implemented** | `orders.list_date_type_names` |
+| GET | `/rest/orders/dates/types/{typeId}/names/{lang}` | Get a name of an order date type | **implemented** | `orders.get_date_type_name` |
 | GET | `/rest/orders/documents/accounting_summary` | List document accounting summaries | planned | — |
 | POST | `/rest/orders/items/dates` | Create a date for an order item | planned | — |
 | DELETE | `/rest/orders/items/dates/{id}` | Delete a date of an order item | planned | — |
@@ -1420,8 +1420,8 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | DELETE | `/rest/orders/referrers/{referrerId}` | Delete referrer | planned | — |
 | GET | `/rest/orders/referrers/{referrerId}` | Get a referrer | planned | — |
 | PUT | `/rest/orders/referrers/{referrerId}` | Update referrer | planned | — |
-| GET | `/rest/orders/search` | Search orders | planned | — |
-| POST | `/rest/orders/search` | Search orders | planned | — |
+| GET | `/rest/orders/search` | Search orders | **implemented** | `orders.search` |
+| POST | `/rest/orders/search` | Search orders | **implemented** | `orders.search` |
 | GET | `/rest/orders/shipping/active_shipping_service_providers` | Get the list of active shipping service providers for registration | planned | — |
 | GET | `/rest/orders/shipping/countries` | List shipping countries | planned | — |
 | GET | `/rest/orders/shipping/list_shipping_information` | Return paginated list containing orders with shipping information | planned | — |
@@ -1456,33 +1456,33 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | POST | `/rest/orders/shipping/shipping_service_providers` | Save a shipping service provider | planned | — |
 | GET | `/rest/orders/shipping/shipping_service_providers/plugins` | List shipping service provider plugins | planned | — |
 | GET | `/rest/orders/shipping/shipping_service_providers/{shipping_service_provider_id}` | Get a shipping service provider | planned | — |
-| GET | `/rest/orders/status-history` | List status histories of orders | planned | — |
-| GET | `/rest/orders/statuses` | Searches for order statuses | planned | — |
-| POST | `/rest/orders/statuses` | Creates an order status. | planned | — |
-| GET | `/rest/orders/statuses/all` | Get all order statuses | planned | — |
-| POST | `/rest/orders/statuses/group_functions` | Change order status properties | planned | — |
-| DELETE | `/rest/orders/statuses/{statusId}` | Delete an order status | planned | — |
-| GET | `/rest/orders/statuses/{statusId}` | Get an order status | planned | — |
-| PUT | `/rest/orders/statuses/{statusId}` | Update an order status | planned | — |
-| DELETE | `/rest/orders/{orderId}` | Delete an order | planned | — |
+| GET | `/rest/orders/status-history` | List status histories of orders | **implemented** | `orders.list_status_history` |
+| GET | `/rest/orders/statuses` | Searches for order statuses | **implemented** | `orders.list_status_definitions` |
+| POST | `/rest/orders/statuses` | Creates an order status. | **implemented** | `orders.create_status_definition` |
+| GET | `/rest/orders/statuses/all` | Get all order statuses | **implemented** | `orders.list_all_status_definitions` |
+| POST | `/rest/orders/statuses/group_functions` | Change order status properties | **implemented** | `orders.update_status_definition_properties` |
+| DELETE | `/rest/orders/statuses/{statusId}` | Delete an order status | **implemented** | `orders.delete_status_definition` |
+| GET | `/rest/orders/statuses/{statusId}` | Get an order status | **implemented** | `orders.get_status_definition` |
+| PUT | `/rest/orders/statuses/{statusId}` | Update an order status | **implemented** | `orders.rename_status_definition` |
+| DELETE | `/rest/orders/{orderId}` | Delete an order | **implemented** | `orders.delete` |
 | GET | `/rest/orders/{orderId}` | Get an order | **implemented** | `orders.get` |
 | PUT | `/rest/orders/{orderId}` | Update an order | **implemented** | `orders.update_status` |
 | POST | `/rest/orders/{orderId}/advance_orders` | Create an advance order from a parent order | planned | — |
 | PUT | `/rest/orders/{orderId}/advance_orders/convert` | Convert a sales order into an advance order | planned | — |
 | POST | `/rest/orders/{orderId}/booking` | Book an order in | planned | — |
-| PUT | `/rest/orders/{orderId}/cancel` | Cancel an order | planned | — |
+| PUT | `/rest/orders/{orderId}/cancel` | Cancel an order | **implemented** | `orders.cancel` |
 | GET | `/rest/orders/{orderId}/contactWish` | Get a contact wish | planned | — |
 | POST | `/rest/orders/{orderId}/coupons/{coupon}` | Redeem a coupon code | planned | — |
 | POST | `/rest/orders/{orderId}/coupons/{coupon}/validate` | Validate coupon for order | planned | — |
 | POST | `/rest/orders/{orderId}/credit_notes` | Create a credit note from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/credit_notes/validate` | Validate order items for create a credit note from a parent order | planned | — |
 | PUT | `/rest/orders/{orderId}/currency` | Update the order currency | planned | — |
-| GET | `/rest/orders/{orderId}/dates` | List all dates of an order | planned | — |
-| GET | `/rest/orders/{orderId}/dates/{typeId}` | Get a date | planned | — |
+| GET | `/rest/orders/{orderId}/dates` | List all dates of an order | **implemented** | `orders.list_order_dates` |
+| GET | `/rest/orders/{orderId}/dates/{typeId}` | Get a date | **implemented** | `orders.get_order_date` |
 | POST | `/rest/orders/{orderId}/delivery_orders` | Create a delivery order from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/delivery_orders/automatic` | Create delivery orders automatically for all order items | planned | — |
 | POST | `/rest/orders/{orderId}/delivery_orders/validate` | Validate order items for create a delivery order from a parent order | planned | — |
-| GET | `/rest/orders/{orderId}/family` | Get information about the order family | planned | — |
+| GET | `/rest/orders/{orderId}/family` | Get information about the order family | **implemented** | `orders.get_family` |
 | GET | `/rest/orders/{orderId}/items` | Search order items | planned | — |
 | POST | `/rest/orders/{orderId}/items/reorders/generate` | Create / update reorder(s) for order items | planned | — |
 | GET | `/rest/orders/{orderId}/items/serialNumbers` | List serial numbers of an order | planned | — |
@@ -1491,7 +1491,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | DELETE | `/rest/orders/{orderId}/items/{orderItemId}` | Delete an order item | planned | — |
 | GET | `/rest/orders/{orderId}/items/{orderItemId}/serialNumbers` | List serial numbers of an order item | planned | — |
 | POST | `/rest/orders/{orderId}/items/{orderItemId}/serialNumbers` | Create item serial number and bind it to order item | planned | — |
-| GET | `/rest/orders/{orderId}/my_account_url` | Get My Account url of the order | planned | — |
+| GET | `/rest/orders/{orderId}/my_account_url` | Get My Account url of the order | **implemented** | `orders.get_my_account_url` |
 | POST | `/rest/orders/{orderId}/offers` | Create an offer from a parent order | planned | — |
 | DELETE | `/rest/orders/{orderId}/outgoing_stocks` | Revert outgoing stock | planned | — |
 | POST | `/rest/orders/{orderId}/outgoing_stocks` | Book out order items | planned | — |
@@ -1534,7 +1534,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | PUT | `/rest/orders/{orderId}/shipping/shipping_information/additional_data` | Update additional data of the shipping information | planned | — |
 | GET | `/rest/orders/{orderId}/shipping/shipping_information/export_label` | Get Export label | planned | — |
 | PUT | `/rest/orders/{orderId}/shipping/shipping_information/status` | Update the shipping status of the shipping information | planned | — |
-| GET | `/rest/orders/{orderId}/status-history` | Get the status history of an order | planned | — |
+| GET | `/rest/orders/{orderId}/status-history` | Get the status history of an order | **implemented** | `orders.get_order_status_history` |
 | POST | `/rest/orders/{orderId}/subscriptions` | Create a subscription from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/subscriptions/validate` | Validate order items for subscription creation from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/transactions` | Create order item transactions for an order | planned | — |

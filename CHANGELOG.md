@@ -28,6 +28,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `StockIntakePayload`, `VariationStockIntakePayload`, `StockDischargePayload`, `VariationStockDischargePayload`, `UnpackVariationPayload` — TypedDicts for the stock booking endpoints
 - `Stock` reaches full endpoint coverage (17/17) under the `StockManagement` API tag
 
+### Order
+
+- feat: `OrdersModule.delete` — delete an order via `DELETE /rest/orders/{orderId}`
+- feat: `OrdersModule.cancel` — cancel an order via `PUT /rest/orders/{orderId}/cancel`
+- feat: `OrdersModule.get_family` — get an order's family info via `GET /rest/orders/{orderId}/family`
+- feat: `OrdersModule.get_my_account_url` — get an order's "My Account" URL via `GET /rest/orders/{orderId}/my_account_url`
+- feat: `OrdersModule.search` / `paginate_search` — filterable order search (unlike `list`, which only paginates) via `GET`/`POST /rest/orders/search`
+- feat: `OrdersModule.list_status_definitions` / `paginate_status_definitions` — search order status definitions via `GET /rest/orders/statuses`
+- feat: `OrdersModule.list_all_status_definitions` — list every order status definition via `GET /rest/orders/statuses/all`
+- feat: `OrdersModule.create_status_definition` — create an order status definition via `POST /rest/orders/statuses`
+- feat: `OrdersModule.get_status_definition` — get one order status definition via `GET /rest/orders/statuses/{statusId}`
+- feat: `OrdersModule.rename_status_definition` — update an order status definition's translated names via `PUT /rest/orders/statuses/{statusId}`
+- feat: `OrdersModule.delete_status_definition` — delete an order status definition via `DELETE /rest/orders/statuses/{statusId}`
+- feat: `OrdersModule.update_status_definition_properties` — bulk-update color/visibility properties across several order status definitions via `POST /rest/orders/statuses/group_functions`
+- feat: `OrderStatusNamePayload` — TypedDict for `create_status_definition`/`rename_status_definition`
+- feat: `OrdersModule.list_status_history` / `paginate_status_history` — search order status history via `GET /rest/orders/status-history`
+- feat: `OrdersModule.get_order_status_history` — get a single order's status history via `GET /rest/orders/{orderId}/status-history`
+- feat: `OrdersModule.list_date_types` — list order date types via `GET /rest/orders/dates/types`
+- feat: `OrdersModule.get_date_type` — get one order date type via `GET /rest/orders/dates/types/{typeId}`
+- feat: `OrdersModule.list_date_type_names` — list translated names of an order date type via `GET /rest/orders/dates/types/{typeId}/names`
+- feat: `OrdersModule.get_date_type_name` — get one translated name of an order date type via `GET /rest/orders/dates/types/{typeId}/names/{lang}`
+- feat: `OrdersModule.list_order_dates` — list all dates recorded on an order via `GET /rest/orders/{orderId}/dates`
+- feat: `OrdersModule.get_order_date` — get a single date recorded on an order via `GET /rest/orders/{orderId}/dates/{typeId}`
+- `Order` reaches 25/307 endpoint coverage under the `Order` API tag (order lifecycle & status management milestone)
+
 
 ## [0.2.1] - 2026-07-01
 
