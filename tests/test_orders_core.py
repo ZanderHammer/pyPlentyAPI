@@ -296,3 +296,71 @@ async def test_paginate_contact_orders_stops_on_empty_entries(httpx_mock, orders
     )
     results = [o async for o in orders.paginate_contact_orders(7)]
     assert results == []
+
+
+async def test_create_multi_order_posts_to_contact_url(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/contacts/7/multi_order",
+        json={"id": 99, "typeId": 9},
+    )
+    result = await orders.create_multi_order(7)
+    assert result["typeId"] == 9
+
+
+async def test_list_accounting_summaries_defaults_to_page_1_and_10(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/documents/accounting_summary?page=1&itemsPerPage=10",
+        json={"page": 1, "totalsCount": 0, "isLastPage": True, "entries": []},
+    )
+    result = await orders.list_accounting_summaries()
+    assert result["page"] == 1
+
+
+async def test_list_accounting_summaries_sends_filters(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=(
+            f"{BASE_URL}/rest/orders/documents/accounting_summary?orderId=42"
+            "&documentType=reversal_document&createdAtFrom=2026-01-01"
+            "&createdAtTo=2026-02-01&page=1&itemsPerPage=10"
+        ),
+        json={"page": 1, "totalsCount": 0, "isLastPage": True, "entries": []},
+    )
+    result = await orders.list_accounting_summaries(
+        order_id=42,
+        document_type="reversal_document",
+        created_at_from="2026-01-01",
+        created_at_to="2026-02-01",
+    )
+    assert result["page"] == 1
+
+
+async def test_paginate_accounting_summaries_yields_all_items_across_pages(
+    httpx_mock, orders
+):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/documents/accounting_summary?page=1&itemsPerPage=2",
+        json={
+            "page": 1,
+            "totalsCount": 3,
+            "isLastPage": False,
+            "entries": [{"key": "a"}, {"key": "b"}],
+        },
+    )
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/documents/accounting_summary?page=2&itemsPerPage=2",
+        json={
+            "page": 2,
+            "totalsCount": 3,
+            "isLastPage": True,
+            "entries": [{"key": "c"}],
+        },
+    )
+    results = [
+        s async for s in orders.paginate_accounting_summaries(items_per_page=2)
+    ]
+    assert [r["key"] for r in results] == ["a", "b", "c"]

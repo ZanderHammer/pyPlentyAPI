@@ -463,3 +463,128 @@ class CoreMixin(OrdersBase):
             if result.get("isLastPage", True):
                 break
             page += 1
+
+    async def create_multi_order(self, contact_id: int) -> dict[str, Any]:
+        """Create a multi-order for a contact.
+
+        Note:
+            Behavior depends on the options chosen in the PlentyMarkets
+            back end under System » Orders » Order types » Multi-order.
+
+        Args:
+            contact_id: The contact ID.
+
+        Returns:
+            The created order dict (see :meth:`get` for the field
+            reference); ``typeId`` will be ``9`` (multi-order).
+        """
+        return await self._session.post(
+            f"/rest/orders/contacts/{contact_id}/multi_order"
+        )
+
+    async def list_accounting_summaries(
+        self,
+        order_id: int | None = None,
+        document_type: str | None = None,
+        created_at_from: str | None = None,
+        created_at_to: str | None = None,
+        page: int = 1,
+        items_per_page: int = 10,
+    ) -> dict[str, Any]:
+        """List document accounting summaries, with pagination.
+
+        A document accounting summary is saved along with each reversal
+        document (for invoices and credit notes).
+
+        Note:
+            The spec documents this endpoint's default ``itemsPerPage`` as
+            ``10``, not this module's usual default of ``50``.
+
+        Args:
+            order_id: Filter by order ID.
+            document_type: Filter by document type. One of
+                ``"reversal_document"`` (invoice reversal) or
+                ``"reversal_refund"`` (credit note reversal).
+            created_at_from: Only return entries created on or after this
+                date.
+            created_at_to: Only return entries created on or before this
+                date.
+            page: Page number (1-indexed).
+            items_per_page: Results per page.
+
+        Returns:
+            A dict with the following keys:
+
+            - ``page`` (int): Current page number.
+            - ``totalsCount`` (int): Total number of matching entries.
+            - ``isLastPage`` (bool): ``True`` when no further pages exist.
+            - ``lastPageNumber`` (int): Number of the last page.
+            - ``entries`` (list[dict]): ``StorageObject`` dicts, each with:
+
+                - ``key`` (str): The storage key.
+                - ``path`` (str): The storage path.
+                - ``lastModified`` (str): ISO 8601 last-modified timestamp.
+                - ``metaData`` (list[dict]): Arbitrary metadata entries.
+                - ``eTag`` (str): The object's ETag.
+                - ``size`` (int): Object size in bytes.
+                - ``storageClass`` (str): The storage backend class.
+                - ``body`` (str): The object body, if inlined.
+                - ``contentType`` (str): MIME type.
+                - ``contentLength`` (str): Content length.
+        """
+        params = self._build_params(
+            None,
+            orderId=order_id,
+            documentType=document_type,
+            createdAtFrom=created_at_from,
+            createdAtTo=created_at_to,
+            page=page,
+            itemsPerPage=items_per_page,
+        )
+        return await self._session.get(
+            "/rest/orders/documents/accounting_summary", params=params
+        )
+
+    async def paginate_accounting_summaries(
+        self,
+        order_id: int | None = None,
+        document_type: str | None = None,
+        created_at_from: str | None = None,
+        created_at_to: str | None = None,
+        items_per_page: int = 10,
+    ) -> AsyncIterator[dict[str, Any]]:
+        """Async generator that yields every document accounting summary
+        across all pages.
+
+        Args:
+            order_id: Filter by order ID.
+            document_type: Filter by document type (see
+                :meth:`list_accounting_summaries`).
+            created_at_from: Only return entries created on or after this
+                date.
+            created_at_to: Only return entries created on or before this
+                date.
+            items_per_page: Results per page request (max 250).
+
+        Yields:
+            Individual ``StorageObject`` dicts (see
+            :meth:`list_accounting_summaries` for the field reference).
+        """
+        page = 1
+        while True:
+            result = await self.list_accounting_summaries(
+                order_id=order_id,
+                document_type=document_type,
+                created_at_from=created_at_from,
+                created_at_to=created_at_to,
+                page=page,
+                items_per_page=items_per_page,
+            )
+            entries = result.get("entries", [])
+            if not entries:
+                break
+            for entry in entries:
+                yield entry
+            if result.get("isLastPage", True):
+                break
+            page += 1

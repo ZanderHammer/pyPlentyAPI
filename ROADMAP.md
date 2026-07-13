@@ -1358,7 +1358,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | POST | `/rest/orders` | Create an order | **implemented** | `orders.create` |
 | GET | `/rest/orders/batch` | Get orders | **implemented** | `orders.get_orders_batch` |
 | GET | `/rest/orders/contacts/{contactId}` | List orders of a contact | **implemented** | `orders.list_contact_orders` |
-| POST | `/rest/orders/contacts/{contactId}/multi_order` | Create a multi-order | planned | — |
+| POST | `/rest/orders/contacts/{contactId}/multi_order` | Create a multi-order | **implemented** | `orders.create_multi_order` |
 | GET | `/rest/orders/coupons/campaigns` | Get list of campaigns | planned | — |
 | DELETE | `/rest/orders/coupons/campaigns/codes/{code}` | Delete a coupon | planned | — |
 | GET | `/rest/orders/coupons/campaigns/codes/{code}` | Get coupon code information | planned | — |
@@ -1379,7 +1379,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | GET | `/rest/orders/dates/types/{typeId}` | Find an order date type | **implemented** | `orders.get_date_type` |
 | GET | `/rest/orders/dates/types/{typeId}/names` | List names of an order date type | **implemented** | `orders.list_date_type_names` |
 | GET | `/rest/orders/dates/types/{typeId}/names/{lang}` | Get a name of an order date type | **implemented** | `orders.get_date_type_name` |
-| GET | `/rest/orders/documents/accounting_summary` | List document accounting summaries | planned | — |
+| GET | `/rest/orders/documents/accounting_summary` | List document accounting summaries | **implemented** | `orders.list_accounting_summaries` |
 | POST | `/rest/orders/items/dates` | Create a date for an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | DELETE | `/rest/orders/items/dates/{id}` | Delete a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | GET | `/rest/orders/items/dates/{id}` | Get date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
