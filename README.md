@@ -9,7 +9,7 @@ Async Python client for the [PlentyMarkets REST API](https://developers.plentyma
 
 ## Features
 - **Async-first**: Built on `httpx.AsyncClient` for high-performance async/await support.
-- **Lazy-loaded modules**: Access `orders`, `items`, `stock`, and `contacts` as properties of `PlentyClient`.
+- **Lazy-loaded modules**: Access `orders`, `items`, `stock`, `contacts`, and `pim` as properties of `PlentyClient`.
 - **Auto-refreshing auth**: Tokens are refreshed automatically when within 60 seconds of expiry.
 - **Comprehensive error handling**: Custom exceptions for HTTP status codes (e.g., `NotFoundError`, `RateLimitError`).
 - **Pagination support**: Async generators for iterating across all pages of results.
@@ -31,7 +31,11 @@ import asyncio
 from plentymarkets import PlentyClient
 
 async def main():
-    async with PlentyClient(username="your_username", password="your_password") as client:
+    async with PlentyClient(
+        base_url="https://your-shop.plentymarkets.com",
+        username="your_username",
+        password="your_password",
+    ) as client:
         # Fetch an order by ID
         order = await client.orders.get(123)
         print(order)
@@ -50,7 +54,7 @@ asyncio.run(main())
 | **Items**     | Manage items and item variants.      | `get()`, `list()`, `create()`, `update()`, `paginate_items()`                                   |
 | **Stock**     | Manage stock, warehouses, storage locations, and stock movements. | `get_by_warehouse()`, `correct()`, `list_warehouses()`, `book_incoming_items()`, `book_outgoing_items()`, `redistribute_stock()`, `paginate_stock()` |
 | **Contacts**  | Manage customer and supplier data.   | `get()`, `list()`, `create()`, `update()`, `paginate_contacts()`                                |
-| **Pim**       | Product Information Management — variations, attributes, categories, sales prices, barcodes, and more. | `client.pim.*` (70+ methods) |
+| **Pim**       | Product Information Management — variations, attributes, categories, sales prices, barcodes, and more. | `client.pim.*` (80+ methods) |
 
 ## API Coverage
 
@@ -58,11 +62,11 @@ Endpoint totals are counted against the [PlentyMarkets OpenAPI spec](https://raw
 
 | Module      | Endpoints  | Status                          |
 |-------------|------------|----------------------------------|
-| **Pim**         | 41 / 41    | ✅ Complete                      |
+| **Pim**         | 80 / 80    | ✅ Complete                      |
 | **Stock**       | 17 / 17    | ✅ Complete                      |
 | **Order**       | 45 / 307   | Lifecycle, items & transactions  |
-| **Item**        | 2 / 146    | Core operations                  |
-| **Account**     | 2 / 87     | Core operations                  |
+| **Item**        | 4 / 294    | Core operations                  |
+| **Account**     | 4 / 151    | Core operations                  |
 
 `Pim` reached full endpoint coverage in `v0.2.0`, `Stock` shortly after — see [ROADMAP.md](ROADMAP.md) for the endpoint-by-endpoint breakdown and the rest of the API surface still planned. `Stock`'s 17 endpoints live under the API's `StockManagement` tag.
 
