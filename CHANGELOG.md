@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-07-13
+
 ### Stock
 
 - feat: `StockModule.list_stock` / `paginate_all_stock` — list/iterate stock levels across all warehouses via `GET /rest/stockmanagement/stock`
