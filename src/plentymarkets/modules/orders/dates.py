@@ -164,6 +164,10 @@ class DatesMixin(OrdersBase):
             **Deprecated** by PlentyMarkets: use
             ``PUT /rest/orders/{orderId}`` instead.
 
+        Note:
+            See the caveat on :meth:`create_item_date` regarding the
+            published schema's missing date-value field.
+
         Args:
             date_id: The order-item date record ID.
 
@@ -179,6 +183,10 @@ class DatesMixin(OrdersBase):
         Note:
             **Deprecated** by PlentyMarkets: use
             ``PUT /rest/orders/{orderId}`` instead.
+
+        Note:
+            See the caveat on :meth:`create_item_date` regarding the
+            published schema's missing date-value field.
 
         Args:
             date_id: The order-item date record ID.
