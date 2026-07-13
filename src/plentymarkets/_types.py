@@ -53,6 +53,28 @@ class OrderCreatePayload(TypedDict, total=False):
     relations: NotRequired[list[dict]]
 
 
+class OrderStatusNamePayload(TypedDict, total=False):
+    """One entry in the ``names`` list for
+    :meth:`OrdersModule.create_status_definition` and
+    :meth:`OrdersModule.rename_status_definition`
+    (``POST``/``PUT /rest/orders/statuses/{statusId}``).
+
+    PlentyMarkets' published OpenAPI spec declares ``names`` entries as a
+    generic ``Collection`` (empty schema) rather than a typed object; the
+    shape below is inferred from the sibling ``OrderDateTypeName`` object.
+    Verify against a live system before relying on it.
+
+    Keys:
+        lang: Two-letter ISO 639-1 language code, e.g. ``"en"``, ``"de"``.
+            **Required.**
+        name: Translated display name for the status in this language.
+            **Required.**
+    """
+
+    lang: Required[str]
+    name: Required[str]
+
+
 # ---------------------------------------------------------------------------
 # Items  (/rest/items)
 # ---------------------------------------------------------------------------
