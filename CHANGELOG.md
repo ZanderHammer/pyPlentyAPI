@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Pim
+
+- refactor: split `PimModule` into a `modules/pim/` package (mixins per sub-resource group: variations, variation identifiers/taxonomy/commerce, attributes, attribute names, attribute values, categories, sales prices, barcodes, item serial numbers, lookups) — no public API change
+
 ## [0.3.0] - 2026-07-13
 
 ### Stock

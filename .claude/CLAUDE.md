@@ -39,6 +39,7 @@ src/plentymarkets/
   _types.py          # TypedDict payload definitions for all write operations
   modules/
     orders/           # OrdersModule  → /rest/orders (package: see "Splitting a large module" below)
+    pim/              # PimModule     → /rest/pim (package: see "Splitting a large module" below)
     items.py         # ItemsModule   → /rest/items
     stock.py         # StockModule   → /rest/stock
     contacts.py      # ContactsModule → /rest/accounts/contacts
