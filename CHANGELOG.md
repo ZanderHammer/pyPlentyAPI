@@ -27,6 +27,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.get_item_date_by_type` — get a date of an order item by type via `GET /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.create_item_date_by_type` — create a date for an order item by type via `POST /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.update_item_date_by_type` — update a date of an order item by type via `PUT /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.list_property_types` — list order property types via `GET /rest/orders/properties/types`
+- feat: `OrdersModule.create_property_type` — create an order property type via `POST /rest/orders/properties/types`
+- feat: `OrdersModule.delete_property_type` — delete an order property type via `DELETE /rest/orders/properties/types/{typeId}`
+- feat: `OrdersModule.get_property_type` — get one order property type via `GET /rest/orders/properties/types/{typeId}`
+- feat: `OrdersModule.update_property_type` — update an order property type via `PUT /rest/orders/properties/types/{typeId}`
+- feat: `OrderPropertyTypeNamePayload`, `OrderPropertyTypeCreatePayload`, `OrderPropertyTypeUpdatePayload` — TypedDicts for `create_property_type`/`update_property_type`
+- refactor: `modules/orders/` gains a `properties.py` mixin (`PropertiesMixin`) — no public API change
 - `Order` reaches 64/307 endpoint coverage under the `Order` API tag (order-item dates milestone)
 
 ## [0.3.2] - 2026-07-13

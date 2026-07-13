@@ -124,6 +124,71 @@ class OrderTransactionsCreatePayload(TypedDict, total=False):
     status: Required[str]
 
 
+class OrderPropertyTypeNamePayload(TypedDict, total=False):
+    """One entry in the ``names`` list for
+    :meth:`OrdersModule.create_property_type` and
+    :meth:`OrdersModule.update_property_type`
+    (``POST``/``PUT /rest/orders/properties/types(/{typeId})``).
+
+    Keys:
+        lang: Two-letter ISO 639-1 language code, e.g. ``"en"``, ``"de"``.
+            **Required.**
+        name: Translated display name for the property type in this
+            language. **Required.**
+    """
+
+    lang: Required[str]
+    name: Required[str]
+
+
+class OrderPropertyTypeCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`OrdersModule.create_property_type`
+    (``POST /rest/orders/properties/types``).
+
+    Note:
+        PlentyMarkets requires both a singular ``lang``/``name`` pair *and*
+        a ``names`` array of the same shape simultaneously — redundant-
+        looking, but both are marked required in the spec. Implemented
+        literally; verify against a live system before assuming one can be
+        omitted.
+
+    Keys:
+        lang: Two-letter ISO 639-1 language code for ``name``. **Required.**
+        name: Translated display name for the property type. **Required.**
+        names: List of translated names in other languages. Use
+            :class:`OrderPropertyTypeNamePayload` for IDE autocomplete.
+            **Required.**
+        cast: Data type of the property's values. One of ``"string"``,
+            ``"int"``, ``"numeric"``, ``"bool"``, or
+            ``"enum(val1,val2,val3,...)"``.
+        position: Sort position.
+    """
+
+    lang: Required[str]
+    name: Required[str]
+    names: Required[list[OrderPropertyTypeNamePayload]]
+    cast: NotRequired[str]
+    position: NotRequired[int]
+
+
+class OrderPropertyTypeUpdatePayload(TypedDict, total=False):
+    """Payload for :meth:`OrdersModule.update_property_type`
+    (``PUT /rest/orders/properties/types/{typeId}``).
+
+    Keys:
+        lang: Two-letter ISO 639-1 language code for ``name``. **Required.**
+        name: Translated display name for the property type. **Required.**
+        names: List of translated names to create/update. Use
+            :class:`OrderPropertyTypeNamePayload` for IDE autocomplete.
+        position: Sort position.
+    """
+
+    lang: Required[str]
+    name: Required[str]
+    names: NotRequired[list[OrderPropertyTypeNamePayload]]
+    position: NotRequired[int]
+
+
 # ---------------------------------------------------------------------------
 # Items  (/rest/items)
 # ---------------------------------------------------------------------------
