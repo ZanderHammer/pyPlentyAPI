@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any, AsyncIterator
 if TYPE_CHECKING:
     from .._types import ContactCreatePayload, ContactUpdatePayload
 
-from .._session import _Session
+from .._session import Session
 
 
 class ContactsModule:
@@ -18,7 +18,7 @@ class ContactsModule:
         session: Shared authenticated session.
     """
 
-    def __init__(self, session: _Session) -> None:
+    def __init__(self, session: Session) -> None:
         self._session = session
 
     def __repr__(self) -> str:

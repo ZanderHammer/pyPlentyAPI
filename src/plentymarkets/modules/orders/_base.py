@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ..._session import _Session
+from ..._session import Session
 
 
 class OrdersBase:
@@ -14,7 +14,7 @@ class OrdersBase:
     ``OrdersModule.__init__``.
     """
 
-    _session: _Session
+    _session: Session
 
     @staticmethod
     def _build_params(

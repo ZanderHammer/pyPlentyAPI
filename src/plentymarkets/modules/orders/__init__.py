@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ..._session import _Session
+from ..._session import Session
 from ._base import OrdersBase
 from .core import CoreMixin
 from .dates import DatesMixin
@@ -33,7 +33,7 @@ class OrdersModule(
         session: Shared authenticated session.
     """
 
-    def __init__(self, session: _Session) -> None:
+    def __init__(self, session: Session) -> None:
         self._session = session
 
     def __repr__(self) -> str:

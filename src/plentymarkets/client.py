@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import httpx
 
-from ._session import _Session
+from ._session import Session
 from .modules.contacts import ContactsModule
 from .modules.items import ItemsModule
 from .modules.orders import OrdersModule
@@ -33,7 +33,7 @@ class PlentyClient:
 
     def __init__(self, base_url: str, username: str, password: str) -> None:
         self._httpx_client = httpx.AsyncClient()
-        self._session = _Session(base_url, username, password, self._httpx_client)
+        self._session = Session(base_url, username, password, self._httpx_client)
         self._orders: OrdersModule | None = None
         self._items: ItemsModule | None = None
         self._stock: StockModule | None = None

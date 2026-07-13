@@ -12,7 +12,7 @@ if TYPE_CHECKING:
         WarehouseCreatePayload,
     )
 
-from .._session import _Session
+from .._session import Session
 
 
 class StockModule:
@@ -23,7 +23,7 @@ class StockModule:
         session: Shared authenticated session.
     """
 
-    def __init__(self, session: _Session) -> None:
+    def __init__(self, session: Session) -> None:
         self._session = session
 
     def __repr__(self) -> str:

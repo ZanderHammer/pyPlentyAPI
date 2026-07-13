@@ -27,6 +27,7 @@ uv run pytest -m integration         # requires live credentials
 - CHANGELOG.md: Group changes by module. Use the same prefix as in commit messages.
 - Small focused commits, one logical change each
 - **Branch workflow:** All changes must branch off `staging` and be merged back into `staging`. `main` is protected and only updated via merges from `staging`.
+- **Internal class naming:** files like `_session.py`/`_types.py`/`_exceptions.py` keep a leading underscore (signals "not part of the public API" to humans), but the *classes* they define (`Session`, exception types, etc.) do not — only `plentymarkets/__init__.py`'s `__all__` decides what's public. A leading underscore on a class name (e.g. the old `_Session`) makes Pylance's `reportPrivateUsage` flag every legitimate cross-file import within the package (`client.py`, every `modules/*.py`), which is not useful noise here.
 
 ## Package structure
 ```
@@ -54,7 +55,7 @@ split, via mixins:
 - `__init__.py` — composes `<Name>Module` from all mixins + `<Name>Base`,
   via multiple inheritance. Defines only `__init__`/`__repr__`. This is the
   only file client.py's `from .modules.<name> import <Name>Module` needs.
-- `_base.py` — `<Name>Base` class: shared `_session: _Session` annotation
+- `_base.py` — `<Name>Base` class: shared `_session: Session` annotation
   (no `__init__`) + shared helpers (e.g. `_build_params`).
 - One file per sub-resource group, each a `<Group>Mixin(<Name>Base)` with
   only that group's `async def` methods, moved verbatim (docstrings unchanged).
@@ -68,7 +69,7 @@ split, via mixins:
 2-dot relative imports (`from .._session import ...`). Files inside the new
 `modules/<name>/` package are one level deeper and need **3 dots**
 (`from ..._session import ...`, `from ..._types import ...`). Sibling
-imports within the package use 1 dot (`from ._base import _<Name>Base`).
+imports within the package use 1 dot (`from ._base import <Name>Base`).
 Getting this wrong is a silent `ImportError` only caught at test time — no
 ruff/mypy import-order check exists in this repo to catch it.
 
