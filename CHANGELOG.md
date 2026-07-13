@@ -74,6 +74,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.create_order_transactions` — bulk-create item transactions for an order's items via `POST /rest/orders/{orderId}/transactions`
 - feat: `OrderTransactionsCreatePayload` — TypedDict for `create_order_transactions`
 - `Order` reaches 45/307 endpoint coverage under the `Order` API tag (order item transactions, items, serial numbers, warehouse locations & reorders milestone)
+- refactor: split `OrdersModule` into a `modules/orders/` package (mixins per sub-resource group: core, statuses, status history, dates, transactions, order items, reorders) — no public API change
 
 
 ## [0.2.1] - 2026-07-01

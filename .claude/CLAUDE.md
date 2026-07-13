@@ -37,11 +37,44 @@ src/plentymarkets/
   _exceptions.py     # exception hierarchy
   _types.py          # TypedDict payload definitions for all write operations
   modules/
-    orders.py        # OrdersModule  → /rest/orders
+    orders/           # OrdersModule  → /rest/orders (package: see "Splitting a large module" below)
     items.py         # ItemsModule   → /rest/items
     stock.py         # StockModule   → /rest/stock
     contacts.py      # ContactsModule → /rest/accounts/contacts
 ```
+
+## Splitting a large module into a package
+
+When a `modules/<name>.py` file exceeds ~500 lines or covers 5+ distinct
+sub-resource groups (e.g. `orders.py`, `pim.py`), convert it to a package
+`modules/<name>/` instead of leaving it flat. **Public API stays 100% flat**
+— `<Name>Module` still exposes every method directly; only the internals
+split, via mixins:
+
+- `__init__.py` — composes `<Name>Module` from all mixins + `<Name>Base`,
+  via multiple inheritance. Defines only `__init__`/`__repr__`. This is the
+  only file client.py's `from .modules.<name> import <Name>Module` needs.
+- `_base.py` — `<Name>Base` class: shared `_session: _Session` annotation
+  (no `__init__`) + shared helpers (e.g. `_build_params`).
+- One file per sub-resource group, each a `<Group>Mixin(<Name>Base)` with
+  only that group's `async def` methods, moved verbatim (docstrings unchanged).
+  Mixin/base class names do **not** get a leading underscore even though
+  they're internal — Pylance's `reportPrivateUsage` flags underscore-prefixed
+  names imported across sibling files (it treats each file in the package as
+  its own "module"). `__all__ = ["<Name>Module"]` in `__init__.py` already
+  keeps them out of `import *`, which is all the privacy signal needed here.
+
+**Import-dot gotcha**: files living directly under `modules/<name>.py` used
+2-dot relative imports (`from .._session import ...`). Files inside the new
+`modules/<name>/` package are one level deeper and need **3 dots**
+(`from ..._session import ...`, `from ..._types import ...`). Sibling
+imports within the package use 1 dot (`from ._base import _<Name>Base`).
+Getting this wrong is a silent `ImportError` only caught at test time — no
+ruff/mypy import-order check exists in this repo to catch it.
+
+Split the matching test file the same way: one `tests/test_<name>_<group>.py`
+per source group, each with its own copy of the `session`/`<name>` fixtures
+(this repo's convention — no shared conftest fixtures).
 
 ## TypedDicts
 `_types.py` holds `TypedDict` definitions for every method that accepts a `data` dict.
