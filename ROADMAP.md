@@ -1380,10 +1380,10 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | GET | `/rest/orders/dates/types/{typeId}/names` | List names of an order date type | **implemented** | `orders.list_date_type_names` |
 | GET | `/rest/orders/dates/types/{typeId}/names/{lang}` | Get a name of an order date type | **implemented** | `orders.get_date_type_name` |
 | GET | `/rest/orders/documents/accounting_summary` | List document accounting summaries | **implemented** | `orders.list_accounting_summaries` |
-| POST | `/rest/orders/items/dates` | Create a date for an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| DELETE | `/rest/orders/items/dates/{id}` | Delete a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| GET | `/rest/orders/items/dates/{id}` | Get date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| PUT | `/rest/orders/items/dates/{id}` | Update a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| POST | `/rest/orders/items/dates` | Create a date for an order item | **implemented** (deprecated by PlentyMarkets) | `orders.create_item_date` |
+| DELETE | `/rest/orders/items/dates/{id}` | Delete a date of an order item | **implemented** (deprecated by PlentyMarkets) | `orders.delete_item_date` |
+| GET | `/rest/orders/items/dates/{id}` | Get date of an order item | **implemented** (deprecated by PlentyMarkets) | `orders.get_item_date` |
+| PUT | `/rest/orders/items/dates/{id}` | Update a date of an order item | **implemented** (deprecated by PlentyMarkets) | `orders.update_item_date` |
 | DELETE | `/rest/orders/items/outgoing_stocks` | Revert outgoing stock for order items | **implemented** | `orders.revert_item_outgoing_stock` |
 | POST | `/rest/orders/items/properties` | Create order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | DELETE | `/rest/orders/items/properties/{id}` | Delete order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |

@@ -110,3 +110,84 @@ class DatesMixin(OrdersBase):
             reference).
         """
         return await self._session.get(f"/rest/orders/{order_id}/dates/{type_id}")
+
+    async def create_item_date(
+        self, order_item_id: int, type_id: int, date: str
+    ) -> dict[str, Any]:
+        """Create a date for an order item, addressed by a new date ID.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+            See the caveat on :meth:`list_order_dates` regarding the
+            published schema's missing date-value field — the same applies
+            here (``OrderItemDate`` has no value field either).
+
+        Args:
+            order_item_id: The order item ID.
+            type_id: The order date type ID (see :meth:`list_date_types`).
+            date: The date value, ISO 8601.
+
+        Returns:
+            A dict with the following keys:
+
+            - ``id`` (int): The order-item date record ID.
+            - ``orderItemId`` (int): The order item this date belongs to.
+            - ``typeId`` (int): The date type ID.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+        """
+        return await self._session.post(
+            "/rest/orders/items/dates",
+            json={"orderItemId": order_item_id, "typeId": type_id, "date": date},
+        )
+
+    async def delete_item_date(self, date_id: int) -> dict[str, Any]:
+        """Delete a date of an order item by its own date ID.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            date_id: The order-item date record ID.
+
+        Returns:
+            Empty dict on success (the API returns no body).
+        """
+        return await self._session.delete(f"/rest/orders/items/dates/{date_id}")
+
+    async def get_item_date(self, date_id: int) -> dict[str, Any]:
+        """Get a date of an order item by its own date ID.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            date_id: The order-item date record ID.
+
+        Returns:
+            An order-item date dict (see :meth:`create_item_date` for the
+            field reference).
+        """
+        return await self._session.get(f"/rest/orders/items/dates/{date_id}")
+
+    async def update_item_date(self, date_id: int, date: str) -> dict[str, Any]:
+        """Update a date of an order item by its own date ID.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            date_id: The order-item date record ID.
+            date: The new date value, ISO 8601.
+
+        Returns:
+            The updated order-item date dict (see :meth:`create_item_date`
+            for the field reference).
+        """
+        return await self._session.put(
+            f"/rest/orders/items/dates/{date_id}", json={"date": date}
+        )
