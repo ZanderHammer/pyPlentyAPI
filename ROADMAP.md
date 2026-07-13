@@ -1385,10 +1385,10 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | GET | `/rest/orders/items/dates/{id}` | Get date of an order item | **implemented** (deprecated by PlentyMarkets) | `orders.get_item_date` |
 | PUT | `/rest/orders/items/dates/{id}` | Update a date of an order item | **implemented** (deprecated by PlentyMarkets) | `orders.update_item_date` |
 | DELETE | `/rest/orders/items/outgoing_stocks` | Revert outgoing stock for order items | **implemented** | `orders.revert_item_outgoing_stock` |
-| POST | `/rest/orders/items/properties` | Create order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| DELETE | `/rest/orders/items/properties/{id}` | Delete order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| GET | `/rest/orders/items/properties/{id}` | Get order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| PUT | `/rest/orders/items/properties/{id}` | Update order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| POST | `/rest/orders/items/properties` | Create order item property | **implemented** | `orders.create_item_property` |
+| DELETE | `/rest/orders/items/properties/{id}` | Delete order item property | **implemented** | `orders.delete_item_property` |
+| GET | `/rest/orders/items/properties/{id}` | Get order item property | **implemented** | `orders.get_item_property` |
+| PUT | `/rest/orders/items/properties/{id}` | Update order item property | **implemented** | `orders.update_item_property` |
 | GET | `/rest/orders/items/transactions` | Search order item transactions | **implemented** | `orders.search_item_transactions` |
 | POST | `/rest/orders/items/transactions/booking` | Book order item transactions | **implemented** | `orders.book_item_transactions` |
 | DELETE | `/rest/orders/items/transactions/{transactionId}` | Delete order item transaction | **implemented** | `orders.delete_item_transaction` |

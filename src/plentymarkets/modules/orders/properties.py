@@ -258,3 +258,103 @@ class PropertiesMixin(OrdersBase):
             f"/rest/orders/{order_id}/properties/{type_id}",
             json={"orderId": order_id, "typeId": type_id, "value": value},
         )
+
+    async def create_item_property(
+        self, order_item_id: int, type_id: int, value: str
+    ) -> dict[str, Any]:
+        """Create an order-item property, addressed by a new property ID.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            order_item_id: The order item ID.
+            type_id: The order-item property type ID.
+            value: The property value.
+
+        Returns:
+            A dict with the following keys:
+
+            - ``id`` (int): The order-item property record ID.
+            - ``orderItemId`` (int): The order item this property belongs
+              to.
+            - ``typeId`` (int): The property type ID.
+            - ``value`` (str): The property value.
+            - ``createdAt`` (str): ISO 8601 creation timestamp.
+            - ``updatedAt`` (str): ISO 8601 last-update timestamp.
+        """
+        return await self._session.post(
+            "/rest/orders/items/properties",
+            json={"orderItemId": order_item_id, "typeId": type_id, "value": value},
+        )
+
+    async def delete_item_property(self, property_id: int) -> dict[str, Any]:
+        """Delete an order-item property by its own property ID.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            property_id: The order-item property record ID.
+
+        Returns:
+            Empty dict on success (the API returns no body).
+        """
+        return await self._session.delete(
+            f"/rest/orders/items/properties/{property_id}"
+        )
+
+    async def get_item_property(self, property_id: int) -> dict[str, Any]:
+        """Get an order-item property by its own property ID.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            property_id: The order-item property record ID.
+
+        Returns:
+            An order-item property dict (see :meth:`create_item_property`
+            for the field reference).
+        """
+        return await self._session.get(f"/rest/orders/items/properties/{property_id}")
+
+    async def update_item_property(
+        self,
+        property_id: int,
+        order_item_id: int | None = None,
+        type_id: int | None = None,
+        value: str | None = None,
+    ) -> dict[str, Any]:
+        """Update an order-item property by its own property ID.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead. Unlike most PUT
+            endpoints in this module, the spec marks none of this
+            operation's body fields as required — all three are optional
+            here.
+
+        Args:
+            property_id: The order-item property record ID.
+            order_item_id: New order item ID to reassign the property to.
+            type_id: New property type ID.
+            value: New property value.
+
+        Returns:
+            The updated order-item property dict (see
+            :meth:`create_item_property` for the field reference).
+        """
+        data: dict[str, Any] = {}
+        if order_item_id is not None:
+            data["orderItemId"] = order_item_id
+        if type_id is not None:
+            data["typeId"] = type_id
+        if value is not None:
+            data["value"] = value
+        return await self._session.put(
+            f"/rest/orders/items/properties/{property_id}", json=data
+        )

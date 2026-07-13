@@ -40,6 +40,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.list_order_properties` — list properties of an order via `GET /rest/orders/{orderId}/properties/{typeId}` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
 - feat: `OrdersModule.delete_order_property_by_type` — delete a property of an order by order and type via `DELETE /rest/orders/{orderId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.update_order_property_by_type` — update a property of an order by order and type via `PUT /rest/orders/{orderId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.create_item_property` — create an order-item property via `POST /rest/orders/items/properties` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.delete_item_property` — delete an order-item property via `DELETE /rest/orders/items/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.get_item_property` — get an order-item property via `GET /rest/orders/items/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.update_item_property` — update an order-item property via `PUT /rest/orders/items/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - `Order` reaches 75/307 endpoint coverage under the `Order` API tag (order property types and order-level property values milestone)
 
 ## [0.3.2] - 2026-07-13

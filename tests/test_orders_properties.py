@@ -179,3 +179,60 @@ async def test_update_order_property_by_type_puts_data(httpx_mock, orders):
         "typeId": 1,
         "value": "A2",
     }
+
+
+# --- order-item property values, by property ID ---
+
+
+async def test_create_item_property_posts_data(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/items/properties",
+        json={"id": 701, "orderItemId": 10, "typeId": 29, "value": "M"},
+    )
+    result = await orders.create_item_property(
+        order_item_id=10, type_id=29, value="M"
+    )
+    assert result["id"] == 701
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == {
+        "orderItemId": 10,
+        "typeId": 29,
+        "value": "M",
+    }
+
+
+async def test_delete_item_property_sends_delete_request(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/orders/items/properties/701",
+        json={},
+    )
+    result = await orders.delete_item_property(701)
+    assert result == {}
+
+
+async def test_get_item_property_calls_correct_url(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/items/properties/701",
+        json={"id": 701, "orderItemId": 10, "typeId": 29, "value": "M"},
+    )
+    result = await orders.get_item_property(701)
+    assert result["value"] == "M"
+
+
+async def test_update_item_property_puts_only_given_fields(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/orders/items/properties/701",
+        json={"id": 701, "orderItemId": 10, "typeId": 29, "value": "L"},
+    )
+    result = await orders.update_item_property(701, value="L")
+    assert result["value"] == "L"
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == {"value": "L"}
