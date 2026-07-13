@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**150 / 1837** endpoints implemented across **53** API tags.
+**160 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **45/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **55/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-45/307 implemented.
+55/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1384,7 +1384,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | DELETE | `/rest/orders/items/dates/{id}` | Delete a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | GET | `/rest/orders/items/dates/{id}` | Get date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | PUT | `/rest/orders/items/dates/{id}` | Update a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| DELETE | `/rest/orders/items/outgoing_stocks` | Revert outgoing stock for order items | deprecated (use `POST /rest/{orderType}/{orderId}/cancel_booking`) | — |
+| DELETE | `/rest/orders/items/outgoing_stocks` | Revert outgoing stock for order items | **implemented** | `orders.revert_item_outgoing_stock` |
 | POST | `/rest/orders/items/properties` | Create order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | DELETE | `/rest/orders/items/properties/{id}` | Delete order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | GET | `/rest/orders/items/properties/{id}` | Get order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
@@ -1493,8 +1493,8 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | POST | `/rest/orders/{orderId}/items/{orderItemId}/serialNumbers` | Create item serial number and bind it to order item | **implemented** | `orders.create_order_item_serial_number` |
 | GET | `/rest/orders/{orderId}/my_account_url` | Get My Account url of the order | **implemented** | `orders.get_my_account_url` |
 | POST | `/rest/orders/{orderId}/offers` | Create an offer from a parent order | planned | — |
-| DELETE | `/rest/orders/{orderId}/outgoing_stocks` | Revert outgoing stock | deprecated (use `POST /rest/{orderType}/{orderId}/cancel_booking`) | — |
-| POST | `/rest/orders/{orderId}/outgoing_stocks` | Book out order items | deprecated (use `POST /rest/{orderType}/{orderId}/book`) | — |
+| DELETE | `/rest/orders/{orderId}/outgoing_stocks` | Revert outgoing stock | **implemented** | `orders.revert_order_outgoing_stock` |
+| POST | `/rest/orders/{orderId}/outgoing_stocks` | Book out order items | **implemented** | `orders.book_out_order_items` |
 | GET | `/rest/orders/{orderId}/packagenumbers` | List package numbers of an order | **implemented** | `orders.list_order_package_numbers` |
 | POST | `/rest/orders/{orderId}/properties` | Create property for an order | planned | — |
 | GET | `/rest/orders/{orderId}/properties/{typeId?}` | List properties of an order | planned | — |

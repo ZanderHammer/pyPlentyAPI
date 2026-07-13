@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.book_order_in` — book an order in via `POST /rest/orders/{orderId}/booking`
 - feat: `OrdersModule.get_contact_wish` — get an order's contact wish via `GET /rest/orders/{orderId}/contactWish`
 - feat: `OrdersModule.update_order_currency` — update an order's currency via `PUT /rest/orders/{orderId}/currency`
+- feat: `OrdersModule.revert_item_outgoing_stock` — revert an order item's outgoing-stock booking via `DELETE /rest/orders/items/outgoing_stocks` (deprecated by PlentyMarkets; use `POST /rest/{orderType}/{orderId}/cancel_booking`)
+- feat: `OrdersModule.book_out_order_items` — book out an order's items via `POST /rest/orders/{orderId}/outgoing_stocks` (deprecated by PlentyMarkets; use `POST /rest/{orderType}/{orderId}/book`)
+- feat: `OrdersModule.revert_order_outgoing_stock` — revert an order's outgoing-stock booking via `DELETE /rest/orders/{orderId}/outgoing_stocks` (deprecated by PlentyMarkets; use `POST /rest/{orderType}/{orderId}/cancel_booking`)
+- `Order` reaches 55/307 endpoint coverage under the `Order` API tag (core metadata batch A-D: batch fetch, contact/multi orders, accounting summaries, booking, contact wish, currency, outgoing stocks)
 
 ## [0.3.2] - 2026-07-13
 

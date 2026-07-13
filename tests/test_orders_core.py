@@ -405,3 +405,52 @@ async def test_update_order_currency_puts_data(httpx_mock, orders):
         42, {"currency": "EUR", "exchangeRate": 1.0}
     )
     assert result["id"] == 42
+
+
+async def test_revert_item_outgoing_stock_sends_body(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/orders/items/outgoing_stocks",
+        json={},
+    )
+    result = await orders.revert_item_outgoing_stock(
+        order_item_id=10, quantity=2.0, warehouse_id=1
+    )
+    assert result == {}
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == {
+        "id": 10,
+        "quantity": 2.0,
+        "warehouseId": 1,
+    }
+
+
+async def test_book_out_order_items_posts_to_outgoing_stocks_url(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/42/outgoing_stocks",
+        json={},
+    )
+    result = await orders.book_out_order_items(42)
+    assert result == {}
+
+
+async def test_book_out_order_items_sends_date(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/42/outgoing_stocks?date=2026-07-13",
+        json={},
+    )
+    await orders.book_out_order_items(42, date="2026-07-13")
+
+
+async def test_revert_order_outgoing_stock_sends_delete_request(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/orders/42/outgoing_stocks",
+        json={},
+    )
+    result = await orders.revert_order_outgoing_stock(42)
+    assert result == {}
