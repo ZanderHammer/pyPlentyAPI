@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**219 / 1837** endpoints implemented across **53** API tags.
+**192 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **114/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **87/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-114/307 implemented.
+87/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1380,30 +1380,30 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | GET | `/rest/orders/dates/types/{typeId}/names` | List names of an order date type | **implemented** | `orders.list_date_type_names` |
 | GET | `/rest/orders/dates/types/{typeId}/names/{lang}` | Get a name of an order date type | **implemented** | `orders.get_date_type_name` |
 | GET | `/rest/orders/documents/accounting_summary` | List document accounting summaries | **implemented** | `orders.list_accounting_summaries` |
-| POST | `/rest/orders/items/dates` | Create a date for an order item | **implemented** (deprecated by PlentyMarkets) | `orders.create_item_date` |
-| DELETE | `/rest/orders/items/dates/{id}` | Delete a date of an order item | **implemented** (deprecated by PlentyMarkets) | `orders.delete_item_date` |
-| GET | `/rest/orders/items/dates/{id}` | Get date of an order item | **implemented** (deprecated by PlentyMarkets) | `orders.get_item_date` |
-| PUT | `/rest/orders/items/dates/{id}` | Update a date of an order item | **implemented** (deprecated by PlentyMarkets) | `orders.update_item_date` |
-| DELETE | `/rest/orders/items/outgoing_stocks` | Revert outgoing stock for order items | **implemented** (deprecated by PlentyMarkets, use `POST /rest/{orderType}/{orderId}/cancel_booking`) | `orders.revert_item_outgoing_stock` |
-| POST | `/rest/orders/items/properties` | Create order item property | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.create_item_property` |
-| DELETE | `/rest/orders/items/properties/{id}` | Delete order item property | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.delete_item_property` |
-| GET | `/rest/orders/items/properties/{id}` | Get order item property | **implemented** (deprecated by PlentyMarkets, use `GET /rest/orders/{orderId}`) | `orders.get_item_property` |
-| PUT | `/rest/orders/items/properties/{id}` | Update order item property | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.update_item_property` |
+| POST | `/rest/orders/items/dates` | Create a date for an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/items/dates/{id}` | Delete a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/dates/{id}` | Get date of an order item | deprecated (use `GET /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/items/dates/{id}` | Update a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/items/outgoing_stocks` | Revert outgoing stock for order items | deprecated (use `POST /rest/{orderType}/{orderId}/cancel_booking`) | — |
+| POST | `/rest/orders/items/properties` | Create order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/items/properties/{id}` | Delete order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/properties/{id}` | Get order item property | deprecated (use `GET /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/items/properties/{id}` | Update order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | GET | `/rest/orders/items/transactions` | Search order item transactions | **implemented** | `orders.search_item_transactions` |
 | POST | `/rest/orders/items/transactions/booking` | Book order item transactions | **implemented** | `orders.book_item_transactions` |
 | DELETE | `/rest/orders/items/transactions/{transactionId}` | Delete order item transaction | **implemented** | `orders.delete_item_transaction` |
 | PUT | `/rest/orders/items/transactions/{transactionId}` | Update order item transaction | **implemented** | `orders.update_item_transaction` |
 | POST | `/rest/orders/items/{orderItemId}/booking` | Book an order item in | **implemented** | `orders.book_item_in` |
-| GET | `/rest/orders/items/{orderItemId}/dates` | List all dates of an order item | **implemented** (deprecated by PlentyMarkets, use `GET /rest/orders/{orderId}`) | `orders.list_item_dates` |
-| DELETE | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Delete a date of an order item by order item and date type | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.delete_item_date_by_type` |
-| GET | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Get a date of an order item by order item and date type | **implemented** (deprecated by PlentyMarkets, use `GET /rest/orders/{orderId}`) | `orders.get_item_date_by_type` |
-| POST | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Create a date for an order item by order item and date type | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.create_item_date_by_type` |
-| PUT | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Update a date of an order item by order item and date type | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.update_item_date_by_type` |
-| GET | `/rest/orders/items/{orderItemId}/properties` | Get all order item properties | **implemented** (deprecated by PlentyMarkets, use `GET /rest/orders/{orderId}`) | `orders.list_item_properties` |
-| DELETE | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Delete order item property | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.delete_item_property_by_type` |
-| GET | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Get order item property | **implemented** (deprecated by PlentyMarkets, use `GET /rest/orders/{orderId}`) | `orders.get_item_property_by_type` |
-| POST | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Create order item property | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.create_item_property_by_type` |
-| PUT | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Update order item property | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.update_item_property_by_type` |
+| GET | `/rest/orders/items/{orderItemId}/dates` | List all dates of an order item | deprecated (use `GET /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Delete a date of an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Get a date of an order item by order item and date type | deprecated (use `GET /rest/orders/{orderId}`) | — |
+| POST | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Create a date for an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Update a date of an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/properties` | Get all order item properties | deprecated (use `GET /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Delete order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Get order item property | deprecated (use `GET /rest/orders/{orderId}`) | — |
+| POST | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Create order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Update order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | GET | `/rest/orders/items/{orderItemId}/transactions` | List order item transactions | **implemented** | `orders.list_item_transactions` |
 | POST | `/rest/orders/items/{orderItemId}/transactions` | Create order item transaction | **implemented** | `orders.create_item_transaction` |
 | GET | `/rest/orders/properties/types` | List order property types | **implemented** | `orders.list_property_types` |
@@ -1411,8 +1411,8 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | DELETE | `/rest/orders/properties/types/{typeId}` | Delete property type | **implemented** | `orders.delete_property_type` |
 | GET | `/rest/orders/properties/types/{typeId}` | Get property type | **implemented** | `orders.get_property_type` |
 | PUT | `/rest/orders/properties/types/{typeId}` | Update property type | **implemented** | `orders.update_property_type` |
-| DELETE | `/rest/orders/properties/{id}` | Delete property of an order by property ID | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.delete_order_property` |
-| PUT | `/rest/orders/properties/{id}` | Update property of an order by property ID | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.update_order_property` |
+| DELETE | `/rest/orders/properties/{id}` | Delete property of an order by property ID | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/properties/{id}` | Update property of an order by property ID | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | GET | `/rest/orders/referrers` | List referrers | **implemented** | `orders.list_referrers` |
 | GET | `/rest/orders/referrers/next_free_main` | Get next free main referrer ID | **implemented** | `orders.get_next_free_referrer_id` |
 | GET | `/rest/orders/referrers/search` | Search for referrers | **implemented** | `orders.search_referrers` |
@@ -1493,13 +1493,13 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | POST | `/rest/orders/{orderId}/items/{orderItemId}/serialNumbers` | Create item serial number and bind it to order item | **implemented** | `orders.create_order_item_serial_number` |
 | GET | `/rest/orders/{orderId}/my_account_url` | Get My Account url of the order | **implemented** | `orders.get_my_account_url` |
 | POST | `/rest/orders/{orderId}/offers` | Create an offer from a parent order | planned | — |
-| DELETE | `/rest/orders/{orderId}/outgoing_stocks` | Revert outgoing stock | **implemented** (deprecated by PlentyMarkets, use `POST /rest/{orderType}/{orderId}/cancel_booking`) | `orders.revert_order_outgoing_stock` |
-| POST | `/rest/orders/{orderId}/outgoing_stocks` | Book out order items | **implemented** (deprecated by PlentyMarkets, use `POST /rest/{orderType}/{orderId}/book`) | `orders.book_out_order_items` |
+| DELETE | `/rest/orders/{orderId}/outgoing_stocks` | Revert outgoing stock | deprecated (use `POST /rest/{orderType}/{orderId}/cancel_booking`) | — |
+| POST | `/rest/orders/{orderId}/outgoing_stocks` | Book out order items | deprecated (use `POST /rest/{orderType}/{orderId}/book`) | — |
 | GET | `/rest/orders/{orderId}/packagenumbers` | List package numbers of an order | **implemented** | `orders.list_order_package_numbers` |
-| POST | `/rest/orders/{orderId}/properties` | Create property for an order | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.create_order_property` |
-| GET | `/rest/orders/{orderId}/properties/{typeId?}` | List properties of an order | **implemented** (deprecated by PlentyMarkets, use `GET /rest/orders/{orderId}`) | `orders.list_order_properties` |
-| DELETE | `/rest/orders/{orderId}/properties/{typeId}` | Delete property of an order by order ID and property type ID | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.delete_order_property_by_type` |
-| PUT | `/rest/orders/{orderId}/properties/{typeId}` | Update property of an order by order ID and property ID | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.update_order_property_by_type` |
+| POST | `/rest/orders/{orderId}/properties` | Create property for an order | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/{orderId}/properties/{typeId?}` | List properties of an order | deprecated (use `GET /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/{orderId}/properties/{typeId}` | Delete property of an order by order ID and property type ID | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/{orderId}/properties/{typeId}` | Update property of an order by order ID and property ID | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | POST | `/rest/orders/{orderId}/redistributions` | Create a redistribution from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/reorders` | Create a reorder from a parent order | **implemented** | `orders.create_order_reorder` |
 | POST | `/rest/orders/{orderId}/reorders/generate` | Create reorder(s) for an order | **implemented** | `orders.generate_order_reorders` |

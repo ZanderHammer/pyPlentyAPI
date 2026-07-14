@@ -14,11 +14,12 @@ class TransactionsMixin(OrdersBase):
     These methods manage transactions (stock movements) recorded against
     order items, via the flat `/rest/orders/items/transactions/*` family
     (addressed by transaction ID) and the `/rest/orders/items/{orderItemId}
-    /transactions` family (scoped to one order item). Both are current
-    (not deprecated), unlike the sibling order-item dates (`DatesMixin`)
-    and order/order-item properties (`PropertiesMixin`) families, which
-    PlentyMarkets has deprecated in favor of `PUT /rest/orders/{orderId}`
-    but which this package still implements for full endpoint coverage.
+    /transactions` family (scoped to one order item). Both are current, not
+    deprecated. PlentyMarkets also exposes an order-item *dates* family and
+    an order/order-item *properties* family under similar paths, but every
+    endpoint in both is deprecated in favor of `PUT /rest/orders/{orderId}`
+    — this client intentionally does not implement deprecated endpoints, so
+    neither family is implemented here or elsewhere in this package.
     """
 
     async def search_item_transactions(

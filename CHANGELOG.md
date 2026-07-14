@@ -17,20 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.book_order_in` — book an order in via `POST /rest/orders/{orderId}/booking`
 - feat: `OrdersModule.get_contact_wish` — get an order's contact wish via `GET /rest/orders/{orderId}/contactWish`
 - feat: `OrdersModule.update_order_currency` — update an order's currency via `PUT /rest/orders/{orderId}/currency`
-- feat: `OrdersModule.revert_item_outgoing_stock` — revert an order item's outgoing-stock booking via `DELETE /rest/orders/items/outgoing_stocks` (deprecated by PlentyMarkets; use `POST /rest/{orderType}/{orderId}/cancel_booking`)
-- feat: `OrdersModule.book_out_order_items` — book out an order's items via `POST /rest/orders/{orderId}/outgoing_stocks` (deprecated by PlentyMarkets; use `POST /rest/{orderType}/{orderId}/book`)
-- feat: `OrdersModule.revert_order_outgoing_stock` — revert an order's outgoing-stock booking via `DELETE /rest/orders/{orderId}/outgoing_stocks` (deprecated by PlentyMarkets; use `POST /rest/{orderType}/{orderId}/cancel_booking`)
-- `Order` reaches 55/307 endpoint coverage under the `Order` API tag (core metadata batch A-D: batch fetch, contact/multi orders, accounting summaries, booking, contact wish, currency, outgoing stocks)
-- feat: `OrdersModule.create_item_date` — create a date for an order item via `POST /rest/orders/items/dates` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.delete_item_date` — delete a date of an order item via `DELETE /rest/orders/items/dates/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.get_item_date` — get a date of an order item via `GET /rest/orders/items/dates/{id}` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
-- feat: `OrdersModule.update_item_date` — update a date of an order item via `PUT /rest/orders/items/dates/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.list_item_dates` — list all dates of an order item via `GET /rest/orders/items/{orderItemId}/dates` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
-- feat: `OrdersModule.delete_item_date_by_type` — delete a date of an order item by type via `DELETE /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.get_item_date_by_type` — get a date of an order item by type via `GET /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
-- feat: `OrdersModule.create_item_date_by_type` — create a date for an order item by type via `POST /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.update_item_date_by_type` — update a date of an order item by type via `PUT /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- `Order` reaches 64/307 endpoint coverage under the `Order` API tag (order-item dates milestone)
+- `Order` reaches 52/307 endpoint coverage under the `Order` API tag (core metadata: batch fetch, contact/multi orders, accounting summaries, booking, contact wish, currency)
 - feat: `OrdersModule.list_property_types` — list order property types via `GET /rest/orders/properties/types`
 - feat: `OrdersModule.create_property_type` — create an order property type via `POST /rest/orders/properties/types`
 - feat: `OrdersModule.delete_property_type` — delete an order property type via `DELETE /rest/orders/properties/types/{typeId}`
@@ -38,22 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.update_property_type` — update an order property type via `PUT /rest/orders/properties/types/{typeId}`
 - feat: `OrderPropertyTypeNamePayload`, `OrderPropertyTypeCreatePayload`, `OrderPropertyTypeUpdatePayload` — TypedDicts for `create_property_type`/`update_property_type`
 - refactor: `modules/orders/` gains a `properties.py` mixin (`PropertiesMixin`) — no public API change
-- feat: `OrdersModule.delete_order_property` — delete a property of an order by property ID via `DELETE /rest/orders/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.update_order_property` — update a property of an order by property ID via `PUT /rest/orders/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.create_order_property` — create and link a property to an order via `POST /rest/orders/{orderId}/properties` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.list_order_properties` — list properties of an order via `GET /rest/orders/{orderId}/properties/{typeId}` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
-- feat: `OrdersModule.delete_order_property_by_type` — delete a property of an order by order and type via `DELETE /rest/orders/{orderId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.update_order_property_by_type` — update a property of an order by order and type via `PUT /rest/orders/{orderId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.create_item_property` — create an order-item property via `POST /rest/orders/items/properties` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.delete_item_property` — delete an order-item property via `DELETE /rest/orders/items/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.get_item_property` — get an order-item property via `GET /rest/orders/items/properties/{id}` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
-- feat: `OrdersModule.update_item_property` — update an order-item property via `PUT /rest/orders/items/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.list_item_properties` — list all properties of an order item via `GET /rest/orders/items/{orderItemId}/properties` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
-- feat: `OrdersModule.delete_item_property_by_type` — delete an order-item property by item and type via `DELETE /rest/orders/items/{orderItemId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.get_item_property_by_type` — get an order-item property by item and type via `GET /rest/orders/items/{orderItemId}/properties/{typeId}` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
-- feat: `OrdersModule.create_item_property_by_type` — create an order-item property by item and type via `POST /rest/orders/items/{orderItemId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- feat: `OrdersModule.update_item_property_by_type` — update an order-item property by item and type via `PUT /rest/orders/items/{orderItemId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- `Order` reaches 84/307 endpoint coverage under the `Order` API tag (properties milestone complete: property types + order-level + order-item-level property values)
+- `Order` reaches 57/307 endpoint coverage under the `Order` API tag (property types milestone; PlentyMarkets' order/order-item property *value* endpoints are all deprecated in favor of `PUT /rest/orders/{orderId}` and are intentionally not implemented — see `CLAUDE.md`)
 - feat: `OrdersModule.list_referrers` — list all order referrers via `GET /rest/orders/referrers`
 - feat: `OrdersModule.get_next_free_referrer_id` — get the next free main referrer ID via `GET /rest/orders/referrers/next_free_main`
 - feat: `OrdersModule.search_referrers` / `paginate_referrers` — search/iterate order referrers via `GET /rest/orders/referrers/search`
@@ -61,7 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.delete_referrer` — delete an order referrer via `DELETE /rest/orders/referrers/{referrerId}`
 - feat: `OrdersModule.get_referrer` — get one order referrer via `GET /rest/orders/referrers/{referrerId}`
 - feat: `OrdersModule.update_referrer` — update an order referrer via `PUT /rest/orders/referrers/{referrerId}`
-- `Order` reaches 91/307 endpoint coverage under the `Order` API tag (referrers milestone)
+- `Order` reaches 64/307 endpoint coverage under the `Order` API tag (referrers milestone)
 - refactor: `modules/orders/` gains a `referrers.py` mixin (`ReferrersMixin`) — no public API change
 - feat: `OrdersModule.list_currencies` — list all currencies via `GET /rest/orders/currencies`
 - feat: `OrdersModule.get_currency_for_country` — get a country's currency via `GET /rest/orders/currencies/countries/{countryId}`
@@ -70,7 +42,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.get_currency` — get one currency via `GET /rest/orders/currencies/{currencyIso}`
 - feat: `OrdersModule.list_currency_countries` — list countries using a currency via `GET /rest/orders/currencies/{currencyIso}/countries`
 - feat: `OrdersModule.get_currency_exchange_rate` — get a currency's exchange rate via `GET /rest/orders/currencies/{currencyIso}/exchangeRate`
-- `Order` reaches 98/307 endpoint coverage under the `Order` API tag (currencies milestone)
+- `Order` reaches 71/307 endpoint coverage under the `Order` API tag (currencies milestone)
 - refactor: `modules/orders/` gains a `currencies.py` mixin (`CurrenciesMixin`) — no public API change
 - feat: `OrdersModule.list_campaigns` — list coupon campaigns via `GET /rest/orders/coupons/campaigns`
 - feat: `OrdersModule.delete_coupon_code` — delete a coupon code via `DELETE /rest/orders/coupons/campaigns/codes/{code}`
@@ -86,13 +58,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.redeem_coupon` — redeem a coupon code against an order via `POST /rest/orders/{orderId}/coupons/{coupon}`
 - feat: `OrdersModule.validate_order_coupon` — validate a coupon against an existing order via `POST /rest/orders/{orderId}/coupons/{coupon}/validate`
 - feat: `OrderCouponValidatePayload` — TypedDict for `validate_coupons`/`validate_coupon`
-- `Order` reaches 109/307 endpoint coverage under the `Order` API tag (coupons milestone complete)
+- `Order` reaches 82/307 endpoint coverage under the `Order` API tag (coupons milestone complete)
 - feat: `OrdersModule.list_taric_vat_assignments` / `paginate_taric_vat_assignments` — list/iterate TARIC VAT assignments via `GET /rest/system/settings/taric_vat_assignment`
 - feat: `OrdersModule.delete_taric_vat_assignment` — delete a TARIC VAT assignment via `DELETE /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
 - feat: `OrdersModule.get_taric_vat_assignment` — get one TARIC VAT assignment via `GET /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
 - feat: `OrdersModule.create_taric_vat_assignment` — create a TARIC VAT assignment via `POST /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
 - feat: `OrdersModule.update_taric_vat_assignment` — update a TARIC VAT assignment via `PUT /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
-- `Order` reaches 114/307 endpoint coverage under the `Order` API tag (Phase 4 "core order metadata" milestone complete: batch/contact/accounting lookups, order-item dates, order & order-item properties, referrers, currencies, coupons, TARIC VAT assignments)
+- `Order` reaches 87/307 endpoint coverage under the `Order` API tag (Phase 4 "core order metadata" milestone complete: batch/contact/accounting lookups, order property types, referrers, currencies, coupons, TARIC VAT assignments — deprecated endpoints surveyed and intentionally skipped, see `CLAUDE.md`)
 - refactor: `modules/orders/` gains a `taric.py` mixin (`TaricMixin`) — no public API change
 
 ## [0.3.2] - 2026-07-13
