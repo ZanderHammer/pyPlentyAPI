@@ -6,6 +6,67 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-07-14
+
+### Order
+
+- feat: `OrdersModule.get_orders_batch` — get several orders at once by ID via `GET /rest/orders/batch`
+- feat: `OrdersModule.list_contact_orders` / `paginate_contact_orders` — list/iterate a contact's orders via `GET /rest/orders/contacts/{contactId}`
+- feat: `OrdersModule.create_multi_order` — create a multi-order for a contact via `POST /rest/orders/contacts/{contactId}/multi_order`
+- feat: `OrdersModule.list_accounting_summaries` / `paginate_accounting_summaries` — list/iterate document accounting summaries via `GET /rest/orders/documents/accounting_summary`
+- feat: `OrdersModule.book_order_in` — book an order in via `POST /rest/orders/{orderId}/booking`
+- feat: `OrdersModule.get_contact_wish` — get an order's contact wish via `GET /rest/orders/{orderId}/contactWish`
+- feat: `OrdersModule.update_order_currency` — update an order's currency via `PUT /rest/orders/{orderId}/currency`
+- `Order` reaches 52/307 endpoint coverage under the `Order` API tag (core metadata: batch fetch, contact/multi orders, accounting summaries, booking, contact wish, currency)
+- feat: `OrdersModule.list_property_types` — list order property types via `GET /rest/orders/properties/types`
+- feat: `OrdersModule.create_property_type` — create an order property type via `POST /rest/orders/properties/types`
+- feat: `OrdersModule.delete_property_type` — delete an order property type via `DELETE /rest/orders/properties/types/{typeId}`
+- feat: `OrdersModule.get_property_type` — get one order property type via `GET /rest/orders/properties/types/{typeId}`
+- feat: `OrdersModule.update_property_type` — update an order property type via `PUT /rest/orders/properties/types/{typeId}`
+- feat: `OrderPropertyTypeNamePayload`, `OrderPropertyTypeCreatePayload`, `OrderPropertyTypeUpdatePayload` — TypedDicts for `create_property_type`/`update_property_type`
+- refactor: `modules/orders/` gains a `properties.py` mixin (`PropertiesMixin`) — no public API change
+- `Order` reaches 57/307 endpoint coverage under the `Order` API tag (property types milestone; PlentyMarkets' order/order-item property *value* endpoints are all deprecated in favor of `PUT /rest/orders/{orderId}` and are intentionally not implemented — see `CLAUDE.md`)
+- feat: `OrdersModule.list_referrers` — list all order referrers via `GET /rest/orders/referrers`
+- feat: `OrdersModule.get_next_free_referrer_id` — get the next free main referrer ID via `GET /rest/orders/referrers/next_free_main`
+- feat: `OrdersModule.search_referrers` / `paginate_referrers` — search/iterate order referrers via `GET /rest/orders/referrers/search`
+- feat: `OrdersModule.create_referrer` — create an order referrer via `POST /rest/orders/referrers/{parentReferrerId}`
+- feat: `OrdersModule.delete_referrer` — delete an order referrer via `DELETE /rest/orders/referrers/{referrerId}`
+- feat: `OrdersModule.get_referrer` — get one order referrer via `GET /rest/orders/referrers/{referrerId}`
+- feat: `OrdersModule.update_referrer` — update an order referrer via `PUT /rest/orders/referrers/{referrerId}`
+- `Order` reaches 64/307 endpoint coverage under the `Order` API tag (referrers milestone)
+- refactor: `modules/orders/` gains a `referrers.py` mixin (`ReferrersMixin`) — no public API change
+- feat: `OrdersModule.list_currencies` — list all currencies via `GET /rest/orders/currencies`
+- feat: `OrdersModule.get_currency_for_country` — get a country's currency via `GET /rest/orders/currencies/countries/{countryId}`
+- feat: `OrdersModule.list_exchange_rates_from` — list exchange rates from a currency via `GET /rest/orders/currencies/exchange_rates/from/{currencyIso}`
+- feat: `OrdersModule.list_exchange_rates_to` — list exchange rates to a currency via `GET /rest/orders/currencies/exchange_rates/to/{currencyIso}`
+- feat: `OrdersModule.get_currency` — get one currency via `GET /rest/orders/currencies/{currencyIso}`
+- feat: `OrdersModule.list_currency_countries` — list countries using a currency via `GET /rest/orders/currencies/{currencyIso}/countries`
+- feat: `OrdersModule.get_currency_exchange_rate` — get a currency's exchange rate via `GET /rest/orders/currencies/{currencyIso}/exchangeRate`
+- `Order` reaches 71/307 endpoint coverage under the `Order` API tag (currencies milestone)
+- refactor: `modules/orders/` gains a `currencies.py` mixin (`CurrenciesMixin`) — no public API change
+- feat: `OrdersModule.list_campaigns` — list coupon campaigns via `GET /rest/orders/coupons/campaigns`
+- feat: `OrdersModule.delete_coupon_code` — delete a coupon code via `DELETE /rest/orders/coupons/campaigns/codes/{code}`
+- feat: `OrdersModule.get_coupon_code` — get coupon code information via `GET /rest/orders/coupons/campaigns/codes/{code}`
+- feat: `OrdersModule.set_coupon_code_disabled` — enable/disable a coupon code via `PUT /rest/orders/coupons/campaigns/codes/{code}/disabled/{isDisabled}`
+- feat: `OrdersModule.get_campaign` — get one coupon campaign via `GET /rest/orders/coupons/campaigns/{campaignId}`
+- feat: `OrdersModule.create_coupon_code` — create a coupon code via `POST /rest/orders/coupons/campaigns/{campaignId}/codes`
+- feat: `OrderCouponCodeCreatePayload` — TypedDict for `create_coupon_code`
+- refactor: `modules/orders/` gains a `coupons.py` mixin (`CouponsMixin`) — no public API change
+- feat: `OrdersModule.validate_coupons` — validate multiple coupon codes via `POST /rest/orders/coupons/codes`
+- feat: `OrdersModule.list_redeemed_coupon_codes` / `paginate_redeemed_coupon_codes` — list/iterate a contact's redeemed coupon codes via `GET /rest/orders/coupons/codes/contacts/{contactId}`
+- feat: `OrdersModule.validate_coupon` — validate a single coupon code via `POST /rest/orders/coupons/codes/{coupon}`
+- feat: `OrdersModule.redeem_coupon` — redeem a coupon code against an order via `POST /rest/orders/{orderId}/coupons/{coupon}`
+- feat: `OrdersModule.validate_order_coupon` — validate a coupon against an existing order via `POST /rest/orders/{orderId}/coupons/{coupon}/validate`
+- feat: `OrderCouponValidatePayload` — TypedDict for `validate_coupons`/`validate_coupon`
+- `Order` reaches 82/307 endpoint coverage under the `Order` API tag (coupons milestone complete)
+- feat: `OrdersModule.list_taric_vat_assignments` / `paginate_taric_vat_assignments` — list/iterate TARIC VAT assignments via `GET /rest/system/settings/taric_vat_assignment`
+- feat: `OrdersModule.delete_taric_vat_assignment` — delete a TARIC VAT assignment via `DELETE /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
+- feat: `OrdersModule.get_taric_vat_assignment` — get one TARIC VAT assignment via `GET /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
+- feat: `OrdersModule.create_taric_vat_assignment` — create a TARIC VAT assignment via `POST /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
+- feat: `OrdersModule.update_taric_vat_assignment` — update a TARIC VAT assignment via `PUT /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
+- `Order` reaches 87/307 endpoint coverage under the `Order` API tag (Phase 4 "core order metadata" milestone complete: batch/contact/accounting lookups, order property types, referrers, currencies, coupons, TARIC VAT assignments — deprecated endpoints surveyed and intentionally skipped, see `CLAUDE.md`)
+- refactor: `modules/orders/` gains a `taric.py` mixin (`TaricMixin`) — no public API change
+
 ## [0.3.2] - 2026-07-13
 
 ## [0.3.1] - 2026-07-13

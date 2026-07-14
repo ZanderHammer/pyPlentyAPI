@@ -28,6 +28,10 @@ uv run pytest -m integration         # requires live credentials
 - Small focused commits, one logical change each
 - **Branch workflow:** All changes must branch off `staging` and be merged back into `staging`. `main` is protected and only updated via merges from `staging`.
 - **Internal class naming:** files like `_session.py`/`_types.py`/`_exceptions.py` keep a leading underscore (signals "not part of the public API" to humans), but the *classes* they define (`Session`, exception types, etc.) do not — only `plentymarkets/__init__.py`'s `__all__` decides what's public. A leading underscore on a class name (e.g. the old `_Session`) makes Pylance's `reportPrivateUsage` flag every legitimate cross-file import within the package (`client.py`, every `modules/*.py`), which is not useful noise here.
+- **Deprecated endpoints are never implemented.** PlentyMarkets marks some endpoints deprecated in the OpenAPI spec's `description` field (`<b>DEPRECATED: Use the following route: ...</b>`) even though they're still live and tagged like any other endpoint. Do not add client methods for these, no matter how the endpoint-coverage tracking is framed ("full coverage," "matches every tagged endpoint," etc.) — a deprecated endpoint is out of scope, not a gap to fill. When surveying an API tag for what to implement next, first check each candidate endpoint's `description` for the deprecation marker and skip it.
+  - In `ROADMAP.md`, list a deprecated endpoint's Status as `deprecated (use <replacement route>)` with Code `—` — the same as `planned`, but permanently, not as a queued task. Never flip it to `**implemented**`.
+  - In `CHANGELOG.md`, never add a `feat:` line for a deprecated endpoint.
+  - If an already-implemented method is later discovered to wrap a deprecated endpoint, remove it (method, tests, TypedDict if unused elsewhere) in a `fix:` or `refactor:` commit rather than leaving it in place.
 
 ## Package structure
 ```

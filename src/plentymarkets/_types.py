@@ -124,6 +124,118 @@ class OrderTransactionsCreatePayload(TypedDict, total=False):
     status: Required[str]
 
 
+class OrderPropertyTypeNamePayload(TypedDict, total=False):
+    """One entry in the ``names`` list for
+    :meth:`OrdersModule.create_property_type` and
+    :meth:`OrdersModule.update_property_type`
+    (``POST``/``PUT /rest/orders/properties/types(/{typeId})``).
+
+    Keys:
+        lang: Two-letter ISO 639-1 language code, e.g. ``"en"``, ``"de"``.
+            **Required.**
+        name: Translated display name for the property type in this
+            language. **Required.**
+    """
+
+    lang: Required[str]
+    name: Required[str]
+
+
+class OrderPropertyTypeCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`OrdersModule.create_property_type`
+    (``POST /rest/orders/properties/types``).
+
+    Note:
+        PlentyMarkets requires both a singular ``lang``/``name`` pair *and*
+        a ``names`` array of the same shape simultaneously — redundant-
+        looking, but both are marked required in the spec. Implemented
+        literally; verify against a live system before assuming one can be
+        omitted.
+
+    Keys:
+        lang: Two-letter ISO 639-1 language code for ``name``. **Required.**
+        name: Translated display name for the property type. **Required.**
+        names: List of translated names in other languages. Use
+            :class:`OrderPropertyTypeNamePayload` for IDE autocomplete.
+            **Required.**
+        cast: Data type of the property's values. One of ``"string"``,
+            ``"int"``, ``"numeric"``, ``"bool"``, or
+            ``"enum(val1,val2,val3,...)"``.
+        position: Sort position.
+    """
+
+    lang: Required[str]
+    name: Required[str]
+    names: Required[list[OrderPropertyTypeNamePayload]]
+    cast: NotRequired[str]
+    position: NotRequired[int]
+
+
+class OrderPropertyTypeUpdatePayload(TypedDict, total=False):
+    """Payload for :meth:`OrdersModule.update_property_type`
+    (``PUT /rest/orders/properties/types/{typeId}``).
+
+    Keys:
+        lang: Two-letter ISO 639-1 language code for ``name``. **Required.**
+        name: Translated display name for the property type. **Required.**
+        names: List of translated names to create/update. Use
+            :class:`OrderPropertyTypeNamePayload` for IDE autocomplete.
+        position: Sort position.
+    """
+
+    lang: Required[str]
+    name: Required[str]
+    names: NotRequired[list[OrderPropertyTypeNamePayload]]
+    position: NotRequired[int]
+
+
+class OrderCouponCodeCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`OrdersModule.create_coupon_code`
+    (``POST /rest/orders/coupons/campaigns/{campaignId}/codes``).
+
+    PlentyMarkets' published OpenAPI spec redeclares ``campaignId`` as a
+    body field even though it is already supplied as a path parameter;
+    :meth:`OrdersModule.create_coupon_code` merges the ``campaign_id``
+    argument into the request body automatically, so it is intentionally
+    omitted from this TypedDict.
+
+    Keys:
+        code: The coupon code string. Auto-generated if omitted.
+        value: The coupon's monetary or percentage value, depending on the
+            campaign's configuration.
+        usedCount: Initial used-count to seed the code with.
+        usedAmount: Initial used-amount to seed the code with.
+    """
+
+    code: NotRequired[str]
+    value: NotRequired[float]
+    usedCount: NotRequired[int]
+    usedAmount: NotRequired[float]
+
+
+class OrderCouponValidatePayload(TypedDict, total=False):
+    """Payload for :meth:`OrdersModule.validate_coupons` and
+    :meth:`OrdersModule.validate_coupon`
+    (``POST /rest/orders/coupons/codes(/{coupon})``).
+
+    Keys:
+        contactId: ID of the contact the coupon would be applied for.
+            **Required.**
+        items: List of basket item dicts to validate the coupon against.
+            **Required.**
+        validationType: Validation mode. Exact accepted values undocumented
+            in the spec.
+        currency: ISO 4217 currency code for the validation.
+        referrer: Referrer ID to validate against.
+    """
+
+    contactId: Required[int]
+    items: Required[list[dict[str, Any]]]
+    validationType: NotRequired[str]
+    currency: NotRequired[str]
+    referrer: NotRequired[float]
+
+
 # ---------------------------------------------------------------------------
 # Items  (/rest/items)
 # ---------------------------------------------------------------------------

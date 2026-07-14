@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**150 / 1837** endpoints implemented across **53** API tags.
+**192 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **45/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **87/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-45/307 implemented.
+87/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1356,70 +1356,70 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | PUT | `/rest/offers/{orderId}/preview` | Get an offer update preview | planned | — |
 | GET | `/rest/orders` | Search order | **implemented** | `orders.list` |
 | POST | `/rest/orders` | Create an order | **implemented** | `orders.create` |
-| GET | `/rest/orders/batch` | Get orders | planned | — |
-| GET | `/rest/orders/contacts/{contactId}` | List orders of a contact | planned | — |
-| POST | `/rest/orders/contacts/{contactId}/multi_order` | Create a multi-order | planned | — |
-| GET | `/rest/orders/coupons/campaigns` | Get list of campaigns | planned | — |
-| DELETE | `/rest/orders/coupons/campaigns/codes/{code}` | Delete a coupon | planned | — |
-| GET | `/rest/orders/coupons/campaigns/codes/{code}` | Get coupon code information | planned | — |
-| PUT | `/rest/orders/coupons/campaigns/codes/{code}/disabled/{isDisabled}` | Disable or enable coupon | planned | — |
-| GET | `/rest/orders/coupons/campaigns/{campaignId}` | Get campaign by Id | planned | — |
-| POST | `/rest/orders/coupons/campaigns/{campaignId}/codes` | Create a coupon code | planned | — |
-| POST | `/rest/orders/coupons/codes` | Validate multiple coupons | planned | — |
-| GET | `/rest/orders/coupons/codes/contacts/{contactId}` | List redeemed coupon codes of a contact | planned | — |
-| POST | `/rest/orders/coupons/codes/{coupon}` | Validate a coupon | planned | — |
-| GET | `/rest/orders/currencies` | List currencies | planned | — |
-| GET | `/rest/orders/currencies/countries/{countryId}` | Get a currency for a country | planned | — |
-| GET | `/rest/orders/currencies/exchange_rates/from/{currencyIso}` | Get the exchange rates from a currency | planned | — |
-| GET | `/rest/orders/currencies/exchange_rates/to/{currencyIso}` | Get the exchange rates to a currency | planned | — |
-| GET | `/rest/orders/currencies/{currencyIso}` | Get a currency | planned | — |
-| GET | `/rest/orders/currencies/{currencyIso}/countries` | List countries for a currency | planned | — |
-| GET | `/rest/orders/currencies/{currencyIso}/exchangeRate` | Get the exchange rate for a currency | planned | — |
+| GET | `/rest/orders/batch` | Get orders | **implemented** | `orders.get_orders_batch` |
+| GET | `/rest/orders/contacts/{contactId}` | List orders of a contact | **implemented** | `orders.list_contact_orders` |
+| POST | `/rest/orders/contacts/{contactId}/multi_order` | Create a multi-order | **implemented** | `orders.create_multi_order` |
+| GET | `/rest/orders/coupons/campaigns` | Get list of campaigns | **implemented** | `orders.list_campaigns` |
+| DELETE | `/rest/orders/coupons/campaigns/codes/{code}` | Delete a coupon | **implemented** | `orders.delete_coupon_code` |
+| GET | `/rest/orders/coupons/campaigns/codes/{code}` | Get coupon code information | **implemented** | `orders.get_coupon_code` |
+| PUT | `/rest/orders/coupons/campaigns/codes/{code}/disabled/{isDisabled}` | Disable or enable coupon | **implemented** | `orders.set_coupon_code_disabled` |
+| GET | `/rest/orders/coupons/campaigns/{campaignId}` | Get campaign by Id | **implemented** | `orders.get_campaign` |
+| POST | `/rest/orders/coupons/campaigns/{campaignId}/codes` | Create a coupon code | **implemented** | `orders.create_coupon_code` |
+| POST | `/rest/orders/coupons/codes` | Validate multiple coupons | **implemented** | `orders.validate_coupons` |
+| GET | `/rest/orders/coupons/codes/contacts/{contactId}` | List redeemed coupon codes of a contact | **implemented** | `orders.list_redeemed_coupon_codes` |
+| POST | `/rest/orders/coupons/codes/{coupon}` | Validate a coupon | **implemented** | `orders.validate_coupon` |
+| GET | `/rest/orders/currencies` | List currencies | **implemented** | `orders.list_currencies` |
+| GET | `/rest/orders/currencies/countries/{countryId}` | Get a currency for a country | **implemented** | `orders.get_currency_for_country` |
+| GET | `/rest/orders/currencies/exchange_rates/from/{currencyIso}` | Get the exchange rates from a currency | **implemented** | `orders.list_exchange_rates_from` |
+| GET | `/rest/orders/currencies/exchange_rates/to/{currencyIso}` | Get the exchange rates to a currency | **implemented** | `orders.list_exchange_rates_to` |
+| GET | `/rest/orders/currencies/{currencyIso}` | Get a currency | **implemented** | `orders.get_currency` |
+| GET | `/rest/orders/currencies/{currencyIso}/countries` | List countries for a currency | **implemented** | `orders.list_currency_countries` |
+| GET | `/rest/orders/currencies/{currencyIso}/exchangeRate` | Get the exchange rate for a currency | **implemented** | `orders.get_currency_exchange_rate` |
 | GET | `/rest/orders/dates/types` | List order date types | **implemented** | `orders.list_date_types` |
 | GET | `/rest/orders/dates/types/{typeId}` | Find an order date type | **implemented** | `orders.get_date_type` |
 | GET | `/rest/orders/dates/types/{typeId}/names` | List names of an order date type | **implemented** | `orders.list_date_type_names` |
 | GET | `/rest/orders/dates/types/{typeId}/names/{lang}` | Get a name of an order date type | **implemented** | `orders.get_date_type_name` |
-| GET | `/rest/orders/documents/accounting_summary` | List document accounting summaries | planned | — |
+| GET | `/rest/orders/documents/accounting_summary` | List document accounting summaries | **implemented** | `orders.list_accounting_summaries` |
 | POST | `/rest/orders/items/dates` | Create a date for an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | DELETE | `/rest/orders/items/dates/{id}` | Delete a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| GET | `/rest/orders/items/dates/{id}` | Get date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/dates/{id}` | Get date of an order item | deprecated (use `GET /rest/orders/{orderId}`) | — |
 | PUT | `/rest/orders/items/dates/{id}` | Update a date of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | DELETE | `/rest/orders/items/outgoing_stocks` | Revert outgoing stock for order items | deprecated (use `POST /rest/{orderType}/{orderId}/cancel_booking`) | — |
 | POST | `/rest/orders/items/properties` | Create order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | DELETE | `/rest/orders/items/properties/{id}` | Delete order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| GET | `/rest/orders/items/properties/{id}` | Get order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/properties/{id}` | Get order item property | deprecated (use `GET /rest/orders/{orderId}`) | — |
 | PUT | `/rest/orders/items/properties/{id}` | Update order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | GET | `/rest/orders/items/transactions` | Search order item transactions | **implemented** | `orders.search_item_transactions` |
 | POST | `/rest/orders/items/transactions/booking` | Book order item transactions | **implemented** | `orders.book_item_transactions` |
 | DELETE | `/rest/orders/items/transactions/{transactionId}` | Delete order item transaction | **implemented** | `orders.delete_item_transaction` |
 | PUT | `/rest/orders/items/transactions/{transactionId}` | Update order item transaction | **implemented** | `orders.update_item_transaction` |
 | POST | `/rest/orders/items/{orderItemId}/booking` | Book an order item in | **implemented** | `orders.book_item_in` |
-| GET | `/rest/orders/items/{orderItemId}/dates` | List all dates of an order item | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/dates` | List all dates of an order item | deprecated (use `GET /rest/orders/{orderId}`) | — |
 | DELETE | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Delete a date of an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| GET | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Get a date of an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Get a date of an order item by order item and date type | deprecated (use `GET /rest/orders/{orderId}`) | — |
 | POST | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Create a date for an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | PUT | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Update a date of an order item by order item and date type | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| GET | `/rest/orders/items/{orderItemId}/properties` | Get all order item properties | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/properties` | Get all order item properties | deprecated (use `GET /rest/orders/{orderId}`) | — |
 | DELETE | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Delete order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| GET | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Get order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Get order item property | deprecated (use `GET /rest/orders/{orderId}`) | — |
 | POST | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Create order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | PUT | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Update order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | GET | `/rest/orders/items/{orderItemId}/transactions` | List order item transactions | **implemented** | `orders.list_item_transactions` |
 | POST | `/rest/orders/items/{orderItemId}/transactions` | Create order item transaction | **implemented** | `orders.create_item_transaction` |
-| GET | `/rest/orders/properties/types` | List order property types | planned | — |
-| POST | `/rest/orders/properties/types` | Create order property type | planned | — |
-| DELETE | `/rest/orders/properties/types/{typeId}` | Delete property type | planned | — |
-| GET | `/rest/orders/properties/types/{typeId}` | Get property type | planned | — |
-| PUT | `/rest/orders/properties/types/{typeId}` | Update property type | planned | — |
-| DELETE | `/rest/orders/properties/{id}` | Delete property of an order by property ID | planned | — |
-| PUT | `/rest/orders/properties/{id}` | Update property of an order by property ID | planned | — |
-| GET | `/rest/orders/referrers` | List referrers | planned | — |
-| GET | `/rest/orders/referrers/next_free_main` | Get next free main referrer ID | planned | — |
-| GET | `/rest/orders/referrers/search` | Search for referrers | planned | — |
-| POST | `/rest/orders/referrers/{parentReferrerId?}` | Create an order referrer | planned | — |
-| DELETE | `/rest/orders/referrers/{referrerId}` | Delete referrer | planned | — |
-| GET | `/rest/orders/referrers/{referrerId}` | Get a referrer | planned | — |
-| PUT | `/rest/orders/referrers/{referrerId}` | Update referrer | planned | — |
+| GET | `/rest/orders/properties/types` | List order property types | **implemented** | `orders.list_property_types` |
+| POST | `/rest/orders/properties/types` | Create order property type | **implemented** | `orders.create_property_type` |
+| DELETE | `/rest/orders/properties/types/{typeId}` | Delete property type | **implemented** | `orders.delete_property_type` |
+| GET | `/rest/orders/properties/types/{typeId}` | Get property type | **implemented** | `orders.get_property_type` |
+| PUT | `/rest/orders/properties/types/{typeId}` | Update property type | **implemented** | `orders.update_property_type` |
+| DELETE | `/rest/orders/properties/{id}` | Delete property of an order by property ID | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/properties/{id}` | Update property of an order by property ID | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/referrers` | List referrers | **implemented** | `orders.list_referrers` |
+| GET | `/rest/orders/referrers/next_free_main` | Get next free main referrer ID | **implemented** | `orders.get_next_free_referrer_id` |
+| GET | `/rest/orders/referrers/search` | Search for referrers | **implemented** | `orders.search_referrers` |
+| POST | `/rest/orders/referrers/{parentReferrerId?}` | Create an order referrer | **implemented** | `orders.create_referrer` |
+| DELETE | `/rest/orders/referrers/{referrerId}` | Delete referrer | **implemented** | `orders.delete_referrer` |
+| GET | `/rest/orders/referrers/{referrerId}` | Get a referrer | **implemented** | `orders.get_referrer` |
+| PUT | `/rest/orders/referrers/{referrerId}` | Update referrer | **implemented** | `orders.update_referrer` |
 | GET | `/rest/orders/search` | Search orders | **implemented** | `orders.search` |
 | POST | `/rest/orders/search` | Search orders | **implemented** | `orders.search` |
 | GET | `/rest/orders/shipping/active_shipping_service_providers` | Get the list of active shipping service providers for registration | planned | — |
@@ -1469,14 +1469,14 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | PUT | `/rest/orders/{orderId}` | Update an order | **implemented** | `orders.update_status` |
 | POST | `/rest/orders/{orderId}/advance_orders` | Create an advance order from a parent order | planned | — |
 | PUT | `/rest/orders/{orderId}/advance_orders/convert` | Convert a sales order into an advance order | planned | — |
-| POST | `/rest/orders/{orderId}/booking` | Book an order in | planned | — |
+| POST | `/rest/orders/{orderId}/booking` | Book an order in | **implemented** | `orders.book_order_in` |
 | PUT | `/rest/orders/{orderId}/cancel` | Cancel an order | **implemented** | `orders.cancel` |
-| GET | `/rest/orders/{orderId}/contactWish` | Get a contact wish | planned | — |
-| POST | `/rest/orders/{orderId}/coupons/{coupon}` | Redeem a coupon code | planned | — |
-| POST | `/rest/orders/{orderId}/coupons/{coupon}/validate` | Validate coupon for order | planned | — |
+| GET | `/rest/orders/{orderId}/contactWish` | Get a contact wish | **implemented** | `orders.get_contact_wish` |
+| POST | `/rest/orders/{orderId}/coupons/{coupon}` | Redeem a coupon code | **implemented** | `orders.redeem_coupon` |
+| POST | `/rest/orders/{orderId}/coupons/{coupon}/validate` | Validate coupon for order | **implemented** | `orders.validate_order_coupon` |
 | POST | `/rest/orders/{orderId}/credit_notes` | Create a credit note from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/credit_notes/validate` | Validate order items for create a credit note from a parent order | planned | — |
-| PUT | `/rest/orders/{orderId}/currency` | Update the order currency | planned | — |
+| PUT | `/rest/orders/{orderId}/currency` | Update the order currency | **implemented** | `orders.update_order_currency` |
 | GET | `/rest/orders/{orderId}/dates` | List all dates of an order | **implemented** | `orders.list_order_dates` |
 | GET | `/rest/orders/{orderId}/dates/{typeId}` | Get a date | **implemented** | `orders.get_order_date` |
 | POST | `/rest/orders/{orderId}/delivery_orders` | Create a delivery order from a parent order | planned | — |
@@ -1496,10 +1496,10 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | DELETE | `/rest/orders/{orderId}/outgoing_stocks` | Revert outgoing stock | deprecated (use `POST /rest/{orderType}/{orderId}/cancel_booking`) | — |
 | POST | `/rest/orders/{orderId}/outgoing_stocks` | Book out order items | deprecated (use `POST /rest/{orderType}/{orderId}/book`) | — |
 | GET | `/rest/orders/{orderId}/packagenumbers` | List package numbers of an order | **implemented** | `orders.list_order_package_numbers` |
-| POST | `/rest/orders/{orderId}/properties` | Create property for an order | planned | — |
-| GET | `/rest/orders/{orderId}/properties/{typeId?}` | List properties of an order | planned | — |
-| DELETE | `/rest/orders/{orderId}/properties/{typeId}` | Delete property of an order by order ID and property type ID | planned | — |
-| PUT | `/rest/orders/{orderId}/properties/{typeId}` | Update property of an order by order ID and property ID | planned | — |
+| POST | `/rest/orders/{orderId}/properties` | Create property for an order | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/{orderId}/properties/{typeId?}` | List properties of an order | deprecated (use `GET /rest/orders/{orderId}`) | — |
+| DELETE | `/rest/orders/{orderId}/properties/{typeId}` | Delete property of an order by order ID and property type ID | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| PUT | `/rest/orders/{orderId}/properties/{typeId}` | Update property of an order by order ID and property ID | deprecated (use `PUT /rest/orders/{orderId}`) | — |
 | POST | `/rest/orders/{orderId}/redistributions` | Create a redistribution from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/reorders` | Create a reorder from a parent order | **implemented** | `orders.create_order_reorder` |
 | POST | `/rest/orders/{orderId}/reorders/generate` | Create reorder(s) for an order | **implemented** | `orders.generate_order_reorders` |
@@ -1611,11 +1611,11 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | PUT | `/rest/subscriptions/{orderId}/currency` | Update the currency | planned | — |
 | POST | `/rest/subscriptions/{orderId}/manual_run` | Create an order for today for a given subscription. | planned | — |
 | PUT | `/rest/subscriptions/{orderId}/preview` | Get a subscription update preview | planned | — |
-| GET | `/rest/system/settings/taric_vat_assignment` | List taric vat assignments | planned | — |
-| DELETE | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Delete taric vat assignment | planned | — |
-| GET | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Get taric vat assignment | planned | — |
-| POST | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Create taric vat assignment | planned | — |
-| PUT | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Update taric vat assignment | planned | — |
+| GET | `/rest/system/settings/taric_vat_assignment` | List taric vat assignments | **implemented** | `orders.list_taric_vat_assignments` |
+| DELETE | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Delete taric vat assignment | **implemented** | `orders.delete_taric_vat_assignment` |
+| GET | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Get taric vat assignment | **implemented** | `orders.get_taric_vat_assignment` |
+| POST | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Create taric vat assignment | **implemented** | `orders.create_taric_vat_assignment` |
+| PUT | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Update taric vat assignment | **implemented** | `orders.update_taric_vat_assignment` |
 | POST | `/rest/warranties` | Create a warranty | planned | — |
 | POST | `/rest/warranties/items/{orderItemId}/assign_variation` | Change an order item of type "unassigned variation" to "variation". | planned | — |
 | POST | `/rest/warranties/items/{orderItemId}/unassign_variation` | Change an order item of type "variation" to "unassigned variation". | planned | — |
