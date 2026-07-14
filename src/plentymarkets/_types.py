@@ -213,6 +213,29 @@ class OrderCouponCodeCreatePayload(TypedDict, total=False):
     usedAmount: NotRequired[float]
 
 
+class OrderCouponValidatePayload(TypedDict, total=False):
+    """Payload for :meth:`OrdersModule.validate_coupons` and
+    :meth:`OrdersModule.validate_coupon`
+    (``POST /rest/orders/coupons/codes(/{coupon})``).
+
+    Keys:
+        contactId: ID of the contact the coupon would be applied for.
+            **Required.**
+        items: List of basket item dicts to validate the coupon against.
+            **Required.**
+        validationType: Validation mode. Exact accepted values undocumented
+            in the spec.
+        currency: ISO 4217 currency code for the validation.
+        referrer: Referrer ID to validate against.
+    """
+
+    contactId: Required[int]
+    items: Required[list[dict[str, Any]]]
+    validationType: NotRequired[str]
+    currency: NotRequired[str]
+    referrer: NotRequired[float]
+
+
 # ---------------------------------------------------------------------------
 # Items  (/rest/items)
 # ---------------------------------------------------------------------------

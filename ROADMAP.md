@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**209 / 1837** endpoints implemented across **53** API tags.
+**214 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **104/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **109/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-104/307 implemented.
+109/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1365,9 +1365,9 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | PUT | `/rest/orders/coupons/campaigns/codes/{code}/disabled/{isDisabled}` | Disable or enable coupon | **implemented** | `orders.set_coupon_code_disabled` |
 | GET | `/rest/orders/coupons/campaigns/{campaignId}` | Get campaign by Id | **implemented** | `orders.get_campaign` |
 | POST | `/rest/orders/coupons/campaigns/{campaignId}/codes` | Create a coupon code | **implemented** | `orders.create_coupon_code` |
-| POST | `/rest/orders/coupons/codes` | Validate multiple coupons | planned | — |
-| GET | `/rest/orders/coupons/codes/contacts/{contactId}` | List redeemed coupon codes of a contact | planned | — |
-| POST | `/rest/orders/coupons/codes/{coupon}` | Validate a coupon | planned | — |
+| POST | `/rest/orders/coupons/codes` | Validate multiple coupons | **implemented** | `orders.validate_coupons` |
+| GET | `/rest/orders/coupons/codes/contacts/{contactId}` | List redeemed coupon codes of a contact | **implemented** | `orders.list_redeemed_coupon_codes` |
+| POST | `/rest/orders/coupons/codes/{coupon}` | Validate a coupon | **implemented** | `orders.validate_coupon` |
 | GET | `/rest/orders/currencies` | List currencies | **implemented** | `orders.list_currencies` |
 | GET | `/rest/orders/currencies/countries/{countryId}` | Get a currency for a country | **implemented** | `orders.get_currency_for_country` |
 | GET | `/rest/orders/currencies/exchange_rates/from/{currencyIso}` | Get the exchange rates from a currency | **implemented** | `orders.list_exchange_rates_from` |
@@ -1472,8 +1472,8 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | POST | `/rest/orders/{orderId}/booking` | Book an order in | **implemented** | `orders.book_order_in` |
 | PUT | `/rest/orders/{orderId}/cancel` | Cancel an order | **implemented** | `orders.cancel` |
 | GET | `/rest/orders/{orderId}/contactWish` | Get a contact wish | **implemented** | `orders.get_contact_wish` |
-| POST | `/rest/orders/{orderId}/coupons/{coupon}` | Redeem a coupon code | planned | — |
-| POST | `/rest/orders/{orderId}/coupons/{coupon}/validate` | Validate coupon for order | planned | — |
+| POST | `/rest/orders/{orderId}/coupons/{coupon}` | Redeem a coupon code | **implemented** | `orders.redeem_coupon` |
+| POST | `/rest/orders/{orderId}/coupons/{coupon}/validate` | Validate coupon for order | **implemented** | `orders.validate_order_coupon` |
 | POST | `/rest/orders/{orderId}/credit_notes` | Create a credit note from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/credit_notes/validate` | Validate order items for create a credit note from a parent order | planned | — |
 | PUT | `/rest/orders/{orderId}/currency` | Update the order currency | **implemented** | `orders.update_order_currency` |

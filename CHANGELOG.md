@@ -76,6 +76,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.create_coupon_code` — create a coupon code via `POST /rest/orders/coupons/campaigns/{campaignId}/codes`
 - feat: `OrderCouponCodeCreatePayload` — TypedDict for `create_coupon_code`
 - refactor: `modules/orders/` gains a `coupons.py` mixin (`CouponsMixin`) — no public API change
+- feat: `OrdersModule.validate_coupons` — validate multiple coupon codes via `POST /rest/orders/coupons/codes`
+- feat: `OrdersModule.list_redeemed_coupon_codes` / `paginate_redeemed_coupon_codes` — list/iterate a contact's redeemed coupon codes via `GET /rest/orders/coupons/codes/contacts/{contactId}`
+- feat: `OrdersModule.validate_coupon` — validate a single coupon code via `POST /rest/orders/coupons/codes/{coupon}`
+- feat: `OrdersModule.redeem_coupon` — redeem a coupon code against an order via `POST /rest/orders/{orderId}/coupons/{coupon}`
+- feat: `OrdersModule.validate_order_coupon` — validate a coupon against an existing order via `POST /rest/orders/{orderId}/coupons/{coupon}/validate`
+- feat: `OrderCouponValidatePayload` — TypedDict for `validate_coupons`/`validate_coupon`
+- `Order` reaches 109/307 endpoint coverage under the `Order` API tag (coupons milestone complete)
 
 ## [0.3.2] - 2026-07-13
 
