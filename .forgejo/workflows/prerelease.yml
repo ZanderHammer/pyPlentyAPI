@@ -1,0 +1,73 @@
+name: Pre-release
+
+on:
+  push:
+    branches:
+      - staging
+
+concurrency:
+  group: prerelease-staging
+  cancel-in-progress: true
+
+jobs:
+  prerelease:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Run tests
+        run: uv run pytest
+
+      - name: Compute next version
+        id: next
+        run: |
+          set +e
+          OUTPUT=$(uv run cz bump --dry-run 2>&1)
+          set -e
+          echo "$OUTPUT"
+          NEXT=$(echo "$OUTPUT" | grep '^bump: version' | awk -F'→' '{print $2}' | xargs)
+          if [ -z "$NEXT" ]; then
+            echo "No version-bumping commits since the last release -- skipping pre-release."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "version=${NEXT}.dev${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
+      - name: Set ephemeral build version
+        if: steps.next.outputs.skip == 'false'
+        run: |
+          python3 - "${{ steps.next.outputs.version }}" <<'EOF'
+          import re
+          import sys
+
+          version = sys.argv[1]
+          content = open("pyproject.toml").read()
+          content = re.sub(
+              r'(?m)^(version = )"[^"]+"',
+              rf'\1"{version}"',
+              content,
+              count=1,
+          )
+          open("pyproject.toml", "w").write(content)
+          EOF
+
+      - name: Build distribution
+        if: steps.next.outputs.skip == 'false'
+        run: uv build
+
+      - name: Publish pre-release to PyPI
+        if: steps.next.outputs.skip == 'false'
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: uv publish
