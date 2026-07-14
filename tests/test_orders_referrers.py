@@ -126,3 +126,7 @@ async def test_update_referrer_puts_data(httpx_mock, orders):
     )
     result = await orders.update_referrer(2, {"name": "Google Ads"})
     assert result["name"] == "Google Ads"
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == {"name": "Google Ads"}
