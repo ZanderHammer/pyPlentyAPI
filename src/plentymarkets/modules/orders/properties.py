@@ -311,7 +311,7 @@ class PropertiesMixin(OrdersBase):
 
         Note:
             **Deprecated** by PlentyMarkets: use
-            ``PUT /rest/orders/{orderId}`` instead.
+            ``GET /rest/orders/{orderId}`` instead.
 
         Args:
             property_id: The order-item property record ID.
@@ -366,7 +366,7 @@ class PropertiesMixin(OrdersBase):
 
         Note:
             **Deprecated** by PlentyMarkets: use
-            ``PUT /rest/orders/{orderId}`` instead.
+            ``GET /rest/orders/{orderId}`` instead.
 
         Args:
             order_item_id: The order item ID.
@@ -406,7 +406,7 @@ class PropertiesMixin(OrdersBase):
 
         Note:
             **Deprecated** by PlentyMarkets: use
-            ``PUT /rest/orders/{orderId}`` instead.
+            ``GET /rest/orders/{orderId}`` instead.
 
         Args:
             order_item_id: The order item ID.

@@ -162,7 +162,7 @@ class DatesMixin(OrdersBase):
 
         Note:
             **Deprecated** by PlentyMarkets: use
-            ``PUT /rest/orders/{orderId}`` instead.
+            ``GET /rest/orders/{orderId}`` instead.
 
         Note:
             See the caveat on :meth:`create_item_date` regarding the
@@ -205,7 +205,7 @@ class DatesMixin(OrdersBase):
 
         Note:
             **Deprecated** by PlentyMarkets: use
-            ``PUT /rest/orders/{orderId}`` instead.
+            ``GET /rest/orders/{orderId}`` instead.
 
         Note:
             See the caveat on :meth:`create_item_date` regarding the
@@ -249,7 +249,7 @@ class DatesMixin(OrdersBase):
 
         Note:
             **Deprecated** by PlentyMarkets: use
-            ``PUT /rest/orders/{orderId}`` instead.
+            ``GET /rest/orders/{orderId}`` instead.
 
         Note:
             See the caveat on :meth:`create_item_date` regarding the
