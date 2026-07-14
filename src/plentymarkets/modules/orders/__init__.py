@@ -6,6 +6,7 @@ from .core import CoreMixin
 from .dates import DatesMixin
 from .order_items import ItemsMixin
 from .properties import PropertiesMixin
+from .referrers import ReferrersMixin
 from .reorders import ReordersMixin
 from .status_history import StatusHistoryMixin
 from .statuses import StatusMixin
@@ -23,6 +24,7 @@ class OrdersModule(
     ItemsMixin,
     ReordersMixin,
     PropertiesMixin,
+    ReferrersMixin,
     OrdersBase,
 ):
     """Wraps the PlentyMarkets ``/rest/orders`` endpoints.

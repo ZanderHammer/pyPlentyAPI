@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**189 / 1837** endpoints implemented across **53** API tags.
+**196 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **84/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **91/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-84/307 implemented.
+91/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1413,13 +1413,13 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | PUT | `/rest/orders/properties/types/{typeId}` | Update property type | **implemented** | `orders.update_property_type` |
 | DELETE | `/rest/orders/properties/{id}` | Delete property of an order by property ID | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.delete_order_property` |
 | PUT | `/rest/orders/properties/{id}` | Update property of an order by property ID | **implemented** (deprecated by PlentyMarkets, use `PUT /rest/orders/{orderId}`) | `orders.update_order_property` |
-| GET | `/rest/orders/referrers` | List referrers | planned | — |
-| GET | `/rest/orders/referrers/next_free_main` | Get next free main referrer ID | planned | — |
-| GET | `/rest/orders/referrers/search` | Search for referrers | planned | — |
-| POST | `/rest/orders/referrers/{parentReferrerId?}` | Create an order referrer | planned | — |
-| DELETE | `/rest/orders/referrers/{referrerId}` | Delete referrer | planned | — |
-| GET | `/rest/orders/referrers/{referrerId}` | Get a referrer | planned | — |
-| PUT | `/rest/orders/referrers/{referrerId}` | Update referrer | planned | — |
+| GET | `/rest/orders/referrers` | List referrers | **implemented** | `orders.list_referrers` |
+| GET | `/rest/orders/referrers/next_free_main` | Get next free main referrer ID | **implemented** | `orders.get_next_free_referrer_id` |
+| GET | `/rest/orders/referrers/search` | Search for referrers | **implemented** | `orders.search_referrers` |
+| POST | `/rest/orders/referrers/{parentReferrerId?}` | Create an order referrer | **implemented** | `orders.create_referrer` |
+| DELETE | `/rest/orders/referrers/{referrerId}` | Delete referrer | **implemented** | `orders.delete_referrer` |
+| GET | `/rest/orders/referrers/{referrerId}` | Get a referrer | **implemented** | `orders.get_referrer` |
+| PUT | `/rest/orders/referrers/{referrerId}` | Update referrer | **implemented** | `orders.update_referrer` |
 | GET | `/rest/orders/search` | Search orders | **implemented** | `orders.search` |
 | POST | `/rest/orders/search` | Search orders | **implemented** | `orders.search` |
 | GET | `/rest/orders/shipping/active_shipping_service_providers` | Get the list of active shipping service providers for registration | planned | — |

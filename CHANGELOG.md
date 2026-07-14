@@ -50,6 +50,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.create_item_property_by_type` — create an order-item property by item and type via `POST /rest/orders/items/{orderItemId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.update_item_property_by_type` — update an order-item property by item and type via `PUT /rest/orders/items/{orderItemId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - `Order` reaches 84/307 endpoint coverage under the `Order` API tag (properties milestone complete: property types + order-level + order-item-level property values)
+- feat: `OrdersModule.list_referrers` — list all order referrers via `GET /rest/orders/referrers`
+- feat: `OrdersModule.get_next_free_referrer_id` — get the next free main referrer ID via `GET /rest/orders/referrers/next_free_main`
+- feat: `OrdersModule.search_referrers` / `paginate_referrers` — search/iterate order referrers via `GET /rest/orders/referrers/search`
+- feat: `OrdersModule.create_referrer` — create an order referrer via `POST /rest/orders/referrers/{parentReferrerId}`
+- feat: `OrdersModule.delete_referrer` — delete an order referrer via `DELETE /rest/orders/referrers/{referrerId}`
+- feat: `OrdersModule.get_referrer` — get one order referrer via `GET /rest/orders/referrers/{referrerId}`
+- feat: `OrdersModule.update_referrer` — update an order referrer via `PUT /rest/orders/referrers/{referrerId}`
+- `Order` reaches 91/307 endpoint coverage under the `Order` API tag (referrers milestone)
+- refactor: `modules/orders/` gains a `referrers.py` mixin (`ReferrersMixin`) — no public API change
 
 ## [0.3.2] - 2026-07-13
 
