@@ -59,6 +59,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.update_referrer` — update an order referrer via `PUT /rest/orders/referrers/{referrerId}`
 - `Order` reaches 91/307 endpoint coverage under the `Order` API tag (referrers milestone)
 - refactor: `modules/orders/` gains a `referrers.py` mixin (`ReferrersMixin`) — no public API change
+- feat: `OrdersModule.list_currencies` — list all currencies via `GET /rest/orders/currencies`
+- feat: `OrdersModule.get_currency_for_country` — get a country's currency via `GET /rest/orders/currencies/countries/{countryId}`
+- feat: `OrdersModule.list_exchange_rates_from` — list exchange rates from a currency via `GET /rest/orders/currencies/exchange_rates/from/{currencyIso}`
+- feat: `OrdersModule.list_exchange_rates_to` — list exchange rates to a currency via `GET /rest/orders/currencies/exchange_rates/to/{currencyIso}`
+- feat: `OrdersModule.get_currency` — get one currency via `GET /rest/orders/currencies/{currencyIso}`
+- feat: `OrdersModule.list_currency_countries` — list countries using a currency via `GET /rest/orders/currencies/{currencyIso}/countries`
+- feat: `OrdersModule.get_currency_exchange_rate` — get a currency's exchange rate via `GET /rest/orders/currencies/{currencyIso}/exchangeRate`
+- `Order` reaches 98/307 endpoint coverage under the `Order` API tag (currencies milestone)
+- refactor: `modules/orders/` gains a `currencies.py` mixin (`CurrenciesMixin`) — no public API change
 
 ## [0.3.2] - 2026-07-13
 

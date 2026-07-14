@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**196 / 1837** endpoints implemented across **53** API tags.
+**203 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **91/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **98/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-91/307 implemented.
+98/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1368,13 +1368,13 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | POST | `/rest/orders/coupons/codes` | Validate multiple coupons | planned | — |
 | GET | `/rest/orders/coupons/codes/contacts/{contactId}` | List redeemed coupon codes of a contact | planned | — |
 | POST | `/rest/orders/coupons/codes/{coupon}` | Validate a coupon | planned | — |
-| GET | `/rest/orders/currencies` | List currencies | planned | — |
-| GET | `/rest/orders/currencies/countries/{countryId}` | Get a currency for a country | planned | — |
-| GET | `/rest/orders/currencies/exchange_rates/from/{currencyIso}` | Get the exchange rates from a currency | planned | — |
-| GET | `/rest/orders/currencies/exchange_rates/to/{currencyIso}` | Get the exchange rates to a currency | planned | — |
-| GET | `/rest/orders/currencies/{currencyIso}` | Get a currency | planned | — |
-| GET | `/rest/orders/currencies/{currencyIso}/countries` | List countries for a currency | planned | — |
-| GET | `/rest/orders/currencies/{currencyIso}/exchangeRate` | Get the exchange rate for a currency | planned | — |
+| GET | `/rest/orders/currencies` | List currencies | **implemented** | `orders.list_currencies` |
+| GET | `/rest/orders/currencies/countries/{countryId}` | Get a currency for a country | **implemented** | `orders.get_currency_for_country` |
+| GET | `/rest/orders/currencies/exchange_rates/from/{currencyIso}` | Get the exchange rates from a currency | **implemented** | `orders.list_exchange_rates_from` |
+| GET | `/rest/orders/currencies/exchange_rates/to/{currencyIso}` | Get the exchange rates to a currency | **implemented** | `orders.list_exchange_rates_to` |
+| GET | `/rest/orders/currencies/{currencyIso}` | Get a currency | **implemented** | `orders.get_currency` |
+| GET | `/rest/orders/currencies/{currencyIso}/countries` | List countries for a currency | **implemented** | `orders.list_currency_countries` |
+| GET | `/rest/orders/currencies/{currencyIso}/exchangeRate` | Get the exchange rate for a currency | **implemented** | `orders.get_currency_exchange_rate` |
 | GET | `/rest/orders/dates/types` | List order date types | **implemented** | `orders.list_date_types` |
 | GET | `/rest/orders/dates/types/{typeId}` | Find an order date type | **implemented** | `orders.get_date_type` |
 | GET | `/rest/orders/dates/types/{typeId}/names` | List names of an order date type | **implemented** | `orders.list_date_type_names` |
