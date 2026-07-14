@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-07-14
+
 ### Order
 
 - fix!: remove `OrdersModule.list`, `paginate_orders`, `list_order_dates`, `get_order_date` — an audit of every implemented endpoint against the live OpenAPI spec's `description` field found these four wrap routes now marked deprecated (`GET /rest/orders` → use `GET /rest/orders/search`; `GET /rest/orders/{orderId}/dates` and `GET /rest/orders/{orderId}/dates/{typeId}` → use `GET /rest/orders/{orderId}`, whose response already includes the order's `dates` list)
