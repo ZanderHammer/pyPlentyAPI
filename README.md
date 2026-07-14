@@ -64,7 +64,7 @@ Endpoint totals are counted against the [PlentyMarkets OpenAPI spec](https://raw
 |-------------|------------|----------------------------------|
 | **Pim**         | 80 / 80    | ✅ Complete                      |
 | **Stock**       | 17 / 17    | ✅ Complete                      |
-| **Order**       | 45 / 307   | Lifecycle, items & transactions  |
+| **Order**       | 87 / 307   | Lifecycle, items, transactions & core metadata |
 | **Item**        | 4 / 294    | Core operations                  |
 | **Account**     | 4 / 151    | Core operations                  |
 
