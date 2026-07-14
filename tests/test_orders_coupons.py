@@ -189,6 +189,8 @@ async def test_redeem_coupon_posts_with_no_body(httpx_mock, orders):
     )
     result = await orders.redeem_coupon(42, "SAVE10")
     assert result["couponCode"] == "SAVE10"
+    request = httpx_mock.get_request()
+    assert request.content == b""
 
 
 async def test_validate_order_coupon_calls_correct_url(httpx_mock, orders):
@@ -199,3 +201,5 @@ async def test_validate_order_coupon_calls_correct_url(httpx_mock, orders):
     )
     result = await orders.validate_order_coupon(42, "SAVE10")
     assert result == [{"valid": True}]
+    request = httpx_mock.get_request()
+    assert request.content == b""
