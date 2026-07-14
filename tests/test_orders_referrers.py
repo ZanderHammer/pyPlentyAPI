@@ -96,6 +96,8 @@ async def test_create_referrer_sends_data_values(httpx_mock, orders):
         1, values=["name:Google", "isFilterable:true"]
     )
     assert result["id"] == 2
+    request = httpx_mock.get_request()
+    assert request.content == b""
 
 
 async def test_delete_referrer_sends_delete_request(httpx_mock, orders):

@@ -306,6 +306,8 @@ async def test_create_multi_order_posts_to_contact_url(httpx_mock, orders):
     )
     result = await orders.create_multi_order(7)
     assert result["typeId"] == 9
+    request = httpx_mock.get_request()
+    assert request.content == b""
 
 
 async def test_list_accounting_summaries_defaults_to_page_1_and_10(httpx_mock, orders):
@@ -374,6 +376,8 @@ async def test_book_order_in_posts_to_booking_url(httpx_mock, orders):
     )
     result = await orders.book_order_in(42)
     assert result == {}
+    request = httpx_mock.get_request()
+    assert request.content == b""
 
 
 async def test_book_order_in_sends_delivery_note_number(httpx_mock, orders):
@@ -383,6 +387,8 @@ async def test_book_order_in_sends_delivery_note_number(httpx_mock, orders):
         json={},
     )
     await orders.book_order_in(42, delivery_note_number="DN-1")
+    request = httpx_mock.get_request()
+    assert request.content == b""
 
 
 async def test_get_contact_wish_calls_correct_url(httpx_mock, orders):
@@ -435,6 +441,8 @@ async def test_book_out_order_items_posts_to_outgoing_stocks_url(httpx_mock, ord
     )
     result = await orders.book_out_order_items(42)
     assert result == {}
+    request = httpx_mock.get_request()
+    assert request.content == b""
 
 
 async def test_book_out_order_items_sends_date(httpx_mock, orders):
@@ -444,6 +452,8 @@ async def test_book_out_order_items_sends_date(httpx_mock, orders):
         json={},
     )
     await orders.book_out_order_items(42, date="2026-07-13")
+    request = httpx_mock.get_request()
+    assert request.content == b""
 
 
 async def test_revert_order_outgoing_stock_sends_delete_request(httpx_mock, orders):

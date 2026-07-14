@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.revert_item_outgoing_stock` — revert an order item's outgoing-stock booking via `DELETE /rest/orders/items/outgoing_stocks` (deprecated by PlentyMarkets; use `POST /rest/{orderType}/{orderId}/cancel_booking`)
 - feat: `OrdersModule.book_out_order_items` — book out an order's items via `POST /rest/orders/{orderId}/outgoing_stocks` (deprecated by PlentyMarkets; use `POST /rest/{orderType}/{orderId}/book`)
 - feat: `OrdersModule.revert_order_outgoing_stock` — revert an order's outgoing-stock booking via `DELETE /rest/orders/{orderId}/outgoing_stocks` (deprecated by PlentyMarkets; use `POST /rest/{orderType}/{orderId}/cancel_booking`)
+- `Order` reaches 55/307 endpoint coverage under the `Order` API tag (core metadata batch A-D: batch fetch, contact/multi orders, accounting summaries, booking, contact wish, currency, outgoing stocks)
 - feat: `OrdersModule.create_item_date` — create a date for an order item via `POST /rest/orders/items/dates` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.delete_item_date` — delete a date of an order item via `DELETE /rest/orders/items/dates/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.get_item_date` — get a date of an order item via `GET /rest/orders/items/dates/{id}` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
@@ -29,6 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.get_item_date_by_type` — get a date of an order item by type via `GET /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `GET /rest/orders/{orderId}`)
 - feat: `OrdersModule.create_item_date_by_type` — create a date for an order item by type via `POST /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.update_item_date_by_type` — update a date of an order item by type via `PUT /rest/orders/items/{orderItemId}/dates/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- `Order` reaches 64/307 endpoint coverage under the `Order` API tag (order-item dates milestone)
 - feat: `OrdersModule.list_property_types` — list order property types via `GET /rest/orders/properties/types`
 - feat: `OrdersModule.create_property_type` — create an order property type via `POST /rest/orders/properties/types`
 - feat: `OrdersModule.delete_property_type` — delete an order property type via `DELETE /rest/orders/properties/types/{typeId}`
