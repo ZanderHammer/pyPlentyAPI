@@ -44,7 +44,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.delete_item_property` — delete an order-item property via `DELETE /rest/orders/items/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.get_item_property` — get an order-item property via `GET /rest/orders/items/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
 - feat: `OrdersModule.update_item_property` — update an order-item property via `PUT /rest/orders/items/properties/{id}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
-- `Order` reaches 75/307 endpoint coverage under the `Order` API tag (order property types and order-level property values milestone)
+- feat: `OrdersModule.list_item_properties` — list all properties of an order item via `GET /rest/orders/items/{orderItemId}/properties` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.delete_item_property_by_type` — delete an order-item property by item and type via `DELETE /rest/orders/items/{orderItemId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.get_item_property_by_type` — get an order-item property by item and type via `GET /rest/orders/items/{orderItemId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.create_item_property_by_type` — create an order-item property by item and type via `POST /rest/orders/items/{orderItemId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- feat: `OrdersModule.update_item_property_by_type` — update an order-item property by item and type via `PUT /rest/orders/items/{orderItemId}/properties/{typeId}` (deprecated by PlentyMarkets; use `PUT /rest/orders/{orderId}`)
+- `Order` reaches 84/307 endpoint coverage under the `Order` API tag (properties milestone complete: property types + order-level + order-item-level property values)
 
 ## [0.3.2] - 2026-07-13
 

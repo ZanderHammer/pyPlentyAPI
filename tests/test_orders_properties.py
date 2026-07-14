@@ -236,3 +236,68 @@ async def test_update_item_property_puts_only_given_fields(httpx_mock, orders):
     import json as _json
 
     assert _json.loads(request.content) == {"value": "L"}
+
+
+# --- order-item property values, by order item + type ---
+
+
+async def test_list_item_properties_calls_correct_url(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/items/10/properties",
+        json=[{"id": 701, "orderItemId": 10, "typeId": 29, "value": "M"}],
+    )
+    result = await orders.list_item_properties(10)
+    assert result[0]["typeId"] == 29
+
+
+async def test_delete_item_property_by_type_sends_delete_request(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="DELETE",
+        url=f"{BASE_URL}/rest/orders/items/10/properties/29",
+        json={},
+    )
+    result = await orders.delete_item_property_by_type(10, 29)
+    assert result == {}
+
+
+async def test_get_item_property_by_type_calls_correct_url(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="GET",
+        url=f"{BASE_URL}/rest/orders/items/10/properties/29",
+        json={"id": 701, "orderItemId": 10, "typeId": 29, "value": "M"},
+    )
+    result = await orders.get_item_property_by_type(10, 29)
+    assert result["value"] == "M"
+
+
+async def test_create_item_property_by_type_posts_data(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="POST",
+        url=f"{BASE_URL}/rest/orders/items/10/properties/29",
+        json={"id": 701, "orderItemId": 10, "typeId": 29, "value": "M"},
+    )
+    result = await orders.create_item_property_by_type(10, 29, value="M")
+    assert result["id"] == 701
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == {
+        "orderItemId": 10,
+        "typeId": 29,
+        "value": "M",
+    }
+
+
+async def test_update_item_property_by_type_puts_value(httpx_mock, orders):
+    httpx_mock.add_response(
+        method="PUT",
+        url=f"{BASE_URL}/rest/orders/items/10/properties/29",
+        json={"id": 701, "orderItemId": 10, "typeId": 29, "value": "L"},
+    )
+    result = await orders.update_item_property_by_type(10, 29, value="L")
+    assert result["value"] == "L"
+    request = httpx_mock.get_request()
+    import json as _json
+
+    assert _json.loads(request.content) == {"value": "L"}

@@ -358,3 +358,110 @@ class PropertiesMixin(OrdersBase):
         return await self._session.put(
             f"/rest/orders/items/properties/{property_id}", json=data
         )
+
+    async def list_item_properties(
+        self, order_item_id: int
+    ) -> list[dict[str, Any]]:
+        """List all properties of an order item.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            order_item_id: The order item ID.
+
+        Returns:
+            A list of order-item property dicts (see
+            :meth:`create_item_property` for the field reference).
+        """
+        return await self._session.get(  # type: ignore[return-value]
+            f"/rest/orders/items/{order_item_id}/properties"
+        )
+
+    async def delete_item_property_by_type(
+        self, order_item_id: int, type_id: int
+    ) -> dict[str, Any]:
+        """Delete an order-item property, addressed by item and type.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            order_item_id: The order item ID.
+            type_id: The order-item property type ID.
+
+        Returns:
+            Empty dict on success (the API returns no body).
+        """
+        return await self._session.delete(
+            f"/rest/orders/items/{order_item_id}/properties/{type_id}"
+        )
+
+    async def get_item_property_by_type(
+        self, order_item_id: int, type_id: int
+    ) -> dict[str, Any]:
+        """Get an order-item property, addressed by item and type.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            order_item_id: The order item ID.
+            type_id: The order-item property type ID.
+
+        Returns:
+            An order-item property dict (see :meth:`create_item_property`
+            for the field reference).
+        """
+        return await self._session.get(
+            f"/rest/orders/items/{order_item_id}/properties/{type_id}"
+        )
+
+    async def create_item_property_by_type(
+        self, order_item_id: int, type_id: int, value: str
+    ) -> dict[str, Any]:
+        """Create an order-item property, addressed by item and type.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            order_item_id: The order item ID.
+            type_id: The order-item property type ID.
+            value: The property value.
+
+        Returns:
+            The created order-item property dict (see
+            :meth:`create_item_property` for the field reference).
+        """
+        return await self._session.post(
+            f"/rest/orders/items/{order_item_id}/properties/{type_id}",
+            json={"orderItemId": order_item_id, "typeId": type_id, "value": value},
+        )
+
+    async def update_item_property_by_type(
+        self, order_item_id: int, type_id: int, value: str
+    ) -> dict[str, Any]:
+        """Update an order-item property, addressed by item and type.
+
+        Note:
+            **Deprecated** by PlentyMarkets: use
+            ``PUT /rest/orders/{orderId}`` instead.
+
+        Args:
+            order_item_id: The order item ID.
+            type_id: The order-item property type ID.
+            value: The new property value.
+
+        Returns:
+            The updated order-item property dict (see
+            :meth:`create_item_property` for the field reference).
+        """
+        return await self._session.put(
+            f"/rest/orders/items/{order_item_id}/properties/{type_id}",
+            json={"value": value},
+        )

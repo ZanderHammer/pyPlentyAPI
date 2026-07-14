@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**180 / 1837** endpoints implemented across **53** API tags.
+**189 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **75/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **84/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-69/307 implemented.
+84/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1399,11 +1399,11 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | GET | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Get a date of an order item by order item and date type | **implemented** | `orders.get_item_date_by_type` |
 | POST | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Create a date for an order item by order item and date type | **implemented** | `orders.create_item_date_by_type` |
 | PUT | `/rest/orders/items/{orderItemId}/dates/{typeId}` | Update a date of an order item by order item and date type | **implemented** | `orders.update_item_date_by_type` |
-| GET | `/rest/orders/items/{orderItemId}/properties` | Get all order item properties | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| DELETE | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Delete order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| GET | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Get order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| POST | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Create order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
-| PUT | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Update order item property | deprecated (use `PUT /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/items/{orderItemId}/properties` | Get all order item properties | **implemented** | `orders.list_item_properties` |
+| DELETE | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Delete order item property | **implemented** | `orders.delete_item_property_by_type` |
+| GET | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Get order item property | **implemented** | `orders.get_item_property_by_type` |
+| POST | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Create order item property | **implemented** | `orders.create_item_property_by_type` |
+| PUT | `/rest/orders/items/{orderItemId}/properties/{typeId}` | Update order item property | **implemented** | `orders.update_item_property_by_type` |
 | GET | `/rest/orders/items/{orderItemId}/transactions` | List order item transactions | **implemented** | `orders.list_item_transactions` |
 | POST | `/rest/orders/items/{orderItemId}/transactions` | Create order item transaction | **implemented** | `orders.create_item_transaction` |
 | GET | `/rest/orders/properties/types` | List order property types | **implemented** | `orders.list_property_types` |
