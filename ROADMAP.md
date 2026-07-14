@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**214 / 1837** endpoints implemented across **53** API tags.
+**219 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **109/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **114/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-109/307 implemented.
+114/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1611,11 +1611,11 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | PUT | `/rest/subscriptions/{orderId}/currency` | Update the currency | planned | — |
 | POST | `/rest/subscriptions/{orderId}/manual_run` | Create an order for today for a given subscription. | planned | — |
 | PUT | `/rest/subscriptions/{orderId}/preview` | Get a subscription update preview | planned | — |
-| GET | `/rest/system/settings/taric_vat_assignment` | List taric vat assignments | planned | — |
-| DELETE | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Delete taric vat assignment | planned | — |
-| GET | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Get taric vat assignment | planned | — |
-| POST | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Create taric vat assignment | planned | — |
-| PUT | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Update taric vat assignment | planned | — |
+| GET | `/rest/system/settings/taric_vat_assignment` | List taric vat assignments | **implemented** | `orders.list_taric_vat_assignments` |
+| DELETE | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Delete taric vat assignment | **implemented** | `orders.delete_taric_vat_assignment` |
+| GET | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Get taric vat assignment | **implemented** | `orders.get_taric_vat_assignment` |
+| POST | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Create taric vat assignment | **implemented** | `orders.create_taric_vat_assignment` |
+| PUT | `/rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}` | Update taric vat assignment | **implemented** | `orders.update_taric_vat_assignment` |
 | POST | `/rest/warranties` | Create a warranty | planned | — |
 | POST | `/rest/warranties/items/{orderItemId}/assign_variation` | Change an order item of type "unassigned variation" to "variation". | planned | — |
 | POST | `/rest/warranties/items/{orderItemId}/unassign_variation` | Change an order item of type "variation" to "unassigned variation". | planned | — |

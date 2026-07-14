@@ -83,6 +83,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.validate_order_coupon` — validate a coupon against an existing order via `POST /rest/orders/{orderId}/coupons/{coupon}/validate`
 - feat: `OrderCouponValidatePayload` — TypedDict for `validate_coupons`/`validate_coupon`
 - `Order` reaches 109/307 endpoint coverage under the `Order` API tag (coupons milestone complete)
+- feat: `OrdersModule.list_taric_vat_assignments` / `paginate_taric_vat_assignments` — list/iterate TARIC VAT assignments via `GET /rest/system/settings/taric_vat_assignment`
+- feat: `OrdersModule.delete_taric_vat_assignment` — delete a TARIC VAT assignment via `DELETE /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
+- feat: `OrdersModule.get_taric_vat_assignment` — get one TARIC VAT assignment via `GET /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
+- feat: `OrdersModule.create_taric_vat_assignment` — create a TARIC VAT assignment via `POST /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
+- feat: `OrdersModule.update_taric_vat_assignment` — update a TARIC VAT assignment via `PUT /rest/system/settings/taric_vat_assignment/{taricCode}/{countryId}`
+- `Order` reaches 114/307 endpoint coverage under the `Order` API tag (Phase 4 "core order metadata" milestone complete: batch/contact/accounting lookups, order-item dates, order & order-item properties, referrers, currencies, coupons, TARIC VAT assignments)
+- refactor: `modules/orders/` gains a `taric.py` mixin (`TaricMixin`) — no public API change
 
 ## [0.3.2] - 2026-07-13
 

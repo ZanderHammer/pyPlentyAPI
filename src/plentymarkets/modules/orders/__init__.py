@@ -12,6 +12,7 @@ from .referrers import ReferrersMixin
 from .reorders import ReordersMixin
 from .status_history import StatusHistoryMixin
 from .statuses import StatusMixin
+from .taric import TaricMixin
 from .transactions import TransactionsMixin
 
 __all__ = ["OrdersModule"]
@@ -29,6 +30,7 @@ class OrdersModule(
     ReferrersMixin,
     CurrenciesMixin,
     CouponsMixin,
+    TaricMixin,
     OrdersBase,
 ):
     """Wraps the PlentyMarkets ``/rest/orders`` endpoints.
