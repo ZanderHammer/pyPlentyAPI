@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Order
+
+- fix!: remove `OrdersModule.list`, `paginate_orders`, `list_order_dates`, `get_order_date` — an audit of every implemented endpoint against the live OpenAPI spec's `description` field found these four wrap routes now marked deprecated (`GET /rest/orders` → use `GET /rest/orders/search`; `GET /rest/orders/{orderId}/dates` and `GET /rest/orders/{orderId}/dates/{typeId}` → use `GET /rest/orders/{orderId}`, whose response already includes the order's `dates` list)
+- BREAKING CHANGE: `client.orders.list()` and `client.orders.paginate_orders()` no longer exist — use `client.orders.search()` / `client.orders.paginate_search()` instead. `client.orders.list_order_dates()` and `client.orders.get_order_date()` no longer exist — use `client.orders.get(order_id)` and read its `dates` key.
+- `Order` drops to 84/307 endpoint coverage under the `Order` API tag (down from 87; its deprecated count rises from 27 to 30) after removing the three methods above
+- docs: `README.md` — report `Order` coverage as `84 + 30 deprecated / 307`, and swap the `paginate_orders()` example in the Pagination section for `paginate_search()`
+
+### Docs
+
+- docs: `README.md` — audit every currently-implemented endpoint (not just `Order`) against the live OpenAPI spec for deprecation markers; only `Order` had any (see above) — `Pim`, `StockManagement`, `Item`, and `Account` are all clean
+- docs: `README.md` — verify all API Coverage rows against `ROADMAP.md` and add a `Total` row (`219 / 1837`, 11.9%) summing every module against the full OpenAPI spec, counting deprecated endpoints toward the total since they're permanently out of scope rather than pending work
+- docs: `README.md` — note that the other 48 API tags (988 endpoints) not shown in the coverage table are 0/N and not yet started, pointing to `ROADMAP.md` for the full tag-by-tag breakdown
+
 ## [0.4.0] - 2026-07-14
 
 ### Order

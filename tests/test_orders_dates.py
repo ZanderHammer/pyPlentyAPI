@@ -60,23 +60,3 @@ async def test_get_date_type_name_calls_correct_url(httpx_mock, orders):
     )
     result = await orders.get_date_type_name(7, "de")
     assert result["name"] == "Zahlungsziel"
-
-
-async def test_list_order_dates_calls_correct_url(httpx_mock, orders):
-    httpx_mock.add_response(
-        method="GET",
-        url=f"{BASE_URL}/rest/orders/42/dates",
-        json=[{"id": 1, "orderId": 42, "typeId": 2}],
-    )
-    result = await orders.list_order_dates(42)
-    assert result[0]["orderId"] == 42
-
-
-async def test_get_order_date_calls_correct_url(httpx_mock, orders):
-    httpx_mock.add_response(
-        method="GET",
-        url=f"{BASE_URL}/rest/orders/42/dates/7",
-        json={"id": 1, "orderId": 42, "typeId": 7},
-    )
-    result = await orders.get_order_date(42, 7)
-    assert result["typeId"] == 7

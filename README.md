@@ -50,7 +50,7 @@ asyncio.run(main())
 ## Modules
 | Module    | Description                          | Key Methods                                                                                     |
 |-----------|--------------------------------------|-------------------------------------------------------------------------------------------------|
-| **Orders**    | Manage orders, order items, item transactions, serial numbers, and reorders. | `get()`, `list()`, `create()`, `update_status()`, `search()`, `delete()`, `cancel()`, `list_order_items()`, `search_item_transactions()`, `create_order_transactions()`, `paginate_orders()` |
+| **Orders**    | Manage orders, order items, item transactions, serial numbers, and reorders. | `get()`, `create()`, `update_status()`, `search()`, `paginate_search()`, `delete()`, `cancel()`, `list_order_items()`, `search_item_transactions()`, `create_order_transactions()` |
 | **Items**     | Manage items and item variants.      | `get()`, `list()`, `create()`, `update()`, `paginate_items()`                                   |
 | **Stock**     | Manage stock, warehouses, storage locations, and stock movements. | `get_by_warehouse()`, `correct()`, `list_warehouses()`, `book_incoming_items()`, `book_outgoing_items()`, `redistribute_stock()`, `paginate_stock()` |
 | **Contacts**  | Manage customer and supplier data.   | `get()`, `list()`, `create()`, `update()`, `paginate_contacts()`                                |
@@ -64,11 +64,14 @@ Endpoint totals are counted against the [PlentyMarkets OpenAPI spec](https://raw
 |-------------|------------|----------------------------------|
 | **Pim**         | 80 / 80    | ✅ Complete                      |
 | **Stock**       | 17 / 17    | ✅ Complete                      |
-| **Order**       | 87 / 307   | Lifecycle, items, transactions & core metadata |
+| **Order**       | 84 + 30 deprecated / 307 | Lifecycle, items, transactions & core metadata |
 | **Item**        | 4 / 294    | Core operations                  |
 | **Account**     | 4 / 151    | Core operations                  |
+| **Total**       | 219 / 1837 (11.9%) | Across all 53 API tags in the spec |
 
-`Pim` reached full endpoint coverage in `v0.2.0`, `Stock` shortly after — see [ROADMAP.md](ROADMAP.md) for the endpoint-by-endpoint breakdown and the rest of the API surface still planned. `Stock`'s 17 endpoints live under the API's `StockManagement` tag.
+Only tags with at least one implemented or deprecated endpoint get their own row above; the other 48 API tags (988 endpoints) are 0/N and not yet started — see [ROADMAP.md](ROADMAP.md) for the full tag-by-tag breakdown.
+
+Deprecated endpoints count toward the `Total` row since they're permanently out of scope rather than pending work.
 
 ## Authentication
 1. Initialize `PlentyClient` with your PlentyMarkets username and password.
@@ -97,7 +100,7 @@ except plentymarkets.RateLimitError:
 ## Pagination
 Use async generators to iterate across all pages:
 ```python
-async for order in client.orders.paginate_orders():
+async for order in client.orders.paginate_search():
     print(order)
 ```
 

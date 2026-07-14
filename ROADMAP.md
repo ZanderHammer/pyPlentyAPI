@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**192 / 1837** endpoints implemented across **53** API tags.
+**189 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **87/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **84/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-87/307 implemented.
+84/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1354,7 +1354,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | DELETE | `/rest/offers/{orderId}` | Delete an offer | planned | — |
 | PUT | `/rest/offers/{orderId}` | Update an offer | planned | — |
 | PUT | `/rest/offers/{orderId}/preview` | Get an offer update preview | planned | — |
-| GET | `/rest/orders` | Search order | **implemented** | `orders.list` |
+| GET | `/rest/orders` | Search order | deprecated (use `GET /rest/orders/search`) | — |
 | POST | `/rest/orders` | Create an order | **implemented** | `orders.create` |
 | GET | `/rest/orders/batch` | Get orders | **implemented** | `orders.get_orders_batch` |
 | GET | `/rest/orders/contacts/{contactId}` | List orders of a contact | **implemented** | `orders.list_contact_orders` |
@@ -1477,8 +1477,8 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | POST | `/rest/orders/{orderId}/credit_notes` | Create a credit note from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/credit_notes/validate` | Validate order items for create a credit note from a parent order | planned | — |
 | PUT | `/rest/orders/{orderId}/currency` | Update the order currency | **implemented** | `orders.update_order_currency` |
-| GET | `/rest/orders/{orderId}/dates` | List all dates of an order | **implemented** | `orders.list_order_dates` |
-| GET | `/rest/orders/{orderId}/dates/{typeId}` | Get a date | **implemented** | `orders.get_order_date` |
+| GET | `/rest/orders/{orderId}/dates` | List all dates of an order | deprecated (use `GET /rest/orders/{orderId}`) | — |
+| GET | `/rest/orders/{orderId}/dates/{typeId}` | Get a date | deprecated (use `GET /rest/orders/{orderId}`) | — |
 | POST | `/rest/orders/{orderId}/delivery_orders` | Create a delivery order from a parent order | planned | — |
 | POST | `/rest/orders/{orderId}/delivery_orders/automatic` | Create delivery orders automatically for all order items | planned | — |
 | POST | `/rest/orders/{orderId}/delivery_orders/validate` | Validate order items for create a delivery order from a parent order | planned | — |
