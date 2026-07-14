@@ -12,6 +12,9 @@ concurrency:
 jobs:
   prerelease:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,19 +35,25 @@ jobs:
         id: next
         run: |
           set +e
-          OUTPUT=$(uv run cz bump --dry-run 2>&1)
-          STATUS=$?
+          AUTO_OUTPUT=$(uv run cz bump --dry-run 2>&1)
+          AUTO_STATUS=$?
           set -e
-          echo "$OUTPUT"
+          echo "$AUTO_OUTPUT"
 
-          if [ $STATUS -ne 0 ] || echo "$OUTPUT" | grep -q "NO_COMMITS_TO_BUMP"; then
+          if [ $AUTO_STATUS -ne 0 ] || echo "$AUTO_OUTPUT" | grep -q "NO_COMMITS_TO_BUMP"; then
             echo "No version-bumping commits since the last release -- skipping pre-release."
             echo "skip=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          CURRENT=$(echo "$OUTPUT" | grep '^bump: version' | awk -F'[ →]+' '{print $3}')
-          NEXT=$(echo "$OUTPUT" | grep '^bump: version' | awk -F'→' '{print $2}' | xargs)
+          # This project stays on PATCH-only automatic bumps while in alpha
+          # (see CLAUDE.md) -- minor/major bumps are only ever run
+          # explicitly by a maintainer, even if a feat:/breaking commit
+          # landed since the last tag and would otherwise justify one.
+          PATCH_OUTPUT=$(uv run cz bump --dry-run --increment PATCH 2>&1)
+          echo "$PATCH_OUTPUT"
+          NEXT=$(echo "$PATCH_OUTPUT" | grep '^bump: version' | awk -F'→' '{print $2}' | xargs)
+          CURRENT=$(echo "$PATCH_OUTPUT" | grep '^bump: version' | awk -F'[ →]+' '{print $3}')
           if [ -z "$NEXT" ] || [ "$NEXT" = "$CURRENT" ]; then
             echo "Could not determine a version newer than the last release -- skipping pre-release."
             echo "skip=true" >> "$GITHUB_OUTPUT"
@@ -80,3 +89,49 @@ jobs:
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: uv publish
+
+      - name: Create Codeberg pre-release and upload artifacts
+        if: steps.next.outputs.skip == 'false'
+        env:
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+        run: |
+          set -e
+          REPO="${{ github.repository }}"
+          TAG="v${{ steps.next.outputs.version }}"
+
+          echo "Automated pre-release build from staging (commit ${{ github.sha }})." > release_body.md
+
+          python3 - "$TAG" "${{ github.sha }}" <<'EOF' > release_payload.json
+          import json
+          import sys
+
+          tag, sha = sys.argv[1], sys.argv[2]
+          body = open("release_body.md").read()
+          print(json.dumps({
+              "tag_name": tag,
+              "target_commitish": sha,
+              "name": tag,
+              "body": body,
+              "draft": False,
+              "prerelease": True,
+          }))
+          EOF
+
+          curl -X POST \
+            -H "Authorization: token $GITEA_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data-binary @release_payload.json \
+            "https://codeberg.org/api/v1/repos/$REPO/releases"
+
+          RELEASE_ID=$(curl -s \
+            -H "Authorization: token $GITEA_TOKEN" \
+            "https://codeberg.org/api/v1/repos/$REPO/releases/tags/$TAG" \
+            | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
+
+          for file in dist/*; do
+            [ -f "$file" ] || continue
+            curl -X POST \
+              -H "Authorization: token $GITEA_TOKEN" \
+              -F "attachment=@$file" \
+              "https://codeberg.org/api/v1/repos/$REPO/releases/$RELEASE_ID/assets"
+          done

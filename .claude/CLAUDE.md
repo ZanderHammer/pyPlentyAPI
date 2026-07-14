@@ -22,6 +22,7 @@ uv run pytest -m integration         # requires live credentials
 
 ## Conventions
 - Conventional commits enforced via commitizen (`feat:`, `fix:`, `docs:`, `chore:`, `test:`, `refactor:`)
+- **Version bumps stay PATCH-only by default.** This project is alpha (`major_version_zero = true` in `pyproject.toml`) and moves fast — minor/major jumps should be deliberate, not an automatic side effect of a `feat:` or breaking-change commit. Always run `cz bump --increment PATCH` rather than a bare `cz bump`, for both manual releases and the `.forgejo/workflows/prerelease.yml` dev-build version preview. Only use a bare `cz bump` (or an explicit `--increment MINOR`/`MAJOR`) when the maintainer explicitly asks for a minor/major bump.
 - Google-style docstrings on ALL public methods; document every response dict key
 - CHANGELOG.md: only ever write to `[Unreleased]` — never add a release section
 - CHANGELOG.md: Group changes by module. Use the same prefix as in commit messages.
