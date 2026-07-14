@@ -2,7 +2,7 @@
 
 Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw.githubusercontent.com/plentymarkets/api-doc/master/plentymarkets/openApiV3/openApiV3.json)), grouped by API tag, with implementation status and the method that implements it in this codebase. Generated from the spec + a scan of `src/plentymarkets/modules/*.py`, so it stays accurate as coverage grows.
 
-**203 / 1837** endpoints implemented across **53** API tags.
+**209 / 1837** endpoints implemented across **53** API tags.
 
 | API Tag | Description | Coverage |
 |---|---|---|
@@ -37,7 +37,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | [`Market`](#market) | Marketplace integrations — Amazon, eBay, Otto, etc. | 0/43 — planned |
 | [`Messenger`](#messenger) | Internal messaging between system users | 0/92 — planned |
 | [`Newsletter`](#newsletter) | Newsletter recipient lists and subscription management | 0/21 — planned |
-| [`Order`](#order) | Orders, order items, order properties, and status management | **98/307** |
+| [`Order`](#order) | Orders, order items, order properties, and status management | **104/307** |
 | [`OrderSummary`](#ordersummary) | Aggregated order statistics and revenue summaries | 0/8 — planned |
 | [`Payment`](#payment) | Payments, payment methods, and booking payments to orders | 0/52 — planned |
 | [`Pim`](#pim) | Product Information Management — modern `/rest/pim` item operations | **80/80** — full coverage |
@@ -1315,7 +1315,7 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 
 ### `Order`
 
-98/307 implemented.
+104/307 implemented.
 
 | Method | Path | Description | Status | Code |
 |---|---|---|---|---|
@@ -1359,12 +1359,12 @@ Every endpoint in the PlentyMarkets OpenAPI spec ([`openApiV3.json`](https://raw
 | GET | `/rest/orders/batch` | Get orders | **implemented** | `orders.get_orders_batch` |
 | GET | `/rest/orders/contacts/{contactId}` | List orders of a contact | **implemented** | `orders.list_contact_orders` |
 | POST | `/rest/orders/contacts/{contactId}/multi_order` | Create a multi-order | **implemented** | `orders.create_multi_order` |
-| GET | `/rest/orders/coupons/campaigns` | Get list of campaigns | planned | — |
-| DELETE | `/rest/orders/coupons/campaigns/codes/{code}` | Delete a coupon | planned | — |
-| GET | `/rest/orders/coupons/campaigns/codes/{code}` | Get coupon code information | planned | — |
-| PUT | `/rest/orders/coupons/campaigns/codes/{code}/disabled/{isDisabled}` | Disable or enable coupon | planned | — |
-| GET | `/rest/orders/coupons/campaigns/{campaignId}` | Get campaign by Id | planned | — |
-| POST | `/rest/orders/coupons/campaigns/{campaignId}/codes` | Create a coupon code | planned | — |
+| GET | `/rest/orders/coupons/campaigns` | Get list of campaigns | **implemented** | `orders.list_campaigns` |
+| DELETE | `/rest/orders/coupons/campaigns/codes/{code}` | Delete a coupon | **implemented** | `orders.delete_coupon_code` |
+| GET | `/rest/orders/coupons/campaigns/codes/{code}` | Get coupon code information | **implemented** | `orders.get_coupon_code` |
+| PUT | `/rest/orders/coupons/campaigns/codes/{code}/disabled/{isDisabled}` | Disable or enable coupon | **implemented** | `orders.set_coupon_code_disabled` |
+| GET | `/rest/orders/coupons/campaigns/{campaignId}` | Get campaign by Id | **implemented** | `orders.get_campaign` |
+| POST | `/rest/orders/coupons/campaigns/{campaignId}/codes` | Create a coupon code | **implemented** | `orders.create_coupon_code` |
 | POST | `/rest/orders/coupons/codes` | Validate multiple coupons | planned | — |
 | GET | `/rest/orders/coupons/codes/contacts/{contactId}` | List redeemed coupon codes of a contact | planned | — |
 | POST | `/rest/orders/coupons/codes/{coupon}` | Validate a coupon | planned | — |

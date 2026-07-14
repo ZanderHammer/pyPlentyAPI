@@ -189,6 +189,30 @@ class OrderPropertyTypeUpdatePayload(TypedDict, total=False):
     position: NotRequired[int]
 
 
+class OrderCouponCodeCreatePayload(TypedDict, total=False):
+    """Payload for :meth:`OrdersModule.create_coupon_code`
+    (``POST /rest/orders/coupons/campaigns/{campaignId}/codes``).
+
+    PlentyMarkets' published OpenAPI spec redeclares ``campaignId`` as a
+    body field even though it is already supplied as a path parameter;
+    :meth:`OrdersModule.create_coupon_code` merges the ``campaign_id``
+    argument into the request body automatically, so it is intentionally
+    omitted from this TypedDict.
+
+    Keys:
+        code: The coupon code string. Auto-generated if omitted.
+        value: The coupon's monetary or percentage value, depending on the
+            campaign's configuration.
+        usedCount: Initial used-count to seed the code with.
+        usedAmount: Initial used-amount to seed the code with.
+    """
+
+    code: NotRequired[str]
+    value: NotRequired[float]
+    usedCount: NotRequired[int]
+    usedAmount: NotRequired[float]
+
+
 # ---------------------------------------------------------------------------
 # Items  (/rest/items)
 # ---------------------------------------------------------------------------

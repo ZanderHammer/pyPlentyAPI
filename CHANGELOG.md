@@ -68,6 +68,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - feat: `OrdersModule.get_currency_exchange_rate` — get a currency's exchange rate via `GET /rest/orders/currencies/{currencyIso}/exchangeRate`
 - `Order` reaches 98/307 endpoint coverage under the `Order` API tag (currencies milestone)
 - refactor: `modules/orders/` gains a `currencies.py` mixin (`CurrenciesMixin`) — no public API change
+- feat: `OrdersModule.list_campaigns` — list coupon campaigns via `GET /rest/orders/coupons/campaigns`
+- feat: `OrdersModule.delete_coupon_code` — delete a coupon code via `DELETE /rest/orders/coupons/campaigns/codes/{code}`
+- feat: `OrdersModule.get_coupon_code` — get coupon code information via `GET /rest/orders/coupons/campaigns/codes/{code}`
+- feat: `OrdersModule.set_coupon_code_disabled` — enable/disable a coupon code via `PUT /rest/orders/coupons/campaigns/codes/{code}/disabled/{isDisabled}`
+- feat: `OrdersModule.get_campaign` — get one coupon campaign via `GET /rest/orders/coupons/campaigns/{campaignId}`
+- feat: `OrdersModule.create_coupon_code` — create a coupon code via `POST /rest/orders/coupons/campaigns/{campaignId}/codes`
+- feat: `OrderCouponCodeCreatePayload` — TypedDict for `create_coupon_code`
+- refactor: `modules/orders/` gains a `coupons.py` mixin (`CouponsMixin`) — no public API change
 
 ## [0.3.2] - 2026-07-13
 

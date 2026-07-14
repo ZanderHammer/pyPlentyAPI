@@ -3,6 +3,7 @@ from __future__ import annotations
 from ..._session import Session
 from ._base import OrdersBase
 from .core import CoreMixin
+from .coupons import CouponsMixin
 from .currencies import CurrenciesMixin
 from .dates import DatesMixin
 from .order_items import ItemsMixin
@@ -27,6 +28,7 @@ class OrdersModule(
     PropertiesMixin,
     ReferrersMixin,
     CurrenciesMixin,
+    CouponsMixin,
     OrdersBase,
 ):
     """Wraps the PlentyMarkets ``/rest/orders`` endpoints.
