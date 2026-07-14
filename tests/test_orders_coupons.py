@@ -63,6 +63,8 @@ async def test_set_coupon_code_disabled_puts_no_body(httpx_mock, orders):
     )
     result = await orders.set_coupon_code_disabled("SAVE10", 1)
     assert result == {}
+    request = httpx_mock.get_request()
+    assert request.content == b""
 
 
 async def test_get_campaign_calls_correct_url(httpx_mock, orders):
