@@ -31,10 +31,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://codeberg.org/ZanderHammer/pyPlentyAPI"
-Repository = "https://codeberg.org/ZanderHammer/pyPlentyAPI"
-Issues = "https://codeberg.org/ZanderHammer/pyPlentyAPI/issues"
-Changelog = "https://codeberg.org/ZanderHammer/pyPlentyAPI/src/branch/main/CHANGELOG.md"
+Homepage = "https://github.com/ZanderHammer/pyPlentyAPI"
+Repository = "https://github.com/ZanderHammer/pyPlentyAPI"
+Issues = "https://github.com/ZanderHammer/pyPlentyAPI/issues"
+Changelog = "https://github.com/ZanderHammer/pyPlentyAPI/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = [
